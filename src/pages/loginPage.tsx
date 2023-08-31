@@ -1,0 +1,107 @@
+import { useState } from 'react'
+import axios, { AxiosResponse } from 'axios';
+
+export default function LoginPage() {
+
+  const [errorMessage, setErrorMessage] = useState<string|null>("")
+  const [username, setUsername] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
+
+  const login = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setErrorMessage("")
+    axios.post("http://localhost:3500/auth/login", {
+      username,
+      password
+    }, {
+      withCredentials: true
+    }).then((res : AxiosResponse) => {
+      if (res.data === "success") {
+       window.location.href = "/"
+     }
+    }, (res) => {
+      console.log({res})
+      setErrorMessage("Sorry, your login request failed. Please try again.")
+    })
+  }
+
+  const logout = () => {
+    axios.get("http://localhost:3500/auth/logout", {withCredentials: true}).then((res : AxiosResponse) => {
+      if (res.data === "success") {
+       window.location.href = "/"
+     }
+    }, () => {
+      console.log("Failure");
+    })
+  }
+
+  return (
+    <div className="h-screen flex">
+    {/* <!-- Left Column - Login Form --> */}
+    <div className="w-screen flex items-center justify-center bg-slate-600">
+      <form className="w-96 p-8 bg-gray-400 rounded-lg shadow-md" onSubmit={e => {login(e)}}>
+        <h2 className="text-2xl font-bold mb-6">INWORD/OUTWORD</h2>
+        <h6 className="text-2xl font-bold mb-6">Please Login</h6>
+        <div className="mb-4">
+          <label htmlFor="username" className="block text-gray-700 font-bold">Username</label>
+          <input type="username" id="username" className="w-full border-gray-300 rounded-lg p-2" 
+                placeholder="Enter your Username" onChange={e => setUsername(e.target.value)}/>
+        </div>        
+        <div className="mb-4">
+          <label htmlFor="password" className="block text-gray-700 font-bold">Password</label>
+          <input type="password" id="password" className="w-full border-gray-300 rounded-lg p-2" 
+                placeholder="Enter your password" onChange={e => setPassword(e.target.value)}/>
+        </div>
+        { errorMessage ? <div className="text-white bg-red-700 border-1 border-red-950 p-4 m-2 mb-4">{errorMessage}</div> : "" }
+        <button type="submit" className="w-full bg-amber-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-blue-300">Login</button>
+      </form>
+    </div>
+
+    {/* <!-- Right Column - Image --> */}
+    {/* <div className="w-1/2 bg-cover bg-center bg-/images/galaxy.jpg" style={{backgroundImage: 'url(/images/galaxy.jpg)'}}></div> */}
+  </div>
+
+  )
+}
+
+// function LoginPage() {
+//   const navigate = useNavigate();
+//   const location = useLocation();
+//   const auth = useAuth();
+
+//   const from = location.state?.from?.pathname || "/";
+
+//   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+//     event.preventDefault();
+
+//     const formData = new FormData(event.currentTarget);
+//     const username = formData.get("username") as string;
+
+//     auth.signin(username, () => {
+//       // Send them back to the page they tried to visit when they were
+//       // redirected to the login page. Use { replace: true } so we don't create
+//       // another entry in the history stack for the login page.  This means that
+//       // when they get to the protected page and click the back button, they
+//       // won't end up back on the login page, which is also really nice for the
+//       // user experience.
+//       navigate(from, { replace: true });
+//     });
+//   }
+
+//   return (
+//     <div>
+//       <p>You must log in to view the page at {from}</p>
+
+//       <form onSubmit={handleSubmit}>
+//         <label>
+//           Username: <input name="username" type="text" />
+//         </label>{" "}
+//         <button type="submit">Login</button>
+//       </form>
+//     </div>
+//   );
+// }
+
+
+
+  
