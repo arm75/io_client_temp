@@ -16,8 +16,9 @@ import SortableTable from '../components/table/sortableTable'
 import { Link } from 'react-router-dom'
 import DemoTablePage from '../payments/page'
 import { DialogDemo } from '../payments/dialog'
-import BoardConstruct from './boardConstruct'
+import BoardConstruct from '../components/game/board/renderBoard'
 import TestBoard from './testBoard'
+import RenderBoard from '../components/game/board/renderBoard'
 
 // const data: IUser[] = [
 //   {
@@ -189,7 +190,7 @@ export default function HomePage() {
 
     content = <>
       <HomeLayout pageTitle="Dashboard Page">
-        <BoardConstruct/>
+        <RenderBoard/>
         {/* <TestBoard/>
         <DialogDemo/>
         <DemoTablePage></DemoTablePage> */}

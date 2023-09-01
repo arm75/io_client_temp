@@ -12,28 +12,12 @@ export default function HomeLayout(props:any) {
     return(
     <>
         <div className="min-h-screen grid grid-cols-12">
-            <div className="bg-slate-100 col-span-9 h-screen overflow-auto pt-0 px-8">
+            <div className="bg-slate-100 col-span-8 h-screen overflow-auto p-4">
                 <HomeLayoutContent pageTitle={pageTitle}>{children}</HomeLayoutContent>
-                {/* <div className="text-white bg-indigo-100 border border-indigo-500 text-center my-10 p-10">
-                    <a className="text-indigo-500 hover:text-white" href="/layout">Layout Page</a>
-                </div>
-                <div className="text-white bg-indigo-500 border border-indigo-900 text-center p-4 mb-2">TEXT</div>                
-                <div className="text-white bg-indigo-500 border border-indigo-900 text-center p-4 mb-2">TEXT</div>                
-                <div className="text-white bg-indigo-500 border border-indigo-900 text-center p-4 mb-2">TEXT</div>                
-                <div className="text-white bg-indigo-500 border border-indigo-900 text-center p-4 mb-2">TEXT</div>                
-                <div className="text-white bg-indigo-500 border border-indigo-900 text-center p-4 mb-2">TEXT</div>                
-                <div className="text-white bg-indigo-500 border border-indigo-900 text-center p-4 mb-2">TEXT</div>                
-                <div className="text-white bg-indigo-500 border border-indigo-900 text-center p-4 mb-2">TEXT</div>                
-                <div className="text-white bg-indigo-500 border border-indigo-900 text-center p-4 mb-2">TEXT</div> 
-                <div className="text-white bg-indigo-500 border border-indigo-900 text-center p-4 mb-2">TEXT</div> 
-                <div className="text-white bg-indigo-500 border border-indigo-900 text-center p-4 mb-2">TEXT</div> */}
-                {/* <HomeLayoutHeader/> */}
+            
             </div>
-            <div className="bg-slate-700 col-span-3 p-8 h-screen overflow-auto">
-                <HomeLayoutSidebar/>                
-                <div className="text-white bg-red-500 border border-red-900 text-center p-4 mb-2">TEXT</div>
-                <div className="text-white bg-red-500 border border-red-900 text-center p-4 mb-2">TEXT</div>
-                <div className="text-white bg-red-500 border border-red-900 text-center p-4 mb-2">TEXT</div>
+            <div className="bg-slate-700 col-span-4 p-8 h-screen overflow-auto">
+                <HomeLayoutSidebar/>
             </div>
         </div>        
     </>
