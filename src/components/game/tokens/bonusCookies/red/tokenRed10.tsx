@@ -1,5 +1,5 @@
-export default function TokenRed10() {
-	return <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="290px" height="290px" viewBox="-0.5 -0.5 290 290" enable-background="new -0.5 -0.5 290 290">
+export default function TokenRed10({ svgWidth = '43px', svgHeight = '43px' }) {
+	return <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width={svgWidth} height={svgHeight} viewBox="-0.5 -0.5 290 290" enable-background="new -0.5 -0.5 290 290">
 <circle fill="#FF0000" stroke="#231F20" cx="144.5" cy="144.5" r="144"/>
 <circle display="none" fill="#FFAA00" stroke="#231F20" cx="144.5" cy="144.5" r="144"/>
 <circle display="none" fill="#0066FF" stroke="#231F20" cx="144.5" cy="144.5" r="144"/>
