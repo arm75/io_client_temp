@@ -17,6 +17,7 @@ import TokenRed3 from '../tokens/bonusCookies/red/tokenRed3';
 import TokenRed5 from '../tokens/bonusCookies/red/tokenRed5';
 import TokenRedArrows from '../tokens/bonusCookies/red/tokenRedArrows';
 import TokenRedSpinner from '../tokens/bonusCookies/red/tokenRedSpinner';
+import RandomToken from '../utils/randomToken';
 
 // Define the dimensions of your grid
 const numRows = 18;
@@ -28,7 +29,7 @@ type Cell = {
     stringValue: string;
 }
 
-export default function RenderBoard                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          () {
+export default function RenderBoard() {
 
     let content = <></>
 
@@ -63,14 +64,14 @@ export default function RenderBoard                                             
     if (gridLoaded) {
       content = <>      
       <div className="col-span-10 overflow-auto flex justify-center bg-slate-500 py-8">
-        <div className="grid grid-cols-[repeat(18,_minmax(0,_1fr))] h-min">
+        <div className="grid grid-cols-[repeat(18,_minmax(0,_1fr))] h-min border-4 border-slate-800">
         {grid.map((row, rowIndex) => (
             <div key={rowIndex.toString()} className="bg-slate-500 col-span-1">
               {row.map((cell, cellIndex) => {
                 console.log({ cell });
                 console.log(`cell (${rowIndex + 1}, ${cellIndex + 1})`);
-                return <div key={cellIndex.toString()} className="text-white bg-slate-300 border border-emerald-900 text-center w-[45px] h-[45px]">
-                  <TokenRed1/>
+                return <div key={cellIndex.toString()} className="text-white bg-slate-300 border-2 border-slate-800 flex justify-center items-center w-[46px] h-[46px]">
+                  <RandomToken/>
                   {/* {cell?.stringValue} */}
                 </div>
               })}
@@ -78,7 +79,7 @@ export default function RenderBoard                                             
           ))}
           </div>
         </div>
-        <TokenRed1/>
+        {/* <TokenRed1/>
         <TokenRed3/>
         <TokenRed5/>
         <TokenRed10/>
@@ -95,9 +96,10 @@ export default function RenderBoard                                             
         <TokenGold5/>
         <TokenGold10/>
         <TokenGoldArrows/>
-        <TokenGoldSpinner/>
+        <TokenGoldSpinner/> */}
       </>
     }
 
   return content
 }
+
