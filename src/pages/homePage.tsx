@@ -1,24 +1,29 @@
-//import React from 'react'
-import { ColumnDef } from '@tanstack/react-table'
-import HomeLayout from '../app/layouts/home/homeLayout'
-import DropDownMenuDemo from '../components/shadcn/dropDownMenu'
-import IUser from '../models/interfaces/user'
-import LoginPage from './loginPage'
-import UsersPage from './usersPage'
-import { Checkbox } from '@radix-ui/react-checkbox'
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuItem, DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu'
-import { ArrowUpDown, MoreHorizontal } from 'lucide-react'
-import { Button } from '../components/ui/button'
-import useAxios from '../app/api/axios'
-import { useQuery } from '@tanstack/react-query'
-import BasicTable from '../components/table/basicTable'
-import SortableTable from '../components/table/sortableTable'
-import { Link } from 'react-router-dom'
-import DemoTablePage from '../payments/page'
-import { DialogDemo } from '../payments/dialog'
-import BoardConstruct from '../components/game/board/renderBoard'
-import TestBoard from './testBoard'
-import RenderBoard from '../components/game/board/renderBoard'
+import HomeLayout from "../app/layouts/home/homeLayout"
+import useAxios from "../app/api/axios"
+import { useQuery } from "@tanstack/react-query"
+import RenderBoard from "../components/game/board/renderBoard"
+// import { ColumnDef } from "@tanstack/react-table"
+// import DropDownMenuDemo from "../components/shadcn/dropDownMenu"
+// import IUser from "../models/interfaces/user"
+// import LoginPage from "./loginPage"
+// import UsersPage from "./usersPage"
+// import { Checkbox } from "@radix-ui/react-checkbox"
+// import {
+// 	DropdownMenu,
+// 	DropdownMenuTrigger,
+// 	DropdownMenuContent,
+// 	DropdownMenuLabel,
+// 	DropdownMenuItem,
+// 	DropdownMenuSeparator,
+// } from "@radix-ui/react-dropdown-menu"
+// import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+// import { Button } from "../components/ui/button"
+// import BasicTable from "../components/table/basicTable"
+// import SortableTable from "../components/table/sortableTable"
+// import { Link } from "react-router-dom"
+// import DemoTablePage from "../payments/page"
+// import { DialogDemo } from "../payments/dialog"
+// import BoardConstruct from "../components/game/board/renderBoard"
 
 // const data: IUser[] = [
 //   {
@@ -116,8 +121,6 @@ import RenderBoard from '../components/game/board/renderBoard'
 //     },
 //   },
 
-
-
 //   {
 //     id: "actions",
 //     enableHiding: false,
@@ -149,55 +152,52 @@ import RenderBoard from '../components/game/board/renderBoard'
 // ]
 
 export default function HomePage() {
+	// component output
+	let content: JSX.Element = <></>
 
-   // component output
-   let content:JSX.Element = <></>
+	const api = useAxios("http://localhost:3500/")
+	//const api = apiRef.current
 
-  const api = useAxios('http://localhost:3500/')
-    //const api = apiRef.current
+	////// REACT-QUERY //////
+	// GET ALL USERS
+	const getAllUsersQuery = useQuery(["get-all-users"], async () => await api.get("users").then((res) => res.data), {
+		refetchOnWindowFocus: false,
+	})
 
-    ////// REACT-QUERY //////
-    // GET ALL USERS
-    const getAllUsersQuery = useQuery(['get-all-users'], 
-        async () => await api.get('users').then(res => res.data),
-        {refetchOnWindowFocus:false})
+	if (getAllUsersQuery.isLoading || getAllUsersQuery.isFetching) {
+		content = <p>Loading...</p>
+	}
 
+	if (getAllUsersQuery.isError) {
+		content = <p className="errmsg">whatev</p>
+	}
 
+	if (getAllUsersQuery.isSuccess) {
+		const usersData = []
 
+		// transform data for table. needs to be extracted out to custom function...
+		for (const objKey in getAllUsersQuery.data) {
+			const obj: any = getAllUsersQuery.data[objKey]
+			usersData.push({
+				id: obj._id,
+				username: obj.username,
+				// password: obj.password,
+				// roles: obj.roles.toString().replaceAll(',', ', '),
+				// rolesArray: obj.roles
+			})
+		}
 
-  if (getAllUsersQuery.isLoading || getAllUsersQuery.isFetching ) {
-    content = <p>Loading...</p>
-  }
-  
-  if (getAllUsersQuery.isError) {
-      content = <p className="errmsg">whatev</p>
-  }
-
-  if (getAllUsersQuery.isSuccess) {
-    const usersData = []
-  
-    // transform data for table. needs to be extracted out to custom function...
-    for (const objKey in getAllUsersQuery.data) {
-        const obj:any = getAllUsersQuery.data[objKey]
-        usersData.push({
-            id: obj._id,
-            username: obj.username,
-            // password: obj.password,
-            // roles: obj.roles.toString().replaceAll(',', ', '),
-            // rolesArray: obj.roles
-        })
-    }
-
-    content = <>
-      <HomeLayout pageTitle="Dashboard Page">
-        <RenderBoard/>
-        {/* <TestBoard/>
+		content = (
+			<>
+				<HomeLayout pageTitle="Dashboard Page">
+					<RenderBoard />
+					{/* <TestBoard/>
         <DialogDemo/>
         <DemoTablePage></DemoTablePage> */}
-      </HomeLayout>      
-    </>
-  }
+				</HomeLayout>
+			</>
+		)
+	}
 
-  return content
+	return content
 }
-                                                                                                                                                                                                                                                                                                                                                                                            
