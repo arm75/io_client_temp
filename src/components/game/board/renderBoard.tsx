@@ -18,7 +18,9 @@ import React, { useEffect, useState } from "react"
 // import TokenRedArrows from '../tokens/bonusCookies/red/tokenRedArrows';
 // import TokenRedSpinner from '../tokens/bonusCookies/red/tokenRedSpinner';
 import RandomToken from "../utils/randomToken"
-import ATile from "../tokens/letterTiles/html/aTile"
+import LetterTileA from "../tokens/letterTiles/html/LetterTileA"
+import LetterTileB from "../tokens/letterTiles/html/LetterTileB"
+import LetterTileC from "../tokens/letterTiles/html/LetterTileC"
 
 // Define the dimensions of your grid
 const numRows = 18
@@ -34,6 +36,32 @@ export default function RenderBoard() {
 	let content = <></>
 
 	const [gridLoaded, setGridLoaded] = useState(false)
+
+	function randomLetterTile(): JSX.Element {
+		const letterTiles: { [key: number]: JSX.Element } = {
+			1: <LetterTileA />,
+			2: <LetterTileB />,
+			3: <LetterTileC />,
+		}
+
+		const randomTile = Math.floor(Math.random() * 3) + 1
+
+		let letterTileToRender = (<></>) as JSX.Element
+
+		switch (randomTile) {
+			case 1:
+				letterTileToRender = letterTiles[1]
+				break
+			case 2:
+				letterTileToRender = letterTiles[2]
+				break
+			case 3:
+				letterTileToRender = letterTiles[3]
+				break
+		}
+
+		return letterTileToRender
+	}
 
 	// Initialize the grid as a 2D array with default values
 	const [grid, setGrid] = useState<(Cell | null)[][]>(() => {
@@ -90,7 +118,8 @@ export default function RenderBoard() {
 												key={cellIndex.toString()}
 												className="text-white bg-slate-300 border-2 border-slate-800 hover:border-yellow-500 flex justify-center items-center w-[46px] h-[46px]"
 											>
-												<ATile />
+												{randomLetterTile()}
+												{/* <LetterTileA /> */}
 												{/* {cell?.stringValue} */}
 											</div>
 										)
