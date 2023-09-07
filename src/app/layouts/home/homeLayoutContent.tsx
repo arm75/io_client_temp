@@ -1,29 +1,31 @@
-import { useQueryClient } from '@tanstack/react-query';
-import IUser from '../../../models/interfaces/user';
-import axios, { AxiosResponse } from 'axios';
+import { useQueryClient } from "@tanstack/react-query"
+import IUser from "../../../models/interfaces/user"
+import axios, { AxiosResponse } from "axios"
 
-export default function HomeLayoutContent(props:any) {
-    
-    const {children, pageTitle} = props
+export default function HomeLayoutContent(props: any) {
+	const { children, pageTitle } = props
 
-    const queryClient = useQueryClient()
+	const queryClient = useQueryClient()
 
-    const authMeQueryData:IUser|undefined = queryClient.getQueryData(["auth-me"])    
+	const authMeQueryData: IUser | undefined = queryClient.getQueryData(["auth-me"])
 
-    const logout = () => {
-        axios.get("http://localhost:3500/auth/logout", {withCredentials: true}).then((res : AxiosResponse) => {
-          if (res.data === "success") {
-           window.location.href = "/"
-         }
-        }, () => {
-          console.log("Failure");
-        })
-      }
+	const logout = () => {
+		axios.get("http://localhost:3500/auth/logout", { withCredentials: true }).then(
+			(res: AxiosResponse) => {
+				if (res.data === "success") {
+					window.location.href = "/"
+				}
+			},
+			() => {
+				console.log("Failure")
+			}
+		)
+	}
 
-    return(            
-       <>        
-        {/* <h1 className="text-3xl font-bold mb-2">{pageTitle}</h1>                     */}
-        {children}
-      </>
-    )    
+	return (
+		<>
+			{/* <h1 className="text-3xl font-bold mb-2">{pageTitle}</h1>                     */}
+			{children}
+		</>
+	)
 }

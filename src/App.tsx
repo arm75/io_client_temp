@@ -20,7 +20,7 @@ export default function App() {
 		refetchOnWindowFocus: false,
 	})
 
-	console.log(authMeQueryData)
+	//console.log(authMeQueryData)
 
 	if (authMeQueryData.isLoading || authMeQueryData.isFetching) {
 		content = <p className="">Loading...</p>

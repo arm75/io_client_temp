@@ -1,4 +1,4 @@
-export default function TokenBlueArrows({ svgWidth = "40px", svgHeight = "40px" }) {
+export default function TokenBlueArrow({ svgWidth = "40px", svgHeight = "40px" }) {
 	return (
 		<svg
 			version="1.1"
