@@ -21,6 +21,9 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
 		col: 0,
 	})
 
+	const [hoverCookieColor, setHoverCookieColor] = useState("")
+	const [hoverCookie, setHoverCookie] = useState("")
+
 	// Define the function you want to make available to nested components
 	// const setHoverPosition = (row: number, col: number) => {
 	// 	console.log("setHoverPosition ran.")
@@ -35,6 +38,10 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
 	const contextValue = {
 		hoverCoordinates,
 		setHoverCoordinates,
+		hoverCookieColor,
+		setHoverCookieColor,
+		hoverCookie,
+		setHoverCookie,
 	}
 
 	return <GameContext.Provider value={contextValue}>{children}</GameContext.Provider>

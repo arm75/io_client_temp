@@ -30,9 +30,9 @@ export default function createNewBoard() {
 	// calc total cookies
 	const totalBonusCookies = Math.round(totalCells * bonusCookieRate)
 	const totalEmptyCells = totalCells - totalBonusCookies
-	console.log({ totalCells })
-	console.log({ totalEmptyCells })
-	console.log({ totalBonusCookies })
+	// console.log({ totalCells })
+	// console.log({ totalEmptyCells })
+	// console.log({ totalBonusCookies })
 
 	// calc total of each color
 	let cookiesRemaining = totalBonusCookies
@@ -41,9 +41,9 @@ export default function createNewBoard() {
 	const totalBlueBonusCookies = Math.round(totalBonusCookies * 0.3)
 	cookiesRemaining = cookiesRemaining - totalBlueBonusCookies
 	const totalGoldBonusCookies = cookiesRemaining
-	console.log({ totalGoldBonusCookies })
-	console.log({ totalRedBonusCookies })
-	console.log({ totalBlueBonusCookies })
+	// console.log({ totalGoldBonusCookies })
+	// console.log({ totalRedBonusCookies })
+	// console.log({ totalBlueBonusCookies })
 
 	// calc number of each type of gold cookies
 	let goldCookiesRemaining = totalGoldBonusCookies
@@ -60,13 +60,13 @@ export default function createNewBoard() {
 	const goldThreeCookies = Math.round(goldNumberCookies * 0.25)
 	goldNumberCookiesRemaining = goldNumberCookiesRemaining - goldThreeCookies
 	const goldOneCookies = goldNumberCookiesRemaining
-	console.log({ goldArrowCookies })
-	console.log({ goldSpinnerCookies })
-	console.log({ goldNumberCookies })
-	console.log({ goldTenCookies })
-	console.log({ goldFiveCookies })
-	console.log({ goldThreeCookies })
-	console.log({ goldOneCookies })
+	// console.log({ goldArrowCookies })
+	// console.log({ goldSpinnerCookies })
+	// console.log({ goldNumberCookies })
+	// console.log({ goldTenCookies })
+	// console.log({ goldFiveCookies })
+	// console.log({ goldThreeCookies })
+	// console.log({ goldOneCookies })
 
 	// calc number of each type of red cookies
 	let redCookiesRemaining = totalRedBonusCookies
@@ -83,13 +83,13 @@ export default function createNewBoard() {
 	const redThreeCookies = Math.round(redNumberCookies * 0.25)
 	redNumberCookiesRemaining = redNumberCookiesRemaining - redThreeCookies
 	const redOneCookies = redNumberCookiesRemaining
-	console.log({ redArrowCookies })
-	console.log({ redSpinnerCookies })
-	console.log({ redNumberCookies })
-	console.log({ redTenCookies })
-	console.log({ redFiveCookies })
-	console.log({ redThreeCookies })
-	console.log({ redOneCookies })
+	// console.log({ redArrowCookies })
+	// console.log({ redSpinnerCookies })
+	// console.log({ redNumberCookies })
+	// console.log({ redTenCookies })
+	// console.log({ redFiveCookies })
+	// console.log({ redThreeCookies })
+	// console.log({ redOneCookies })
 
 	// calc number of each type of blue cookies
 	let blueCookiesRemaining = totalBlueBonusCookies
@@ -106,13 +106,13 @@ export default function createNewBoard() {
 	const blueThreeCookies = Math.round(blueNumberCookies * 0.25)
 	blueNumberCookiesRemaining = blueNumberCookiesRemaining - blueThreeCookies
 	const blueOneCookies = blueNumberCookiesRemaining
-	console.log({ blueArrowCookies })
-	console.log({ blueSpinnerCookies })
-	console.log({ blueNumberCookies })
-	console.log({ blueTenCookies })
-	console.log({ blueFiveCookies })
-	console.log({ blueThreeCookies })
-	console.log({ blueOneCookies })
+	// console.log({ blueArrowCookies })
+	// console.log({ blueSpinnerCookies })
+	// console.log({ blueNumberCookies })
+	// console.log({ blueTenCookies })
+	// console.log({ blueFiveCookies })
+	// console.log({ blueThreeCookies })
+	// console.log({ blueOneCookies })
 
 	const tokenArray: Array<string> = []
 

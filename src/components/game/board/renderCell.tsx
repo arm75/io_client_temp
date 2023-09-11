@@ -4,12 +4,14 @@ import RandomToken from "../utils/randomToken"
 
 export default function RenderCell(props: any) {
 	const { cell } = props
-	const { setHoverCoordinates } = useGameContext()
+	const { setHoverCoordinates, setHoverCookieColor, setHoverCookie } = useGameContext()
 
-	const handleMouseOver = (currentRow: number, currentCol: number) => {
+	const handleMouseOver = (currentRow: number, currentCol: number, currentCookieColor: string, currentCookie: string) => {
 		//console.log("handleMouseOver\n")
 		//console.log("row: ", currentRow, ", col:", currentCol, "\n")
 		setHoverCoordinates({ row: currentRow, col: currentCol })
+		setHoverCookieColor(currentCookieColor)
+		setHoverCookie(currentCookie)
 	}
 
 	//console.log(cell)
@@ -19,7 +21,7 @@ export default function RenderCell(props: any) {
 		<>
 			<div
 				className="border text-white bg-slate-300 hover:bg-emerald-300 hover:border-emerald-600 border-slate-800 flex justify-center items-center w-[46px] h-[46px]"
-				onMouseOver={() => handleMouseOver(cell.row, cell.col)}
+				onMouseOver={() => handleMouseOver(cell.row, cell.col, cell.bonusCookieColor, cell.bonusCookie)}
 			>
 				<div className="select-none">
 					{/* {cell.row}, {cell.col}

@@ -14,13 +14,13 @@ export default function RenderBoard() {
 	const [boardLoaded, setBoardLoaded] = useState(false)
 	const [board, setBoard] = useState<ICell[][]>([])
 
-	const { setHoverCoordinates } = useGameContext()
+	const { setHoverCoordinates, setHoverCookieColor, setHoverCookie } = useGameContext()
 
 	useEffect(() => {
 		console.log("Initializing board (useEffect)...")
 		if (!boardLoaded) {
 			const gameBoard = createNewBoard()
-			console.log({ gameBoard })
+			//console.log({ gameBoard })
 			setBoard(gameBoard)
 			setBoardLoaded(true)
 		}
@@ -76,6 +76,8 @@ export default function RenderBoard() {
 		//console.log("handleMouseOver\n")
 		//console.log("row: ", currentRow, ", col:", currentCol, "\n")
 		setHoverCoordinates({ row: 0, col: 0 })
+		setHoverCookieColor("")
+		setHoverCookie("")
 	}
 
 	function consoleLog(msg: string) {
@@ -92,6 +94,7 @@ export default function RenderBoard() {
 			<>
 				<div className="col-span-10 overflow-auto flex justify-center bg-slate-500 py-8">
 					<div
+						key={"main-board-box"}
 						className="grid grid-cols-[repeat(18,_minmax(0,_1fr))] h-min border-4 border-slate-800"
 						onMouseOut={handleMouseOut}
 					>

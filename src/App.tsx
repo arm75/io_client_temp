@@ -7,8 +7,17 @@ import AuthGuard from "./app/auth/authGuard"
 import PageNotFound from "./pages/pageNotFound"
 import BasicTablePage from "./pages/tables/basicTablePage"
 import SortableTablePage from "./pages/tables/sortableTablePage"
+import socketClient from "socket.io-client"
+
+const SOCKET_SERVER = "http://localhost:3500"
 
 export default function App() {
+	const socket = socketClient(SOCKET_SERVER)
+
+	socket.on("connection", () => {
+		console.log(`I'm connected with the back-end`)
+	})
+
 	// component output
 	let content: JSX.Element = <></>
 

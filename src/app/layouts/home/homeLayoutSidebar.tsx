@@ -1,3 +1,4 @@
+import ChatBox from "../../../components/chat/chatBox"
 import { useGameContext } from "../../../components/game/contexts/gameContext"
 
 export default function HomeLayoutSidebar(props: any) {
@@ -6,7 +7,7 @@ export default function HomeLayoutSidebar(props: any) {
 	// const queryClient = useQueryClient()
 	// const authMeQueryData:IUser|undefined = queryClient.getQueryData("auth-me")
 
-	const { hoverCoordinates } = useGameContext()
+	const { hoverCoordinates, hoverCookieColor, hoverCookie } = useGameContext()
 
 	return (
 		<>
@@ -39,7 +40,12 @@ export default function HomeLayoutSidebar(props: any) {
 				<span className="text-emerald-500 text-5xl">
 					{hoverCoordinates.row}, {hoverCoordinates.col}
 				</span>
+				<br />
+				Current Cookie Color: <span className="text-emerald-500 text-5xl">{hoverCookieColor}</span>
+				<br />
+				Current Cookie: <span className="text-emerald-500 text-5xl">{hoverCookie}</span>
 			</h1>
+			<ChatBox />
 		</>
 	)
 }
