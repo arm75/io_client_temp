@@ -1,3 +1,8 @@
+import { useState, useEffect } from "react"
+import socketClient from "socket.io-client"
+
+const SOCKET_SERVER = "http://localhost:3500"
+
 const chatMessages = [
 	{
 		name: "henry",
@@ -142,31 +147,66 @@ const chatMessages = [
 ]
 
 export default function ChatBox() {
+	const socket = socketClient(SOCKET_SERVER)
+
+	socket.on("connection", () => {
+		console.log(`I'm connected with the back-end`)
+	})
+
+	const [message, setMessage] = useState("")
+	const [messages, setMessages] = useState<string[]>([])
+
+	useEffect(() => {
+		console.log("useEffect ran")
+		socket.on("chat message", (message: string) => {
+			setMessages([...messages, message])
+		})
+	}, [messages])
+
+	const handleSendMessage = () => {
+		socket.emit("chat message", message)
+		setMessage("")
+	}
+
 	return (
 		<>
 			<div className="w-full h-[250px] flex flex-col border bg-slate-800 border-gray-300 overflow-y-scroll">
-				{chatMessages.map((message, index) => (
+				{messages.map((message, index) => (
 					<>
-						{/* <div className={`${(index + 1) % 2 === 0 ? "mr-auto" : "ml-auto"} bg-slate-500`}> */}
 						<div className={`${(index + 1) % 2 === 0 ? "bg-slate-800" : "bg-slate-900"} p-2`}>
-							{/* <div className="p-2 m-1 inline-block text-sm text-white bg-red-500 border border-red-800 rounded"> */}
+							<div className="text-slate-100 text-xs">
+								{/* <span className="text-slate-500">{message.name}&gt; </span> */}
+								{message}
+							</div>
+						</div>
+					</>
+				))}
+				{/* {chatMessages.map((message, index) => (
+					<>
+						<div className={`${(index + 1) % 2 === 0 ? "bg-slate-800" : "bg-slate-900"} p-2`}>
 							<div className="text-slate-100 text-xs">
 								<span className="text-slate-500">{message.name}&gt; </span>
 								{message.text}
 							</div>
-							{/* </div> */}
 						</div>
 					</>
-				))}
-			</div>			
+				))} */}
+			</div>
 
 			<div className="flex mt-2">
 				<input
 					type="text"
 					className="w-full px-4 py-2 rounded-l-lg border border-gray-300 focus:outline-none focus:ring focus:border-blue-300"
 					placeholder="Type your message..."
+					value={message}
+					onChange={(e) => setMessage(e.target.value)}
 				/>
-				<button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-r-lg">Send</button>
+				<button
+					onClick={handleSendMessage}
+					className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-r-lg"
+				>
+					Send
+				</button>
 			</div>
 		</>
 	)

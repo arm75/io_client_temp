@@ -1,12 +1,8 @@
 import HomeLayoutSidebar from "./homeLayoutSidebar"
-import HomeLayoutHeader from "./homeLayoutHeader"
 import HomeLayoutContent from "./homeLayoutContent"
 
 export default function HomeLayout(props: any) {
 	const { children, pageTitle } = props
-
-	// const queryClient = useQueryClient()
-	// const authMeQueryData:IUser|undefined = queryClient.getQueryData(["auth-me"])
 
 	return (
 		<>

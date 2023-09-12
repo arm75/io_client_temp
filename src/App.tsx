@@ -5,31 +5,17 @@ import useAxios from "./app/api/axios"
 import LoginPage from "./pages/loginPage"
 import AuthGuard from "./app/auth/authGuard"
 import PageNotFound from "./pages/pageNotFound"
-import BasicTablePage from "./pages/tables/basicTablePage"
-import SortableTablePage from "./pages/tables/sortableTablePage"
-import socketClient from "socket.io-client"
 
 const SOCKET_SERVER = "http://localhost:3500"
 
 export default function App() {
-	const socket = socketClient(SOCKET_SERVER)
-
-	socket.on("connection", () => {
-		console.log(`I'm connected with the back-end`)
-	})
-
-	// component output
 	let content: JSX.Element = <></>
 
-	const api = useAxios("http://localhost:3500/")
+	const api = useAxios(SOCKET_SERVER)
 
-	////// REACT-QUERY //////
-	// GET AuthMe
 	const authMeQueryData = useQuery(["auth-me"], async () => await api.get("auth/me").then((res: any) => res.data), {
 		refetchOnWindowFocus: false,
 	})
-
-	//console.log(authMeQueryData)
 
 	if (authMeQueryData.isLoading || authMeQueryData.isFetching) {
 		content = <p className="">Loading...</p>
@@ -53,22 +39,6 @@ export default function App() {
 							}
 						/>
 						<Route
-							path="basic"
-							element={
-								<AuthGuard>
-									<BasicTablePage />
-								</AuthGuard>
-							}
-						/>
-						<Route
-							path="sortable"
-							element={
-								<AuthGuard>
-									<SortableTablePage />
-								</AuthGuard>
-							}
-						/>
-						<Route
 							path="login"
 							element={<LoginPage />}
 						/>
@@ -88,13 +58,3 @@ export default function App() {
 
 	return content
 }
-
-// <AuthProvider>
-//   <Routes>
-//     <Route element={<Layout />}>
-//       <Route path="/" element={<PublicPage />} />
-//       <Route path="/login" element={<LoginPage />} />
-//       <Route path="/protected" element={ <RequireAuth><ProtectedPage /></RequireAuth> } />
-//     </Route>
-//   </Routes>
-// </AuthProvider>
