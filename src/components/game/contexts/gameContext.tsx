@@ -13,7 +13,7 @@ export function useGameContext() {
 }
 
 // Create the AppProvider component
-export function GameContextProvider({ children }: { children: React.ReactNode }) {
+export function GameContextProvider({ children }: { children: JSX.Element }) {
 	const [hoverCoordinates, setHoverCoordinates] = useState<any>({
 		// Initialize your context state here
 		// For example:
