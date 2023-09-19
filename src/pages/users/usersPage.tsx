@@ -18,8 +18,9 @@ export default function UsersPage() {
 	const showDeleteModal = deleteUserId !== null
 
 	const onUpdateUserClick = (id: any) => {
-		console.log(id)
-		console.log("update user clicked")
+		//console.log(id)
+		//console.log("update user clicked")
+		setUpdateUserId(id)
 	}
 
 	const onDeleteUserClick = (id: any) => {

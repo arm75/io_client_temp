@@ -78,7 +78,7 @@ export default function CreateUserDialog(props: any) {
 							name="username"
 							defaultValue=""
 							render={({ field }) => {
-								console.log({ field })
+								//console.log({ field })
 								return (
 									<FormItem>
 										<FormLabel>Username</FormLabel>
@@ -99,7 +99,7 @@ export default function CreateUserDialog(props: any) {
 							name="password"
 							defaultValue=""
 							render={({ field }) => {
-								console.log({ field })
+								//console.log({ field })
 								return (
 									<FormItem>
 										<FormLabel>Password</FormLabel>
@@ -120,7 +120,7 @@ export default function CreateUserDialog(props: any) {
 							name="role"
 							defaultValue=""
 							render={({ field }) => {
-								console.log({ field })
+								//console.log({ field })
 								return (
 									<FormItem>
 										<FormLabel>Role</FormLabel>
@@ -133,7 +133,7 @@ export default function CreateUserDialog(props: any) {
 													<SelectValue placeholder="" />
 												</SelectTrigger>
 												<SelectContent>
-													<SelectItem value="Employee">Player</SelectItem>
+													<SelectItem value="Player">Player</SelectItem>
 													<SelectItem value="Admin">Admin</SelectItem>
 												</SelectContent>
 											</Select>

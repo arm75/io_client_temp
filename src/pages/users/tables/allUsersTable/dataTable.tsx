@@ -110,32 +110,40 @@ export function DataTable<TData, TValue>({ columns, data, updateUserFn, deleteUs
 					</TableHeader>
 					<TableBody>
 						{table.getRowModel().rows?.length ? (
-							table.getRowModel().rows.map((row) => (
-								<TableRow
-									key={row.id}
-									data-state={row.getIsSelected() && "selected"}
-								>
-									{row.getVisibleCells().map((cell) => (
-										<TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-									))}
-									<TableCell>
-										<Button
-											onClick={() => handleClick(row)}
-											className="text-white bg-violet-500 border border-violet-900 hover:bg-violet-800 mx-1"
-											size="sm"
-										>
-											<PencilIcon className="h-4 w-4" />
-										</Button>
-										<Button
-											onClick={() => handleClick(row)}
-											className="text-white bg-violet-500 border border-violet-900 hover:bg-violet-800 mx-1"
-											size="sm"
-										>
-											<Trash2Icon className="h-4 w-4" />
-										</Button>
-									</TableCell>
-								</TableRow>
-							))
+							table.getRowModel().rows.map((row) => {
+								//console.log({ row })
+								return (
+									<TableRow
+										key={row.id}
+										data-state={row.getIsSelected() && "selected"}
+									>
+										{row.getVisibleCells().map((cell) => {
+											//console.log({ cell })
+											return (
+												<TableCell key={cell.id}>
+													{flexRender(cell.column.columnDef.cell, cell.getContext())}
+												</TableCell>
+											)
+										})}
+										<TableCell>
+											<Button
+												onClick={() => handleClick(row.getValue("_id"))}
+												className="text-white bg-violet-500 border border-violet-900 hover:bg-violet-800 mx-1"
+												size="sm"
+											>
+												<PencilIcon className="h-4 w-4" />
+											</Button>
+											<Button
+												onClick={() => handleClick(row)}
+												className="text-white bg-violet-500 border border-violet-900 hover:bg-violet-800 mx-1"
+												size="sm"
+											>
+												<Trash2Icon className="h-4 w-4" />
+											</Button>
+										</TableCell>
+									</TableRow>
+								)
+							})
 						) : (
 							<TableRow>
 								<TableCell
