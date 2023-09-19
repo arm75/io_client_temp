@@ -5,6 +5,8 @@ import useAxios from "./app/api/axios"
 import LoginPage from "./pages/loginPage"
 import AuthGuard from "./app/auth/authGuard"
 import PageNotFound from "./pages/pageNotFound"
+import DemoTablePage from "./payments/page"
+import UsersPage from "./pages/users/usersPage"
 
 const SOCKET_SERVER = "http://localhost:3500"
 
@@ -39,7 +41,11 @@ export default function App() {
 							}
 						/>
 						<Route
-							path="login"
+							path="/admin/users"
+							element={<UsersPage />}
+						/>
+						<Route
+							path="/login"
 							element={<LoginPage />}
 						/>
 						<Route

@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import IUser from "../../../models/interfaces/user"
 import axios, { AxiosResponse } from "axios"
 
-export default function HomeLayoutContent(props: any) {
+export default function GameLayoutContent(props: any) {
 	const { children, pageTitle } = props
 
 	const queryClient = useQueryClient()

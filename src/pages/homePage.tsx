@@ -8,6 +8,10 @@ export default function HomePage() {
 
 	const api = useAxios("http://localhost:3500/")
 
+	const authMeQueryData = useQuery(["auth-me"], async () => await api.get("auth/me").then((res: any) => res.data), {
+		refetchOnWindowFocus: false,
+	})
+
 	const getAllUsersQuery = useQuery(["get-all-users"], async () => await api.get("users").then((res) => res.data), {
 		refetchOnWindowFocus: false,
 	})
@@ -22,6 +26,10 @@ export default function HomePage() {
 
 	if (getAllUsersQuery.isSuccess) {
 		const usersData = []
+
+		setTimeout(() => {
+			console.log({ authMeQueryData })
+		}, 5000)
 
 		// transform data for table. needs to be extracted out to custom function...
 		for (const objKey in getAllUsersQuery.data) {
@@ -38,7 +46,7 @@ export default function HomePage() {
 		content = (
 			<>
 				<HomeLayout pageTitle="Dashboard Page">
-					<RenderBoard />
+					{/* <RenderBoard /> */}
 					{/* <TestBoard/>
 					<DialogDemo/>
 					<DemoTablePage></DemoTablePage> */}
