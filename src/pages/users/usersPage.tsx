@@ -4,6 +4,7 @@ import AllUsersTable from "./tables/allUsersTable/allUsersTable"
 import { Button } from "../../components/ui/button"
 import HomeLayout from "../../app/layouts/home/homeLayout"
 import UpdateUserDialog from "./dialogs/updateUserDialog"
+import DeleteUserDialog from "./dialogs/deleteUserDialog"
 
 export default function UsersPage() {
 	// CREATE USER modal state
@@ -26,6 +27,7 @@ export default function UsersPage() {
 	const onDeleteUserClick = (id: any) => {
 		console.log(id)
 		console.log("delete user clicked")
+		setDeleteUserId(id)
 	}
 
 	return (
@@ -33,7 +35,7 @@ export default function UsersPage() {
 			<HomeLayout>
 				<h1 className="text-3xl font-bold mb-2">Users</h1>
 				<Button
-					className="text-white bg-violet-500 border border-violet-900 hover:bg-violet-800"
+					className="text-white bg-emerald-500 border border-emerald-900 hover:bg-emerald-800"
 					onClick={() => {
 						setShowCreateModal(true)
 					}}
@@ -60,6 +62,15 @@ export default function UsersPage() {
 					}}
 					title="Update User"
 					description="Please update the new user's details."
+				/>
+				<DeleteUserDialog
+					deleteUserId={deleteUserId}
+					isOpen={showDeleteModal}
+					onClose={() => {
+						setDeleteUserId(null)
+					}}
+					title="Delete User"
+					description="Are you sure you want to delete the user?"
 				/>
 			</HomeLayout>
 		</>

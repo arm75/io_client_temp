@@ -50,9 +50,15 @@ export function DataTable<TData, TValue>({ columns, data, updateUserFn, deleteUs
 		},
 	})
 
-	const handleClick = (row: any): void => {
+	const handleUpdateUserClick = (row: any): void => {
 		const rowIdClicked = row
 		updateUserFn(rowIdClicked)
+		//console.log(rowIdClicked)
+	}
+
+	const handleDeleteUserClick = (row: any): void => {
+		const rowIdClicked = row
+		deleteUserFn(rowIdClicked)
 		//console.log(rowIdClicked)
 	}
 
@@ -127,15 +133,15 @@ export function DataTable<TData, TValue>({ columns, data, updateUserFn, deleteUs
 										})}
 										<TableCell>
 											<Button
-												onClick={() => handleClick(row.getValue("_id"))}
-												className="text-white bg-violet-500 border border-violet-900 hover:bg-violet-800 mx-1"
+												onClick={() => handleUpdateUserClick(row.getValue("_id"))}
+												className="text-white bg-emerald-500 border border-emerald-900 hover:bg-emerald-800 mx-1"
 												size="sm"
 											>
 												<PencilIcon className="h-4 w-4" />
 											</Button>
 											<Button
-												onClick={() => handleClick(row)}
-												className="text-white bg-violet-500 border border-violet-900 hover:bg-violet-800 mx-1"
+												onClick={() => handleDeleteUserClick(row.getValue("_id"))}
+												className="text-white bg-red-500 border border-red-900 hover:bg-red-800 mx-1"
 												size="sm"
 											>
 												<Trash2Icon className="h-4 w-4" />

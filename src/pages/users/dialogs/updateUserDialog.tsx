@@ -7,12 +7,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import IUser from "../../../models/interfaces/user"
 import axios from "axios"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 export default function UpdateUserDialog(props: any) {
 	const { isOpen, onClose, title, description, updateUserId } = props
 
-	const [usernameField, setUsernameField] = useState("")
 	const [roleField, setRoleField] = useState("")
 
 	// get query client (react-query)
