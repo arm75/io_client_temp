@@ -6,6 +6,8 @@ import LoginPage from "./pages/loginPage"
 import AuthGuard from "./app/auth/authGuard"
 import PageNotFound from "./pages/pageNotFound"
 import UsersPage from "./pages/users/usersPage"
+import PlayPage from "./pages/play/playPage"
+import DashboardPage from "./pages/dashboard/dashboardPage"
 
 const SOCKET_SERVER = "http://localhost:3500"
 
@@ -35,10 +37,26 @@ export default function App() {
 							path="/"
 							element={
 								<AuthGuard>
-									<HomePage />
+									<DashboardPage />
 								</AuthGuard>
 							}
 						/>
+						<Route path="/game">
+							{/* Nested route for "/game/play" */}
+							<Route
+								path="play"
+								element={
+									<AuthGuard>
+										<PlayPage />
+									</AuthGuard>
+								}
+							/>
+							{/* Nested route for "/game/list" */}
+							{/* <Route
+								path="new"
+								element={<GameLayoutNew />}
+							/> */}
+						</Route>
 						<Route
 							path="/admin/users"
 							element={

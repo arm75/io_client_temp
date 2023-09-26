@@ -4,36 +4,40 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Form } from "../../../components/ui/form"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
-import { useState } from "react"
 
-export default function DeleteUserDialog(props: any) {
-	const { isOpen, onClose, title, description, deleteUserId } = props
+export default function DeleteGameDialog(props: any) {
+	const { isOpen, onClose, title, description, deleteGameId } = props
 
-	const [roleField, setRoleField] = useState("")
+	//const [roleField, setRoleField] = useState("")
 
 	// get query client (react-query)
 	const queryClient = useQueryClient()
 
 	// GET USER QUERY (react-query)
-	const getUserQuery = useQuery(
-		[`get-user`],
-		async () => await axios.get(`http://localhost:3500/users/${deleteUserId}`).then((res) => res.data),
+	const getGameQuery = useQuery(
+		[`get-game-delete-game`],
+		async () =>
+			await axios.get(`http://localhost:3500/game/${deleteGameId}`).then((res) => {
+				console.log({ deleteGameId })
+				return res.data
+			}),
 		{
 			onSuccess: (data) => {
 				//console.log("query-changed:", data)
-				userForm.setValue("id", data._id)
-				userForm.setValue("username", data.username)
-				userForm.setValue("role", data.role)
-				setRoleField(data.role)
+				gameForm.setValue("id", data._id)
+				gameForm.setValue("name", data.name)
+				//userForm.setValue("role", data.role)
+				//setRoleField(data.role)
 			},
 			onError: () => {
 				//console.log("Error: ", { res })
 				//cl('error', "CREATE USER FAILED!")
 				//makeToast(res.response.data.message, 'danger')
-				userForm.setValue("id", "")
-				userForm.setValue("username", "")
-				userForm.setValue("role", "")
-				setRoleField("")
+				gameForm.setValue("id", "")
+				gameForm.setValue("name", "")
+				//userForm.setValue("username", "")
+				//userForm.setValue("role", "")
+				//setRoleField("")
 			},
 			onSettled: () => {
 				//console.log("Settled: ", {res})
@@ -42,17 +46,18 @@ export default function DeleteUserDialog(props: any) {
 				//cancelModal()
 			},
 			refetchOnWindowFocus: false,
-			enabled: deleteUserId !== null,
+			enabled: deleteGameId !== null,
 		}
 	)
 
-	// UPDATE USER mutation (react-query)
-	const deleteUserMutation = useMutation(async (id: string) => await axios.delete(`http://localhost:3500/users/${id}`), {
+	// DELETE GAME mutation (react-query)
+	const deleteGameMutation = useMutation(async (id: string) => await axios.delete(`http://localhost:3500/game/${id}`), {
 		onSuccess: () => {
 			//console.log("Success: ", {res})
 			//cl('info', "CREATE USER Successful!")
 			//cancelModal()
 			//makeToast(res.data.message, 'primary')
+			onClose()
 		},
 		onError: (res) => {
 			//console.log("Error: ", { res })
@@ -61,15 +66,15 @@ export default function DeleteUserDialog(props: any) {
 		},
 		onSettled: () => {
 			//console.log("Settled: ", {res})
-			queryClient.invalidateQueries(["get-all-users"])
-			// queryClient.invalidateQueries(["get-user"])
+			queryClient.invalidateQueries(["get-all-games"])
+			//queryClient.invalidateQueries(["get-game"])
 			cancelModal()
 		},
 	})
 
-	const userForm = useForm({ mode: "onChange" })
+	const gameForm = useForm({ mode: "onChange" })
 
-	const submitDeleteUserForm: any = (data: any) => {
+	const submitDeleteGameForm: any = (data: any) => {
 		// { username, password, roles }: any
 		//console.log("Form Submit Data: ", data)
 		const { id, username, password, role } = data
@@ -87,12 +92,12 @@ export default function DeleteUserDialog(props: any) {
 		// 	roles: roles,
 		// 	//rolesArray: rolesArray,
 		// }
-		deleteUserMutation.mutate(id)
+		deleteGameMutation.mutate(id)
 	}
 
 	const cancelModal = () => {
 		//makeToast('Cancel World!', 'primary')
-		userForm.reset()
+		gameForm.reset()
 		onClose()
 	}
 
@@ -102,13 +107,14 @@ export default function DeleteUserDialog(props: any) {
 			onOpenChange={cancelModal}
 		>
 			<DialogContent className="sm:max-w-[425px]">
-				<Form {...userForm}>
-					<form onSubmit={userForm.handleSubmit(submitDeleteUserForm)}>
+				<p>Value: {deleteGameId !== null ? "true" : "false"}</p>
+				<Form {...gameForm}>
+					<form onSubmit={gameForm.handleSubmit(submitDeleteGameForm)}>
 						<DialogHeader>
 							<DialogTitle>{title}</DialogTitle>
 							<DialogDescription>{description}</DialogDescription>
 						</DialogHeader>
-						<h4>Are you sure you want to delete {getUserQuery?.data?.username} ?</h4>
+						<h4>Are you sure you want to delete game {getGameQuery?.data?.name} ?</h4>
 						<DialogFooter className="mt-8">
 							<Button
 								type="button"
@@ -116,7 +122,7 @@ export default function DeleteUserDialog(props: any) {
 							>
 								Cancel
 							</Button>
-							<Button type="submit">Delete User</Button>
+							<Button type="submit">Delete Game</Button>
 						</DialogFooter>
 					</form>
 				</Form>

@@ -207,7 +207,7 @@ export default function UpdateUserDialog(props: any) {
 								)
 							}}
 						/>
-						<DialogFooter>
+						<DialogFooter className="mt-8">
 							<Button
 								type="button"
 								onClick={cancelModal}

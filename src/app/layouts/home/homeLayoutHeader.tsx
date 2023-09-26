@@ -11,7 +11,7 @@ export default function HomeLayoutHeader(props: any) {
 	const authMeQueryData: IUser | undefined = queryClient.getQueryData(["auth-me"])
 
 	const logout = () => {
-		axios.get("http://localhost:3000/auth/logout", { withCredentials: true }).then(
+		axios.get("http://localhost:3500/auth/logout", { withCredentials: true }).then(
 			(res: AxiosResponse) => {
 				if (res.data === "success") {
 					window.location.href = "/"
@@ -36,21 +36,20 @@ export default function HomeLayoutHeader(props: any) {
 					</div> */}
 
 					{/* <!-- Optional: Text Links --> */}
-					{/* <nav className="py-1 pt-2 text-sm">
-						<a className="mx-1 py-1 px-3 text-slate-600 font-light hover:py-1 hover:px-3 hover:rounded-full hover:bg-violet-700 hover:text-white">
+					<nav className="py-1 pt-2 text-sm">
+						{/* 	<a className="mx-1 py-1 px-3 text-slate-600 font-light hover:py-1 hover:px-3 hover:rounded-full hover:bg-violet-700 hover:text-white">
 							First Link
 						</a>
 						<a className="mx-1 py-1 px-3 text-slate-600 font-light hover:py-1 hover:px-3 hover:rounded-full hover:bg-violet-700 hover:text-white">
 							Second Link
-						</a>
-						<a
-							href=""
+						</a>*/}
+						<button
 							onClick={logout}
 							className="mx-1 py-1 px-3 text-slate-600 font-light hover:py-1 hover:px-3 hover:rounded-full hover:bg-violet-700 hover:text-white"
 						>
 							Logout
-						</a>
-					</nav> */}
+						</button>
+					</nav>
 
 					{/* <!-- Vertical Divider --> */}
 					{/* <div className="flex flex-col justify-center">

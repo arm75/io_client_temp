@@ -4,18 +4,20 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "../../../components/ui/input"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../../../components/ui/form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import IUser from "../../../models/interfaces/user"
 import axios from "axios"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select"
+import IGame from "../../../models/interfaces/game/board/game"
+import IUser from "../../../models/interfaces/user"
 
-export default function CreateUserDialog(props: any) {
+export default function CreateGameDialog(props: any) {
 	const { isOpen, onClose, title, description } = props
 
 	// get query client (react-query)
 	const queryClient = useQueryClient()
 
+	const authMeQueryData: IUser | undefined = queryClient.getQueryData(["auth-me"])
+
 	// CREATE USER mutation (react-query)
-	const createUserMutation = useMutation(async (user: IUser) => await axios.post("http://localhost:3500/users", user), {
+	const createGameMutation = useMutation(async (game: IGame) => await axios.post("http://localhost:3500/game", game), {
 		onSuccess: () => {
 			//console.log("Success: ", {res})
 			//cl('info', "CREATE USER Successful!")
@@ -29,20 +31,29 @@ export default function CreateUserDialog(props: any) {
 		},
 		onSettled: () => {
 			//console.log("Settled: ", {res})
-			queryClient.invalidateQueries(["get-all-users"])
+			queryClient.invalidateQueries(["get-all-games"])
 			cancelModal()
 		},
 	})
 
-	const userForm = useForm({ mode: "onChange" })
+	const createGameForm = useForm({ mode: "onChange" })
 
-	const submitCreateUserForm: any = (data: any) => {
+	const submitCreateGameForm: any = (data: any) => {
 		// { username, password, roles }: any
-		const { username, password, role } = data
-		console.log({ username })
-		console.log({ password })
-		console.log({ role })
-		console.log("submit function ran.")
+		const { name, description } = data
+		console.log({ name })
+		console.log({ description })
+
+		if (!authMeQueryData) return
+
+		const creator: IUser = {
+			id: authMeQueryData.id,
+			username: authMeQueryData.username,
+			role: authMeQueryData.role,
+		}
+
+		createGameMutation.mutate({ name, description, creator })
+
 		// const newUser = {
 		// 	username: username,
 		// 	password: password,
@@ -52,12 +63,11 @@ export default function CreateUserDialog(props: any) {
 		// 	roles: roles,
 		// 	//rolesArray: rolesArray,
 		// }
-		createUserMutation.mutate({ username, password, role })
 	}
 
 	const cancelModal = () => {
 		//makeToast('Cancel World!', 'primary')
-		userForm.reset()
+		createGameForm.reset()
 		onClose()
 	}
 
@@ -67,60 +77,59 @@ export default function CreateUserDialog(props: any) {
 			onOpenChange={cancelModal}
 		>
 			<DialogContent className="sm:max-w-[425px]">
-				<Form {...userForm}>
-					<form onSubmit={userForm.handleSubmit(submitCreateUserForm)}>
+				<Form {...createGameForm}>
+					<form onSubmit={createGameForm.handleSubmit(submitCreateGameForm)}>
 						<DialogHeader>
 							<DialogTitle>{title}</DialogTitle>
 							<DialogDescription>{description}</DialogDescription>
 						</DialogHeader>
 						<FormField
-							control={userForm.control}
-							name="username"
+							control={createGameForm.control}
+							name="name"
 							defaultValue=""
 							render={({ field }) => {
 								//console.log({ field })
 								return (
 									<FormItem>
-										<FormLabel>Username</FormLabel>
+										<FormLabel>Game Name</FormLabel>
 										<FormControl>
 											<Input
 												// placeholder=""
 												{...field}
 											/>
 										</FormControl>
-										<FormDescription>Please enter a username.</FormDescription>
+										<FormDescription>Please enter a game name.</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)
 							}}
 						/>
 						<FormField
-							control={userForm.control}
-							name="password"
+							control={createGameForm.control}
+							name="description"
 							defaultValue=""
 							render={({ field }) => {
 								//console.log({ field })
 								return (
 									<FormItem>
-										<FormLabel>Password</FormLabel>
+										<FormLabel>Description</FormLabel>
 										<FormControl>
 											<Input
 												// placeholder=""
 												{...field}
 											/>
 										</FormControl>
-										<FormDescription>Please enter a password.</FormDescription>
+										<FormDescription>Please enter a game description.</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)
 							}}
 						/>
-						<FormField
-							control={userForm.control}
+						{/* <FormField
+							control={createGameForm.control}
 							name="role"
 							defaultValue=""
 							render={({ field }) => {
-								//console.log({ field })
 								return (
 									<FormItem>
 										<FormLabel>Role</FormLabel>
@@ -143,7 +152,7 @@ export default function CreateUserDialog(props: any) {
 									</FormItem>
 								)
 							}}
-						/>
+						/> */}
 						<DialogFooter className="mt-8">
 							<Button
 								type="button"
@@ -151,7 +160,7 @@ export default function CreateUserDialog(props: any) {
 							>
 								Cancel
 							</Button>
-							<Button type="submit">Create User</Button>
+							<Button type="submit">Create Game</Button>
 						</DialogFooter>
 					</form>
 				</Form>

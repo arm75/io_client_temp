@@ -1,17 +1,23 @@
-import GameLayoutSidebar from "./gameLayoutSidebar"
-import GameLayoutContent from "./gameLayoutContent"
+import GameLayoutBoard from "./gameLayoutBoard"
+import GameLayoutChat from "./gameLayoutChat"
+import GameLayoutControls from "./gameLayoutControls"
 
 export default function GameLayout(props: any) {
 	const { children, pageTitle } = props
 
 	return (
 		<>
-			<div className="min-h-screen grid grid-cols-12">
-				<div className="bg-slate-100 col-span-6 h-screen overflow-auto p-4">
-					<GameLayoutContent pageTitle={pageTitle}>{children}</GameLayoutContent>
+			<div className="grid grid-cols-12 h-screen">
+				<div className="col-span-6 h-full bg-emerald-600 px-8 pt-2 pb-8">
+					<GameLayoutBoard pageTitle={pageTitle}>{children}</GameLayoutBoard>
 				</div>
-				<div className="bg-slate-700 col-span-6 p-8 h-screen overflow-auto">
-					<GameLayoutSidebar />
+				<div className="col-span-6 h-full grid grid-rows-10 bg-slate-900">
+					<div className="row-start-1 row-end-7 bg-slate-600 p-8">
+						<GameLayoutControls />
+					</div>
+					<div className="row-start-7 row-end-11 bg-slate-700 p-8">
+						<GameLayoutChat />
+					</div>
 				</div>
 			</div>
 		</>

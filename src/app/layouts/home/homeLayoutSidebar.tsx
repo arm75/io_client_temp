@@ -27,13 +27,32 @@ export default function HomeLayoutSidebar(props: any) {
 			</div>
 
 			{/* <!-- "NAVIGATION" Label --> */}
-			<div className="text-gray-500 self-center uppercase mb-4">Navigation</div>
-			<a
-				className="text-white text-3xl"
-				href="/admin/users"
-			>
-				Users
-			</a>
+			<div className="text-gray-500 self-center uppercase mb-4 flex justify-center">Navigation</div>
+			<div>
+				<a
+					className="text-emerald-600 text-2xl hover:text-white"
+					href="/"
+				>
+					Dashboard
+				</a>
+			</div>
+
+			<div>
+				<a
+					className="text-emerald-600 text-2xl hover:text-white"
+					href="/game/play"
+				>
+					Play
+				</a>
+			</div>
+			<div>
+				<a
+					className="text-emerald-600 text-2xl hover:text-white"
+					href="/admin/users"
+				>
+					Users
+				</a>
+			</div>
 		</>
 	)
 }

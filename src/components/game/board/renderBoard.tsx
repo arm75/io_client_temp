@@ -92,7 +92,7 @@ export default function RenderBoard() {
 	if (boardLoaded) {
 		content = (
 			<>
-				<div className="col-span-10 overflow-auto flex justify-center bg-slate-500 py-8">
+				<div className="col-span-10 overflow-auto flex justify-center bg-emerald-600 py-8">
 					<div
 						key={"main-board-box"}
 						className="grid grid-cols-[repeat(18,_minmax(0,_1fr))] h-min border-4 border-slate-800"

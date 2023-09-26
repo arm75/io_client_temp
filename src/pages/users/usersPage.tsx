@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import CreateUserDialog from "./dialogs/createUserDialog"
 import AllUsersTable from "./tables/allUsersTable/allUsersTable"
 import { Button } from "../../components/ui/button"

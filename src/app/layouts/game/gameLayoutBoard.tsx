@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import IUser from "../../../models/interfaces/user"
 import axios, { AxiosResponse } from "axios"
 
-export default function GameLayoutContent(props: any) {
+export default function GameLayoutBoard(props: any) {
 	const { children, pageTitle } = props
 
 	const queryClient = useQueryClient()
@@ -22,10 +22,5 @@ export default function GameLayoutContent(props: any) {
 		)
 	}
 
-	return (
-		<>
-			{/* <h1 className="text-3xl font-bold mb-2">{pageTitle}</h1>                     */}
-			{children}
-		</>
-	)
+	return <>{children}</>
 }

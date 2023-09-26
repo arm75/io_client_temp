@@ -3,19 +3,54 @@ import { Button } from "../../../components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../../components/ui/dialog"
 import { Input } from "../../../components/ui/input"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../../../components/ui/form"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import IUser from "../../../models/interfaces/user"
 import axios from "axios"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select"
+import { useState } from "react"
 
-export default function CreateUserDialog(props: any) {
-	const { isOpen, onClose, title, description } = props
+export default function UpdateGameDialog(props: any) {
+	const { isOpen, onClose, title, description, updateGameId } = props
+
+	const [roleField, setRoleField] = useState("")
 
 	// get query client (react-query)
 	const queryClient = useQueryClient()
 
-	// CREATE USER mutation (react-query)
-	const createUserMutation = useMutation(async (user: IUser) => await axios.post("http://localhost:3500/users", user), {
+	// GET USER QUERY (react-query)
+	const getUserQuery = useQuery(
+		[`get-game-update-game`],
+		async () => await axios.get(`http://127.0.0.1:3500/users/${updateGameId}`).then((res) => res.data),
+		{
+			onSuccess: (data) => {
+				//console.log("query-changed:", data)
+				userForm.setValue("id", data._id)
+				userForm.setValue("username", data.username)
+				userForm.setValue("role", data.role)
+				setRoleField(data.role)
+			},
+			onError: () => {
+				//console.log("Error: ", { res })
+				//cl('error', "CREATE USER FAILED!")
+				//makeToast(res.response.data.message, 'danger')
+				userForm.setValue("id", "")
+				userForm.setValue("username", "")
+				userForm.setValue("role", "")
+				setRoleField("")
+			},
+			onSettled: () => {
+				//console.log("Settled: ", {res})
+				//queryClient.invalidateQueries(["get-all-users"])
+				//queryClient.invalidateQueries(["get-user"])
+				//cancelModal()
+			},
+			refetchOnWindowFocus: false,
+			enabled: updateGameId !== null,
+		}
+	)
+
+	// UPDATE USER mutation (react-query)
+	const updateUserMutation = useMutation(async (user: IUser) => await axios.patch("http://localhost:3500/users", user), {
 		onSuccess: () => {
 			//console.log("Success: ", {res})
 			//cl('info', "CREATE USER Successful!")
@@ -23,26 +58,28 @@ export default function CreateUserDialog(props: any) {
 			//makeToast(res.data.message, 'primary')
 		},
 		onError: (res) => {
-			console.log("Error: ", { res })
+			//console.log("Error: ", { res })
 			//cl('error', "CREATE USER FAILED!")
 			//makeToast(res.response.data.message, 'danger')
 		},
 		onSettled: () => {
 			//console.log("Settled: ", {res})
 			queryClient.invalidateQueries(["get-all-users"])
+			queryClient.invalidateQueries(["get-user"])
 			cancelModal()
 		},
 	})
 
 	const userForm = useForm({ mode: "onChange" })
 
-	const submitCreateUserForm: any = (data: any) => {
+	const submitUpdateUserForm: any = (data: any) => {
 		// { username, password, roles }: any
-		const { username, password, role } = data
-		console.log({ username })
-		console.log({ password })
-		console.log({ role })
-		console.log("submit function ran.")
+		//console.log("Form Submit Data: ", data)
+		const { id, username, password, role } = data
+		// console.log({ username })
+		// console.log({ password })
+		// console.log({ role })
+		// console.log("submit function ran.")
 		// const newUser = {
 		// 	username: username,
 		// 	password: password,
@@ -52,7 +89,7 @@ export default function CreateUserDialog(props: any) {
 		// 	roles: roles,
 		// 	//rolesArray: rolesArray,
 		// }
-		createUserMutation.mutate({ username, password, role })
+		updateUserMutation.mutate({ id, username, password, role })
 	}
 
 	const cancelModal = () => {
@@ -68,17 +105,39 @@ export default function CreateUserDialog(props: any) {
 		>
 			<DialogContent className="sm:max-w-[425px]">
 				<Form {...userForm}>
-					<form onSubmit={userForm.handleSubmit(submitCreateUserForm)}>
+					<form onSubmit={userForm.handleSubmit(submitUpdateUserForm)}>
 						<DialogHeader>
 							<DialogTitle>{title}</DialogTitle>
 							<DialogDescription>{description}</DialogDescription>
 						</DialogHeader>
 						<FormField
 							control={userForm.control}
+							name="id"
+							defaultValue=""
+							render={({ field }) => {
+								//console.log("id field:", field)
+								return (
+									<FormItem>
+										{/* <FormLabel>Username</FormLabel> */}
+										<FormControl>
+											<Input
+												type="hidden"
+												// placeholder=""
+												{...field}
+											/>
+										</FormControl>
+										{/* <FormDescription>Please enter a username.</FormDescription>
+										<FormMessage /> */}
+									</FormItem>
+								)
+							}}
+						/>
+						<FormField
+							//control={userForm.control}
 							name="username"
 							defaultValue=""
 							render={({ field }) => {
-								//console.log({ field })
+								//console.log("username field:", field)
 								return (
 									<FormItem>
 										<FormLabel>Username</FormLabel>
@@ -95,11 +154,11 @@ export default function CreateUserDialog(props: any) {
 							}}
 						/>
 						<FormField
-							control={userForm.control}
+							//control={userForm.control}
 							name="password"
 							defaultValue=""
 							render={({ field }) => {
-								//console.log({ field })
+								//console.log("password field:", field)
 								return (
 									<FormItem>
 										<FormLabel>Password</FormLabel>
@@ -120,14 +179,18 @@ export default function CreateUserDialog(props: any) {
 							name="role"
 							defaultValue=""
 							render={({ field }) => {
-								//console.log({ field })
+								//console.log("role field:", field)
 								return (
 									<FormItem>
 										<FormLabel>Role</FormLabel>
 										<FormControl>
 											<Select
-												onValueChange={field.onChange}
-												defaultValue={field.value}
+												onValueChange={(value) => {
+													userForm.setValue("role", value)
+													setRoleField(value)
+												}}
+												value={roleField}
+												defaultValue=""
 											>
 												<SelectTrigger className="w-[180px]">
 													<SelectValue placeholder="" />
@@ -151,7 +214,7 @@ export default function CreateUserDialog(props: any) {
 							>
 								Cancel
 							</Button>
-							<Button type="submit">Create User</Button>
+							<Button type="submit">Update User</Button>
 						</DialogFooter>
 					</form>
 				</Form>

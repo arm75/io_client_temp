@@ -18,7 +18,7 @@ import TokenRed3 from "../tokens/bonusCookies/red/tokenRed3"
 import TokenRed5 from "../tokens/bonusCookies/red/tokenRed5"
 import TokenRedArrow from "../tokens/bonusCookies/red/tokenRedArrow"
 import TokenRedSpinner from "../tokens/bonusCookies/red/tokenRedSpinner"
-import IGameBoard from "../../../models/interfaces/game/board/gameBoard"
+import IGameBoard from "../../../models/interfaces/game/board/game"
 
 export default function createNewBoard() {
 	// initial constants
@@ -221,7 +221,7 @@ export default function createNewBoard() {
 	}
 
 	function assignCookieToken(color: string, cookie: string) {
-		let returnElement
+		let returnElement 
 
 		switch (color) {
 			case "gold":
