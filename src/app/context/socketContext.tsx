@@ -32,6 +32,11 @@ export function SocketContextProvider({ children }: { children: JSX.Element }) {
 			queryClient.invalidateQueries(["get-all-games"])
 		})
 
+		socket.on("turnChanged", (data) => {
+			console.log("turnChanged event:", data)
+			queryClient.invalidateQueries(["get-game-in-progress"])
+		})
+
 		return () => {
 			socket.off("startNewGame")
 		}

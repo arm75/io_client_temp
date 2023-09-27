@@ -1,14 +1,50 @@
+import { useQueryClient } from "@tanstack/react-query"
 import ChatBox from "../../../components/chat/chatBox"
 import { useBoardHoverContext } from "../../../components/game/contexts/boardHoverContext"
+import IUser from "../../../models/interfaces/user"
+import { useEffect, useState } from "react"
+import { Button } from "../../../components/ui/button"
+import { useSocketContext } from "../../context/socketContext"
 
 export default function GameLayoutControls(props: any) {
 	// const {children, pageTitle} = props
-
+	const socket = useSocketContext()
+	//let content: JSX.Element = <></>
+	const queryClient = useQueryClient()
 	// const queryClient = useQueryClient()
-	// const authMeQueryData:IUser|undefined = queryClient.getQueryData("auth-me")
+	const gameInProgressQueryData: any = queryClient.getQueryData(["get-game-in-progress"])
+	const authMeQueryData: IUser | undefined = queryClient.getQueryData(["auth-me"])
 
 	const { hoverCoordinates, hoverCookieColor, hoverCookie } = useBoardHoverContext()
 
+	console.log(gameInProgressQueryData)
+
+	const [gameId, setGameId] = useState<any>({})
+	const [me, setMe] = useState<any>({})
+
+	console.log("ME: ", me)
+
+	useEffect(() => {
+		console.log("hello")
+		const myId = authMeQueryData?.id
+		setGameId(gameInProgressQueryData._id)
+		setMe(gameInProgressQueryData.players.find((player: any) => player.user._id === myId))
+	}, [authMeQueryData, gameInProgressQueryData])
+
+	const handlePassTurn = (id: any) => {
+		socket.emit("passTurn", { gameId, playerId: id })
+	}
+
+	// if (gameInProgressQueryData.isLoading || gameInProgressQueryData.isFetching) {
+	// 	content = <p>Loading...</p>
+	// }
+
+	// if (gameInProgressQueryData.isError) {
+	// 	content = <p className="errmsg">whatev</p>
+	// }
+
+	// if (gameInProgressQueryData.isSuccess) {
+	// 	content = (
 	return (
 		<>
 			{/* <!-- Logo Section --> */}
@@ -39,6 +75,22 @@ export default function GameLayoutControls(props: any) {
 				Current Cookie Color: <span className="text-emerald-500 text-5xl">{hoverCookieColor}</span>
 				<br />
 				Current Cookie: <span className="text-emerald-500 text-5xl">{hoverCookie}</span>
+				<br />
+				{me?.turn ? (
+					<>
+						YOUR TURN
+						<br />
+						<Button
+							onClick={() => {
+								handlePassTurn(me._id)
+							}}
+						>
+							Pass Turn
+						</Button>
+					</>
+				) : (
+					<></>
+				)}
 			</h1>
 		</>
 	)

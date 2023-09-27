@@ -11,8 +11,8 @@ import { useBoardHoverContext } from "../contexts/boardHoverContext"
 export default function RenderBoard(props: any) {
 	const { gameId, boardToRender } = props
 
-	console.log("gameID in Render", gameId)
-	console.log("boardToRender in Render", boardToRender)
+	//console.log("gameID in Render", gameId)
+	//console.log("boardToRender in Render", boardToRender)
 
 	let content = <></>
 
