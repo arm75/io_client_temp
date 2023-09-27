@@ -2,30 +2,35 @@ import { useEffect, useState } from "react"
 import RenderCell from "./renderCell"
 import ICell from "../../../models/interfaces/game/board/cell"
 import createNewBoard from "../utils/createNewBoard"
-import { useGameContext } from "../contexts/gameContext"
+import { useBoardHoverContext } from "../contexts/boardHoverContext"
 
 // Define the dimensions of your grid
 // const numRows = 18
 // const numCols = 18
 
-export default function RenderBoard() {
+export default function RenderBoard(props: any) {
+	const { gameId, boardToRender } = props
+
+	console.log("gameID in Render", gameId)
+	console.log("boardToRender in Render", boardToRender)
+
 	let content = <></>
 
-	const [boardLoaded, setBoardLoaded] = useState(false)
-	const [board, setBoard] = useState<ICell[][]>([])
+	const [board, setBoard] = useState<ICell[][]>(boardToRender)
+	const boardLoaded = board !== null
 
-	const { setHoverCoordinates, setHoverCookieColor, setHoverCookie } = useGameContext()
+	const { setHoverCoordinates, setHoverCookieColor, setHoverCookie } = useBoardHoverContext()
 
-	useEffect(() => {
-		console.log("Initializing board (useEffect)...")
-		if (!boardLoaded) {
-			const gameBoard = createNewBoard()
-			//console.log({ gameBoard })
-			setBoard(gameBoard)
-			setBoardLoaded(true)
-		}
-		console.log("Board Initialization complete.")
-	}, [boardLoaded])
+	// useEffect(() => {
+	// 	console.log("Initializing board (useEffect)...")
+	// 	if (!boardLoaded) {
+	// 		const gameBoard = createNewBoard()
+	// 		console.log("Frontend Generated Board", { gameBoard })
+	// 		setBoard(gameBoard)
+	// 		setBoardLoaded(true)
+	// 	}
+	// 	console.log("Board Initialization complete.")
+	// }, [boardLoaded])
 
 	// function randomLetterTile(): JSX.Element {
 	// 	const letterTiles: { [key: number]: JSX.Element } = {

@@ -6,12 +6,13 @@ import { Form, FormControl, FormField, FormItem } from "../../../components/ui/f
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import IUser from "../../../models/interfaces/user"
 import axios from "axios"
+import { useSocketContext } from "../../../app/context/socketContext"
 
 export default function JoinGameDialog(props: any) {
 	const { isOpen, onClose, title, description, joinGameId } = props
 
 	//const [roleField, setRoleField] = useState("")
-
+	const socket = useSocketContext()
 	// get query client (react-query)
 	const queryClient = useQueryClient()
 
@@ -67,6 +68,7 @@ export default function JoinGameDialog(props: any) {
 			onSettled: () => {
 				//console.log("Settled: ", {res})
 				queryClient.invalidateQueries(["get-all-games"])
+				socket.emit("joinGame")
 				//queryClient.invalidateQueries(["get-user"])
 				cancelModal()
 			},

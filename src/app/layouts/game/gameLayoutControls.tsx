@@ -1,5 +1,5 @@
 import ChatBox from "../../../components/chat/chatBox"
-import { useGameContext } from "../../../components/game/contexts/gameContext"
+import { useBoardHoverContext } from "../../../components/game/contexts/boardHoverContext"
 
 export default function GameLayoutControls(props: any) {
 	// const {children, pageTitle} = props
@@ -7,7 +7,7 @@ export default function GameLayoutControls(props: any) {
 	// const queryClient = useQueryClient()
 	// const authMeQueryData:IUser|undefined = queryClient.getQueryData("auth-me")
 
-	const { hoverCoordinates, hoverCookieColor, hoverCookie } = useGameContext()
+	const { hoverCoordinates, hoverCookieColor, hoverCookie } = useBoardHoverContext()
 
 	return (
 		<>

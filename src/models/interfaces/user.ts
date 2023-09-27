@@ -8,5 +8,7 @@ export default interface IUser {
 	age?: number
 	active?: boolean
 	role?: string
+	inGame?: boolean
+	currentGameId?: string
 	//rolesArray?: Array<string>
 }

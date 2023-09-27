@@ -7,8 +7,12 @@ import UpdateGameDialog from "./dialogs/updateGameDialog"
 import CancelGameDialog from "./dialogs/cancelGameDialog"
 import DeleteGameDialog from "./dialogs/deleteGameDialog"
 import JoinGameDialog from "./dialogs/joinGameDialog"
+import axios from "axios"
+import { useSocketContext } from "../../app/context/socketContext"
 
 export default function DashboardPage() {
+	const socket = useSocketContext()
+
 	// CREATE Game modal state
 	const [showCreateModal, setShowCreateModal] = useState(false)
 
@@ -52,6 +56,14 @@ export default function DashboardPage() {
 		setDeleteGameId(id)
 	}
 
+	// const goToPlayPage = () => {
+	// 	window.location.href = "/game/play"
+	// }
+
+	// const handleClearUsers = () => {
+	// 	socket.emit("clearUsers", "651377127cfcf5e11c0f2cc8")
+	// }
+
 	return (
 		<>
 			<HomeLayout>
@@ -64,7 +76,6 @@ export default function DashboardPage() {
 				>
 					Create Game
 				</Button>
-				<p>deleteGameId in Dashboard component: {deleteGameId !== null ? "true" : "false"}</p>
 				<GamesTable
 					joinGameFn={onJoinGameClick}
 					updateGameFn={onUpdateGameClick}

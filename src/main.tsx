@@ -3,18 +3,18 @@ import "./index.css"
 import ReactDOM from "react-dom/client"
 import App from "./App.tsx"
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
-import { GameContextProvider } from "./components/game/contexts/gameContext.tsx"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { SocketContextProvider } from "./app/context/socketContext.tsx"
+import { GameStateContextProvider } from "./components/game/contexts/gameStateContext.tsx"
 const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<QueryClientProvider client={queryClient}>
-		<SocketContextProvider>
-			<GameContextProvider>
+		<GameStateContextProvider>
+			<SocketContextProvider>
 				<App />
-			</GameContextProvider>
-		</SocketContextProvider>
+			</SocketContextProvider>
+		</GameStateContextProvider>
 		<ReactQueryDevtools />
 	</QueryClientProvider>
 )

@@ -14,8 +14,10 @@ import { Button } from "../../../../components/ui/button"
 import { Input } from "../../../../components/ui/input"
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "../../../../components/ui/dropdown-menu"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../../components/ui/table"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { PencilIcon, Trash2Icon } from "lucide-react"
+import { useGameStateContext } from "../../../../components/game/contexts/gameStateContext"
+import { useSocketContext } from "../../../../app/context/socketContext"
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
@@ -34,6 +36,10 @@ export function DataTable<TData, TValue>({
 	cancelGameFn,
 	deleteGameFn,
 }: DataTableProps<TData, TValue>) {
+	const { startNewGame } = useGameStateContext()
+
+	const socket = useSocketContext()
+
 	const [sorting, setSorting] = React.useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
 	const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
@@ -57,6 +63,24 @@ export function DataTable<TData, TValue>({
 			rowSelection,
 		},
 	})
+
+	// socket.on("connection", () => {
+	// 	console.log(`I'm connected with the back-end`)
+	// })
+
+	// const [message, setMessage] = useState("")
+	// const [messages, setMessages] = useState<string[]>([])
+
+	// useEffect(() => {
+	// 	console.log("useEffect ran")
+	// 	socket.on("chat message", (message: string) => {
+	// 		setMessages([...messages, message])
+	// 	})
+	// }, [messages])
+
+	const handleStartGame = (id: any) => {
+		socket.emit("startGame", id)
+	}
 
 	const handleJoinGameClick = (row: any): void => {
 		const rowIdClicked = row
@@ -152,6 +176,13 @@ export function DataTable<TData, TValue>({
 											)
 										})}
 										<TableCell className="text-right">
+											<Button
+												onClick={() => handleStartGame(row.getValue("_id"))}
+												className="text-white align-top bg-emerald-500 border border-emerald-900 hover:bg-emerald-800 mx-1"
+												size="sm"
+											>
+												START GAME
+											</Button>
 											<Button
 												onClick={() => handleJoinGameClick(row.getValue("_id"))}
 												className="text-white align-top bg-emerald-500 border border-emerald-900 hover:bg-emerald-800 mx-1"

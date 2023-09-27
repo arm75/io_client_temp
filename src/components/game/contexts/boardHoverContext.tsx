@@ -1,19 +1,19 @@
-import React, { createContext, useContext, useState } from "react"
+import { createContext, useContext, useState } from "react"
 
 // Create the context
-const GameContext = createContext<any>(null)
+const BoardHoverContext = createContext<any>(null)
 
 // Create a custom hook to access the context
-export function useGameContext() {
-	const context = useContext(GameContext)
+export function useBoardHoverContext() {
+	const context = useContext(BoardHoverContext)
 	if (!context) {
-		throw new Error("useGameContext must be used within <GameContextProvider/>")
+		throw new Error("useGameContext must be used within <BoardHoverContextProvider/>")
 	}
 	return context
 }
 
 // Create the AppProvider component
-export function GameContextProvider({ children }: { children: JSX.Element }) {
+export function BoardHoverContextProvider({ children }: { children: JSX.Element }) {
 	const [hoverCoordinates, setHoverCoordinates] = useState<any>({
 		// Initialize your context state here
 		// For example:
@@ -44,5 +44,5 @@ export function GameContextProvider({ children }: { children: JSX.Element }) {
 		setHoverCookie,
 	}
 
-	return <GameContext.Provider value={contextValue}>{children}</GameContext.Provider>
+	return <BoardHoverContext.Provider value={contextValue}>{children}</BoardHoverContext.Provider>
 }
