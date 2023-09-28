@@ -1,10 +1,8 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, AxeIcon, HelpCircle } from "lucide-react"
-import { Button } from "../../../../components/ui/button"
-import { Checkbox } from "../../../../components/ui/checkbox"
+import { ArrowUpDown } from "lucide-react"
+import { Button } from "../../../../components/shadcn/button"
 import IGame from "../../../../models/interfaces/game/board/game"
-import IUser from "../../../../models/interfaces/user"
-import { Badge } from "../../../../components/ui/badge"
+import { Badge } from "../../../../components/shadcn/badge"
 
 export const columns: ColumnDef<IGame>[] = [
 	// {

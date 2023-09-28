@@ -1,6 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query"
 import IUser from "../../../models/interfaces/user"
-import DropDownMenuDemo from "../../../components/shadcn/dropDownMenu"
 import axios, { AxiosResponse } from "axios"
 import ChatBox from "../../../components/chat/chatBox"
 

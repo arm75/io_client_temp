@@ -10,11 +10,16 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from "@tanstack/react-table"
-import { Button } from "../../../../components/ui/button"
-import { Input } from "../../../../components/ui/input"
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "../../../../components/ui/dropdown-menu"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../../components/ui/table"
-import React, { useEffect, useState } from "react"
+import { Button } from "../../../../components/shadcn/button"
+import { Input } from "../../../../components/shadcn/input"
+import {
+	DropdownMenu,
+	DropdownMenuCheckboxItem,
+	DropdownMenuContent,
+	DropdownMenuTrigger,
+} from "../../../../components/shadcn/dropdown-menu"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../../components/shadcn/table"
+import React from "react"
 import { PencilIcon, Trash2Icon } from "lucide-react"
 import { useGameStateContext } from "../../../../components/game/contexts/gameStateContext"
 import { useSocketContext } from "../../../../app/context/socketContext"

@@ -1,17 +1,16 @@
 import { useState } from "react"
 import GamesTable from "./tables/gamesTable/gamesTable"
-import { Button } from "../../components/ui/button"
+import { Button } from "../../components/shadcn/button"
 import HomeLayout from "../../app/layouts/home/homeLayout"
 import CreateGameDialog from "./dialogs/createGameDialog"
 import UpdateGameDialog from "./dialogs/updateGameDialog"
 import CancelGameDialog from "./dialogs/cancelGameDialog"
 import DeleteGameDialog from "./dialogs/deleteGameDialog"
 import JoinGameDialog from "./dialogs/joinGameDialog"
-import axios from "axios"
 import { useSocketContext } from "../../app/context/socketContext"
 
 export default function DashboardPage() {
-	const socket = useSocketContext()
+	//const socket = useSocketContext()
 
 	// CREATE Game modal state
 	const [showCreateModal, setShowCreateModal] = useState(false)

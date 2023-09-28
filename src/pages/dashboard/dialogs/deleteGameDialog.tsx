@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form"
-import { Button } from "../../../components/ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../../components/ui/dialog"
-import { Form } from "../../../components/ui/form"
+import { Button } from "../../../components/shadcn/button"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../../components/shadcn/dialog"
+import { Form } from "../../../components/shadcn/form"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 

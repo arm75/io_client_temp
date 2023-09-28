@@ -11,12 +11,17 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from "@tanstack/react-table"
-import { Button } from "../../../../components/ui/button"
-import { Input } from "../../../../components/ui/input"
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "../../../../components/ui/dropdown-menu"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../../components/ui/table"
+import { Button } from "../../../../components/shadcn/button"
+import { Input } from "../../../../components/shadcn/input"
+import {
+	DropdownMenu,
+	DropdownMenuCheckboxItem,
+	DropdownMenuContent,
+	DropdownMenuTrigger,
+} from "../../../../components/shadcn/dropdown-menu"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../../components/shadcn/table"
 import React from "react"
-import { PencilIcon, Trash2, Trash2Icon } from "lucide-react"
+import { PencilIcon, Trash2Icon } from "lucide-react"
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
