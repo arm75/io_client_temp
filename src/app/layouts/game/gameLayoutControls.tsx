@@ -1,5 +1,4 @@
 import { useQueryClient } from "@tanstack/react-query"
-import ChatBox from "../../../components/chat/chatBox"
 import { useBoardHoverContext } from "../../../components/game/contexts/boardHoverContext"
 import IUser from "../../../models/interfaces/user"
 import { useEffect, useState } from "react"

@@ -64,6 +64,11 @@ export default function DashboardPage() {
 	// 	socket.emit("clearUsers", "651377127cfcf5e11c0f2cc8")
 	// }
 
+	const apiKey = import.meta.env.VITE_APP_API_KEY
+	const apiUrl = import.meta.env.VITE_APP_BASE_URL
+	console.log({ apiKey })
+	console.log({ apiUrl })
+
 	return (
 		<>
 			<HomeLayout>
