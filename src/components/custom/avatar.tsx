@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "../shadcn/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "../shadcn/ui/avatar"
 
 export default function AvatarDemo() {
 	return (

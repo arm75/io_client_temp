@@ -4,7 +4,7 @@ import AuthGuard from "./app/auth/authGuard"
 import PageNotFound from "./pages/pageNotFound"
 import UsersPage from "./pages/users/usersPage"
 import PlayPage from "./pages/play/playPage"
-import DashboardPage from "./pages/dashboard/dashboardPage"
+import GamesPage from "./pages/games/gamesPage"
 
 //const SOCKET_SERVER = "http://localhost:3500"
 
@@ -36,7 +36,7 @@ export default function App() {
 						path="/"
 						element={
 							<AuthGuard>
-								<DashboardPage />
+								<GamesPage />
 							</AuthGuard>
 						}
 					/>

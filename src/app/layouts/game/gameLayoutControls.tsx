@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useBoardHoverContext } from "../../../components/game/contexts/boardHoverContext"
 import IUser from "../../../models/interfaces/user"
 import { useEffect, useState } from "react"
-import { Button } from "../../../components/shadcn/button"
+import { Button } from "../../../components/shadcn/ui/button"
 import { useSocketContext } from "../../context/socketContext"
 
 export default function GameLayoutControls(props: any) {

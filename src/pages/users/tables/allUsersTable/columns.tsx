@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
-import { Button } from "../../../../components/shadcn/button"
-import { Checkbox } from "../../../../components/shadcn/checkbox"
+import { Button } from "../../../../components/shadcn/ui/button"
+import { Checkbox } from "../../../../components/shadcn/ui/checkbox"
 import IUser from "../../../../models/interfaces/user"
 
 export const columns: ColumnDef<IUser>[] = [

@@ -15,7 +15,7 @@ import {
 	Users,
 } from "lucide-react"
 
-import { Button } from "../shadcn/button"
+import { Button } from "../shadcn/ui/button"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -29,7 +29,7 @@ import {
 	DropdownMenuSubContent,
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
-} from "../shadcn/dropdown-menu"
+} from "../shadcn/ui/dropdown-menu"
 import AvatarDemo from "./avatar"
 import { useQueryClient } from "@tanstack/react-query"
 import IUser from "../../models/interfaces/user"

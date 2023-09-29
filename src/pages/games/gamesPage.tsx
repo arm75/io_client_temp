@@ -1,6 +1,6 @@
 import { useState } from "react"
 import GamesTable from "./tables/gamesTable/gamesTable"
-import { Button } from "../../components/shadcn/button"
+import { Button } from "../../components/shadcn/ui/button"
 import HomeLayout from "../../app/layouts/home/homeLayout"
 import CreateGameDialog from "./dialogs/createGameDialog"
 import UpdateGameDialog from "./dialogs/updateGameDialog"
@@ -9,7 +9,7 @@ import DeleteGameDialog from "./dialogs/deleteGameDialog"
 import JoinGameDialog from "./dialogs/joinGameDialog"
 import { useSocketContext } from "../../app/context/socketContext"
 
-export default function DashboardPage() {
+export default function GamesPage() {
 	//const socket = useSocketContext()
 
 	// CREATE Game modal state

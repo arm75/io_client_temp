@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form"
-import { Button } from "../../../components/shadcn/button"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../../components/shadcn/dialog"
-import { Input } from "../../../components/shadcn/input"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../../../components/shadcn/form"
+import { Button } from "../../../components/shadcn/ui/button"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../../components/shadcn/ui/dialog"
+import { Input } from "../../../components/shadcn/ui/input"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../../../components/shadcn/ui/form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import IUser from "../../../models/interfaces/user"
 import axios from "axios"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/shadcn/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/shadcn/ui/select"
 
 export default function CreateUserDialog(props: any) {
 	const { isOpen, onClose, title, description } = props

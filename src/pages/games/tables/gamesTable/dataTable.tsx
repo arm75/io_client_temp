@@ -10,15 +10,15 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from "@tanstack/react-table"
-import { Button } from "../../../../components/shadcn/button"
-import { Input } from "../../../../components/shadcn/input"
+import { Button } from "../../../../components/shadcn/ui/button"
+import { Input } from "../../../../components/shadcn/ui/input"
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
 	DropdownMenuTrigger,
-} from "../../../../components/shadcn/dropdown-menu"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../../components/shadcn/table"
+} from "../../../../components/shadcn/ui/dropdown-menu"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../../components/shadcn/ui/table"
 import React from "react"
 import { PencilIcon, Trash2Icon } from "lucide-react"
 import { useGameStateContext } from "../../../../components/game/contexts/gameStateContext"

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import CreateUserDialog from "./dialogs/createUserDialog"
 import AllUsersTable from "./tables/allUsersTable/allUsersTable"
-import { Button } from "../../components/shadcn/button"
+import { Button } from "../../components/shadcn/ui/button"
 import HomeLayout from "../../app/layouts/home/homeLayout"
 import UpdateUserDialog from "./dialogs/updateUserDialog"
 import DeleteUserDialog from "./dialogs/deleteUserDialog"

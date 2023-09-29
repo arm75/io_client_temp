@@ -33,7 +33,7 @@ export default function HomeLayoutSidebar(props: any) {
 					className="text-emerald-600 text-2xl hover:text-white"
 					href="/"
 				>
-					Dashboard
+					Games
 				</a>
 			</div>
 

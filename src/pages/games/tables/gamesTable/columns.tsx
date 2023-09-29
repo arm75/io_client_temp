@@ -1,8 +1,8 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
-import { Button } from "../../../../components/shadcn/button"
+import { Button } from "../../../../components/shadcn/ui/button"
 import IGame from "../../../../models/interfaces/game/board/game"
-import { Badge } from "../../../../components/shadcn/badge"
+import { Badge } from "../../../../components/shadcn/ui/badge"
 
 export const columns: ColumnDef<IGame>[] = [
 	// {
@@ -82,7 +82,7 @@ export const columns: ColumnDef<IGame>[] = [
 		cell: (value) => {
 			const playersArray = value.getValue() as any
 			console.log("LOOKIE", playersArray)
-			const namesArray = playersArray.map((player: any) => player.user.username)
+			const namesArray = playersArray.map((player: any) => player?.user?.username)
 
 			return namesArray.map((name: any, index: any) => (
 				<Badge
