@@ -3,7 +3,7 @@ import io from "socket.io-client"
 import { useGameStateContext } from "../../components/game/contexts/gameStateContext"
 import { useQueryClient } from "@tanstack/react-query"
 
-const SOCKET_SERVER = "http://localhost:3500"
+const SOCKET_SERVER = "http://localhost:3500/"
 const SocketContext = createContext<any>(null)
 
 export function useSocketContext() {
@@ -11,15 +11,17 @@ export function useSocketContext() {
 }
 
 export function SocketContextProvider({ children }: { children: JSX.Element }) {
-	const initialSocket = io(SOCKET_SERVER) // Initialize the socket
+	const initialSocket = io(SOCKET_SERVER, {
+		withCredentials: true,
+	}) // Initialize the socket
 	const [socket, setSocket] = useState(initialSocket)
 
 	const queryClient = useQueryClient()
 	const { startNewGame } = useGameStateContext()
 
-	useEffect(() => {
-		setSocket(socket)
-	}, [socket])
+	// useEffect(() => {
+	// 	setSocket(socket)
+	// }, [socket])
 
 	useEffect(() => {
 		socket.on("startNewGame", (data) => {
