@@ -49,7 +49,7 @@ export default function UpdateGameDialog(props: any) {
 	})
 
 	// UPDATE USER mutation (react-query)
-	const updateUserMutation = useMutation(async (user: IUser) => await axios.patch("http://localhost:3500/users", user), {
+	const updateUserMutation = useMutation(async (user: IUser) => await api.patch("/users", user), {
 		onSuccess: () => {
 			//console.log("Success: ", {res})
 			//cl('info', "CREATE USER Successful!")

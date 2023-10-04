@@ -3,19 +3,18 @@ import { Button } from "../../../components/shadcn/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../../components/shadcn/ui/dialog"
 import { Form, FormControl, FormField, FormItem } from "../../../components/shadcn/ui/form"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import axios from "axios"
 import { Input } from "../../../components/shadcn/ui/input"
 import useAxios from "../../../app/api/axios"
 
 export default function CancelGameDialog(props: any) {
 	const { isOpen, onClose, title, description, cancelGameId } = props
 
+	const api = useAxios()
+
 	// const [roleField, setRoleField] = useState("")
 
 	// get query client (react-query)
 	const queryClient = useQueryClient()
-
-	const api = useAxios()
 
 	// GET USER QUERY (react-query)
 	const getGameQuery = useQuery([`get-game-cancel-game`], async () => await api.get(`/game/${cancelGameId}`).then((res) => res.data), {
@@ -36,7 +35,7 @@ export default function CancelGameDialog(props: any) {
 	})
 
 	// UPDATE USER mutation (react-query)
-	const cancelGameMutation = useMutation(async (id: string) => await axios.patch(`http://localhost:3500/game/cancel`), {
+	const cancelGameMutation = useMutation(async (id: string) => await api.patch(`/game/cancel`), {
 		onSuccess: () => {
 			//console.log("Success: ", {res})
 			//cl('info', "CREATE USER Successful!")

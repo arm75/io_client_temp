@@ -4,12 +4,14 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "../../../components/shadcn/ui/input"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../../../components/shadcn/ui/form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import axios from "axios"
 import IGame from "../../../models/interfaces/game/board/game"
 import IUser from "../../../models/interfaces/user"
+import useAxios from "../../../app/api/axios"
 
 export default function CreateGameDialog(props: any) {
 	const { isOpen, onClose, title, description } = props
+
+	const api = useAxios()
 
 	// get query client (react-query)
 	const queryClient = useQueryClient()
@@ -17,7 +19,7 @@ export default function CreateGameDialog(props: any) {
 	const authMeQueryData: IUser | undefined = queryClient.getQueryData(["auth-me"])
 
 	// CREATE USER mutation (react-query)
-	const createGameMutation = useMutation(async (game: IGame) => await axios.post("http://localhost:3500/game", game), {
+	const createGameMutation = useMutation(async (game: IGame) => await api.post("/game", game), {
 		onSuccess: () => {
 			//console.log("Success: ", {res})
 			//cl('info', "CREATE USER Successful!")

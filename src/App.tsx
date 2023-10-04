@@ -6,8 +6,6 @@ import UsersPage from "./pages/users/usersPage"
 import PlayPage from "./pages/play/playPage"
 import GamesPage from "./pages/games/gamesPage"
 
-//const SOCKET_SERVER = "http://localhost:3500"
-
 export default function App() {
 	// let content: JSX.Element = <></>
 

@@ -5,49 +5,48 @@ import { Form } from "../../../components/shadcn/ui/form"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { useState } from "react"
+import useAxios from "../../../app/api/axios"
 
 export default function DeleteUserDialog(props: any) {
 	const { isOpen, onClose, title, description, deleteUserId } = props
 
 	const [roleField, setRoleField] = useState("")
 
+	const api = useAxios()
+
 	// get query client (react-query)
 	const queryClient = useQueryClient()
 
 	// GET USER QUERY (react-query)
-	const getUserQuery = useQuery(
-		[`get-user`],
-		async () => await axios.get(`http://localhost:3500/users/${deleteUserId}`).then((res) => res.data),
-		{
-			onSuccess: (data) => {
-				//console.log("query-changed:", data)
-				userForm.setValue("id", data._id)
-				userForm.setValue("username", data.username)
-				userForm.setValue("role", data.role)
-				setRoleField(data.role)
-			},
-			onError: () => {
-				//console.log("Error: ", { res })
-				//cl('error', "CREATE USER FAILED!")
-				//makeToast(res.response.data.message, 'danger')
-				userForm.setValue("id", "")
-				userForm.setValue("username", "")
-				userForm.setValue("role", "")
-				setRoleField("")
-			},
-			onSettled: () => {
-				//console.log("Settled: ", {res})
-				//queryClient.invalidateQueries(["get-all-users"])
-				//queryClient.invalidateQueries(["get-user"])
-				//cancelModal()
-			},
-			refetchOnWindowFocus: false,
-			enabled: deleteUserId !== null,
-		}
-	)
+	const getUserQuery = useQuery([`get-user`], async () => await api.get(`/users/${deleteUserId}`).then((res) => res.data), {
+		onSuccess: (data) => {
+			//console.log("query-changed:", data)
+			userForm.setValue("id", data._id)
+			userForm.setValue("username", data.username)
+			userForm.setValue("role", data.role)
+			setRoleField(data.role)
+		},
+		onError: () => {
+			//console.log("Error: ", { res })
+			//cl('error', "CREATE USER FAILED!")
+			//makeToast(res.response.data.message, 'danger')
+			userForm.setValue("id", "")
+			userForm.setValue("username", "")
+			userForm.setValue("role", "")
+			setRoleField("")
+		},
+		onSettled: () => {
+			//console.log("Settled: ", {res})
+			//queryClient.invalidateQueries(["get-all-users"])
+			//queryClient.invalidateQueries(["get-user"])
+			//cancelModal()
+		},
+		refetchOnWindowFocus: false,
+		enabled: deleteUserId !== null,
+	})
 
 	// UPDATE USER mutation (react-query)
-	const deleteUserMutation = useMutation(async (id: string) => await axios.delete(`http://localhost:3500/users/${id}`), {
+	const deleteUserMutation = useMutation(async (id: string) => await api.delete(`/users/${id}`), {
 		onSuccess: () => {
 			//console.log("Success: ", {res})
 			//cl('info', "CREATE USER Successful!")

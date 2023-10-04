@@ -5,17 +5,18 @@ import { Input } from "../../../components/shadcn/ui/input"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../../../components/shadcn/ui/form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import IUser from "../../../models/interfaces/user"
-import axios from "axios"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/shadcn/ui/select"
+import useAxios from "../../../app/api/axios"
 
 export default function CreateUserDialog(props: any) {
 	const { isOpen, onClose, title, description } = props
 
+	const api = useAxios()
 	// get query client (react-query)
 	const queryClient = useQueryClient()
 
 	// CREATE USER mutation (react-query)
-	const createUserMutation = useMutation(async (user: IUser) => await axios.post("http://localhost:3500/users", user), {
+	const createUserMutation = useMutation(async (user: IUser) => await api.post("/users", user), {
 		onSuccess: () => {
 			//console.log("Success: ", {res})
 			//cl('info', "CREATE USER Successful!")

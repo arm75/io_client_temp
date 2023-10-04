@@ -24,6 +24,7 @@ export default function UsersPageOld(props: any) {
 			accessor: "roles",
 		},
 	]
+	const api = useAxios()
 
 	// component output
 	let content: JSX.Element = <></>
@@ -43,12 +44,9 @@ export default function UsersPageOld(props: any) {
 	////// CONTEXT //////
 	//const { someBool, toggleSomeBool } = useSomeContext()
 
-	const api = useAxios("http://localhost:3500/")
-	//const api = apiRef.current
-
 	////// REACT-QUERY //////
 	// GET ALL USERS
-	const getAllUsersQuery = useQuery(["get-all-users"], async () => await api.get("users").then((res) => res.data), {
+	const getAllUsersQuery = useQuery(["get-all-users"], async () => await api.get("/users").then((res) => res.data), {
 		refetchOnWindowFocus: false,
 	})
 

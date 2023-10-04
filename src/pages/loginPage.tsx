@@ -1,40 +1,41 @@
 import { useState } from "react"
 import axios, { AxiosResponse } from "axios"
+import useAxios from "../app/api/axios"
 
 export default function LoginPage() {
 	const [errorMessage, setErrorMessage] = useState<string | null>("")
 	const [username, setUsername] = useState<string>("")
 	const [password, setPassword] = useState<string>("")
 
+	const api = useAxios()
+
 	const login = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		setErrorMessage("")
-		axios
-			.post(
-				"http://localhost:3500/auth/login",
-				{
-					username,
-					password,
-				},
-				{
-					withCredentials: true,
+		api.post(
+			"/auth/login",
+			{
+				username,
+				password,
+			},
+			{
+				withCredentials: true,
+			}
+		).then(
+			(res: AxiosResponse) => {
+				if (res.data === "success") {
+					window.location.href = "/"
 				}
-			)
-			.then(
-				(res: AxiosResponse) => {
-					if (res.data === "success") {
-						window.location.href = "/"
-					}
-				},
-				(res) => {
-					console.log({ res })
-					setErrorMessage("Sorry, your login request failed. Please try again.")
-				}
-			)
+			},
+			(res) => {
+				console.log({ res })
+				setErrorMessage("Sorry, your login request failed. Please try again.")
+			}
+		)
 	}
 
 	const logout = () => {
-		axios.get("http://localhost:3500/auth/logout", { withCredentials: true }).then(
+		api.get("/auth/logout", { withCredentials: true }).then(
 			(res: AxiosResponse) => {
 				if (res.data === "success") {
 					window.location.href = "/"

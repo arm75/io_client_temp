@@ -1,18 +1,17 @@
 import HomeLayout from "../app/layouts/home/homeLayout"
 import useAxios from "../app/api/axios"
 import { useQuery } from "@tanstack/react-query"
-import RenderBoard from "../components/game/board/renderBoard"
 
 export default function HomePage() {
 	let content: JSX.Element = <></>
 
-	const api = useAxios("http://localhost:3500/")
+	const api = useAxios()
 
-	const authMeQueryData = useQuery(["auth-me"], async () => await api.get("auth/me").then((res: any) => res.data), {
+	const authMeQueryData = useQuery(["auth-me"], async () => await api.get("/auth/me").then((res: any) => res.data), {
 		refetchOnWindowFocus: false,
 	})
 
-	const getAllUsersQuery = useQuery(["get-all-users"], async () => await api.get("users").then((res) => res.data), {
+	const getAllUsersQuery = useQuery(["get-all-users"], async () => await api.get("/users").then((res) => res.data), {
 		refetchOnWindowFocus: false,
 	})
 

@@ -4,11 +4,13 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Form } from "../../../components/shadcn/ui/form"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
+import useAxios from "../../../app/api/axios"
 
 export default function DeleteGameDialog(props: any) {
 	const { isOpen, onClose, title, description, deleteGameId } = props
 
 	//const [roleField, setRoleField] = useState("")
+	const api = useAxios()
 
 	// get query client (react-query)
 	const queryClient = useQueryClient()
@@ -17,7 +19,7 @@ export default function DeleteGameDialog(props: any) {
 	const getGameQuery = useQuery(
 		[`get-game-delete-game`],
 		async () =>
-			await axios.get(`http://localhost:3500/game/${deleteGameId}`).then((res) => {
+			await api.get(`/game/${deleteGameId}`).then((res) => {
 				return res.data
 			}),
 		{
@@ -50,7 +52,7 @@ export default function DeleteGameDialog(props: any) {
 	)
 
 	// DELETE GAME mutation (react-query)
-	const deleteGameMutation = useMutation(async (id: string) => await axios.delete(`http://localhost:3500/game/${id}`), {
+	const deleteGameMutation = useMutation(async (id: string) => await api.delete(`/game/${id}`), {
 		onSuccess: () => {
 			//console.log("Success: ", {res})
 			//cl('info', "CREATE USER Successful!")

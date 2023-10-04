@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import io from "socket.io-client"
 import { useGameStateContext } from "../../components/game/contexts/gameStateContext"
 import { useQueryClient } from "@tanstack/react-query"
 
-const SOCKET_SERVER = "http://localhost:3500/"
+const SOCKET_SERVER = import.meta.env.VITE_APP_BASE_URL
 const SocketContext = createContext<any>(null)
 
 export function useSocketContext() {

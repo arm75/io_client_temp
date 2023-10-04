@@ -1,6 +1,5 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { createContext, useContext, useEffect, useState } from "react"
-import IUser from "../../../models/interfaces/user"
 import useAxios from "../../../app/api/axios"
 
 // Create the context
@@ -19,7 +18,7 @@ export function useGameStateContext() {
 // Create the AppProvider component
 export function GameStateContextProvider({ children }: { children: JSX.Element }) {
 	//const [gameInProgress, setGameInProgress] = useState(false)
-
+	const api = useAxios()
 	//let content = <></>
 
 	const [currentGameId, setCurrentGameId] = useState<string | null>(null)
@@ -27,26 +26,9 @@ export function GameStateContextProvider({ children }: { children: JSX.Element }
 
 	let content: JSX.Element = <></>
 
-	const api = useAxios("http://localhost:3500")
-
-	const authMeQueryData = useQuery(["auth-me"], async () => await api.get("auth/me").then((res: any) => res.data), {
+	const authMeQueryData = useQuery(["auth-me"], async () => await api.get("/auth/me").then((res: any) => res.data), {
 		refetchOnWindowFocus: false,
 	})
-
-	//console.log(authMeQueryData)
-
-	// useEffect(() => {
-	// 	const inGameAlready = localStorage.getItem("gameStateObject")
-
-	// 	if (inGameAlready) {
-	// 		const gameState = JSON.parse(inGameAlready)
-
-	// 		console.log("Object retrieved from localStorage:", gameState)
-	// 		setCurrentGameId(gameState.currentGameId)
-	// 	} else {
-	// 		console.log("Object does not exist in localStorage.")
-	// 	}
-	// }, [currentGameId])
 
 	const startNewGame = (gameId: string) => {
 		//console.log(`Game ID: ${gameId}`)

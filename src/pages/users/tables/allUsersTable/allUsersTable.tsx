@@ -8,9 +8,9 @@ export default function AllUsersTable(props: any) {
 
 	let content: JSX.Element = <></>
 
-	const api = useAxios("http://localhost:3500/")
+	const api = useAxios()
 
-	const getAllUsersQuery = useQuery(["get-all-users"], async () => await api.get("users").then((res: any) => res.data), {
+	const getAllUsersQuery = useQuery(["get-all-users"], async () => await api.get("/users").then((res: any) => res.data), {
 		refetchOnWindowFocus: false,
 	})
 

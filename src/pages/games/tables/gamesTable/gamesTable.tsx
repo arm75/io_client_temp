@@ -8,12 +8,12 @@ export default function GamesTable(props: any) {
 
 	let content: JSX.Element = <></>
 
-	const api = useAxios("http://localhost:3500/")
+	const api = useAxios()
 
 	const getAllGamesQuery = useQuery(
 		["get-all-games"],
 		async () =>
-			await api.get("game").then((res: any) => {
+			await api.get("/game").then((res: any) => {
 				//console.log(res.data)
 				return res.data
 			}),
