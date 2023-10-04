@@ -49,7 +49,7 @@ export function GameStateContextProvider({ children }: { children: JSX.Element }
 	// }, [currentGameId])
 
 	const startNewGame = (gameId: string) => {
-		console.log(`Game ID: ${gameId}`)
+		//console.log(`Game ID: ${gameId}`)
 		// Define an object to store in localStorage
 		const gameStateObjectToSet = { currentGameId: gameId }
 		// Convert the object to a JSON string
@@ -84,7 +84,6 @@ export function GameStateContextProvider({ children }: { children: JSX.Element }
 	if (authMeQueryData.isSuccess) {
 		content = (
 			<>
-				{console.log(authMeQueryData)}
 				<GameStateContext.Provider value={contextValue}>{children}</GameStateContext.Provider>
 			</>
 		)

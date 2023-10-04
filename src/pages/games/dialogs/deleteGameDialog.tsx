@@ -18,7 +18,6 @@ export default function DeleteGameDialog(props: any) {
 		[`get-game-delete-game`],
 		async () =>
 			await axios.get(`http://localhost:3500/game/${deleteGameId}`).then((res) => {
-				console.log({ deleteGameId })
 				return res.data
 			}),
 		{
@@ -78,7 +77,7 @@ export default function DeleteGameDialog(props: any) {
 		// { username, password, roles }: any
 		//console.log("Form Submit Data: ", data)
 		const { id, username, password, role } = data
-		console.log({ id })
+		//console.log({ id })
 		// console.log({ username })
 		// console.log({ password })
 		// console.log({ role })

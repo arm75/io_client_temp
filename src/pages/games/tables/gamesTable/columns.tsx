@@ -81,7 +81,6 @@ export const columns: ColumnDef<IGame>[] = [
 		},
 		cell: (value) => {
 			const playersArray = value.getValue() as any
-			console.log("LOOKIE", playersArray)
 			const namesArray = playersArray.map((player: any) => player?.user?.username)
 
 			return namesArray.map((name: any, index: any) => (

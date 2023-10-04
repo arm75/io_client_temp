@@ -2,7 +2,7 @@ import axios from "axios"
 import IUser from "../../models/interfaces/user"
 import { useQueryClient } from "@tanstack/react-query"
 
-const useAxios = (baseURL: string) => {
+const useAxios = (baseURL: string = import.meta.env.VITE_APP_BASE_URL) => {
 	const axiosInstance = axios.create({
 		baseURL,
 		withCredentials: true,

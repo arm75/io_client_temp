@@ -18,9 +18,9 @@ export default function UpdateGameDialog(props: any) {
 	const queryClient = useQueryClient()
 
 	// GET USER QUERY (react-query)
-	const getUserQuery = useQuery(
+	const getGameQuery = useQuery(
 		[`get-game-update-game`],
-		async () => await axios.get(`http://127.0.0.1:3500/users/${updateGameId}`).then((res) => res.data),
+		async () => await axios.get(`http://127.0.0.1:3500/game/${updateGameId}`).then((res) => res.data),
 		{
 			onSuccess: (data) => {
 				//console.log("query-changed:", data)
