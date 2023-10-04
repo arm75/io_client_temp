@@ -5,11 +5,13 @@ import { Input } from "../../../components/shadcn/ui/input"
 import { Form, FormControl, FormField, FormItem } from "../../../components/shadcn/ui/form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import IUser from "../../../models/interfaces/user"
-import axios from "axios"
 import { useSocketContext } from "../../../app/context/socketContext"
+import useAxios from "../../../app/api/axios"
 
 export default function JoinGameDialog(props: any) {
 	const { isOpen, onClose, title, description, joinGameId } = props
+
+	const api = useAxios()
 
 	//const [roleField, setRoleField] = useState("")
 	const socket = useSocketContext()
@@ -20,60 +22,27 @@ export default function JoinGameDialog(props: any) {
 
 	const userForm = useForm({ mode: "onChange" })
 
-	// useEffect(() => {
-	// 	userForm.setValue("userId", authMeQueryData?.id)
-	// 	userForm.setValue("gameId", joinGameId)
-	// }, [authMeQueryData?.id, joinGameId, userForm])
-
-	// GET USER QUERY (react-query)
-	// const joinGameQuery = useQuery(
-	// 	[`get-user`],
-	// 	async () => await axios.get(`http://127.0.0.1:3500/game/${joinGameId}`).then((res) => res.data),
-	// 	{
-	// 		onSuccess: (data) => {
-	// 			userForm.setValue("id", data._id)
-	// 			userForm.setValue("username", data.username)
-	// 			userForm.setValue("role", data.role)
-	// 			setRoleField(data.role)
-	// 		},
-	// 		onError: () => {
-	// 			userForm.setValue("id", "")
-	// 			userForm.setValue("username", "")
-	// 			userForm.setValue("role", "")
-	// 			setRoleField("")
-	// 		},
-	// 		onSettled: () => {
-	// 			console.log("")
-	// 		},
-	// 		refetchOnWindowFocus: false,
-	// 		enabled: joinGameId !== null,
-	// 	}
-	// )
-
 	// UPDATE USER mutation (react-query)
-	const joinGameMutation = useMutation(
-		async (msg: { userId: string; gameId: string }) => await axios.patch("http://localhost:3500/game/join", msg),
-		{
-			onSuccess: (res) => {
-				//console.log("Success: ", {res})
-				//cl('info', "CREATE USER Successful!")
-				//cancelModal()
-				//makeToast(res.data.message, 'primary')
-			},
-			onError: (res) => {
-				//console.log("Error: ", { res })
-				//cl('error', "CREATE USER FAILED!")
-				//makeToast(res.response.data.message, 'danger')
-			},
-			onSettled: () => {
-				//console.log("Settled: ", {res})
-				queryClient.invalidateQueries(["get-all-games"])
-				socket.emit("joinGame")
-				//queryClient.invalidateQueries(["get-user"])
-				cancelModal()
-			},
-		}
-	)
+	const joinGameMutation = useMutation(async (msg: { userId: string; gameId: string }) => await api.patch("/game/join", msg), {
+		onSuccess: (res) => {
+			//console.log("Success: ", {res})
+			//cl('info', "CREATE USER Successful!")
+			//cancelModal()
+			//makeToast(res.data.message, 'primary')
+		},
+		onError: (res) => {
+			//console.log("Error: ", { res })
+			//cl('error', "CREATE USER FAILED!")
+			//makeToast(res.response.data.message, 'danger')
+		},
+		onSettled: () => {
+			//console.log("Settled: ", {res})
+			queryClient.invalidateQueries(["get-all-games"])
+			socket.emit("joinGame")
+			//queryClient.invalidateQueries(["get-user"])
+			cancelModal()
+		},
+	})
 
 	const submitUpdateUserForm: any = (data: any) => {
 		// { username, password, roles }: any

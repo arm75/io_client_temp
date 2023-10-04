@@ -5,6 +5,7 @@ import { Form, FormControl, FormField, FormItem } from "../../../components/shad
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { Input } from "../../../components/shadcn/ui/input"
+import useAxios from "../../../app/api/axios"
 
 export default function CancelGameDialog(props: any) {
 	const { isOpen, onClose, title, description, cancelGameId } = props
@@ -14,27 +15,25 @@ export default function CancelGameDialog(props: any) {
 	// get query client (react-query)
 	const queryClient = useQueryClient()
 
+	const api = useAxios()
+
 	// GET USER QUERY (react-query)
-	const getGameQuery = useQuery(
-		[`get-game-cancel-game`],
-		async () => await axios.get(`http://127.0.0.1:3500/game/${cancelGameId}`).then((res) => res.data),
-		{
-			onSuccess: (data) => {
-				console.log("query-changed:", data)
-				gameForm.setValue("id", data.id)
-				gameForm.setValue("name", data.name)
-			},
-			onError: () => {
-				gameForm.setValue("id", "")
-				gameForm.setValue("name", "")
-			},
-			onSettled: () => {
-				console.log(cancelGameId)
-			},
-			refetchOnWindowFocus: false,
-			enabled: cancelGameId !== null,
-		}
-	)
+	const getGameQuery = useQuery([`get-game-cancel-game`], async () => await api.get(`/game/${cancelGameId}`).then((res) => res.data), {
+		onSuccess: (data) => {
+			console.log("query-changed:", data)
+			gameForm.setValue("id", data.id)
+			gameForm.setValue("name", data.name)
+		},
+		onError: () => {
+			gameForm.setValue("id", "")
+			gameForm.setValue("name", "")
+		},
+		onSettled: () => {
+			console.log(cancelGameId)
+		},
+		refetchOnWindowFocus: false,
+		enabled: cancelGameId !== null,
+	})
 
 	// UPDATE USER mutation (react-query)
 	const cancelGameMutation = useMutation(async (id: string) => await axios.patch(`http://localhost:3500/game/cancel`), {

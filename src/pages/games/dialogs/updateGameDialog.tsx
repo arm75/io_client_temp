@@ -8,9 +8,12 @@ import IUser from "../../../models/interfaces/user"
 import axios from "axios"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/shadcn/ui/select"
 import { useState } from "react"
+import useAxios from "../../../app/api/axios"
 
 export default function UpdateGameDialog(props: any) {
 	const { isOpen, onClose, title, description, updateGameId } = props
+
+	const api = useAxios()
 
 	const [roleField, setRoleField] = useState("")
 
@@ -18,36 +21,32 @@ export default function UpdateGameDialog(props: any) {
 	const queryClient = useQueryClient()
 
 	// GET USER QUERY (react-query)
-	const getGameQuery = useQuery(
-		[`get-game-update-game`],
-		async () => await axios.get(`http://127.0.0.1:3500/game/${updateGameId}`).then((res) => res.data),
-		{
-			onSuccess: (data) => {
-				//console.log("query-changed:", data)
-				userForm.setValue("id", data._id)
-				userForm.setValue("username", data.username)
-				userForm.setValue("role", data.role)
-				setRoleField(data.role)
-			},
-			onError: () => {
-				//console.log("Error: ", { res })
-				//cl('error', "CREATE USER FAILED!")
-				//makeToast(res.response.data.message, 'danger')
-				userForm.setValue("id", "")
-				userForm.setValue("username", "")
-				userForm.setValue("role", "")
-				setRoleField("")
-			},
-			onSettled: () => {
-				//console.log("Settled: ", {res})
-				//queryClient.invalidateQueries(["get-all-users"])
-				//queryClient.invalidateQueries(["get-user"])
-				//cancelModal()
-			},
-			refetchOnWindowFocus: false,
-			enabled: updateGameId !== null,
-		}
-	)
+	const getGameQuery = useQuery([`get-game-update-game`], async () => await api.get(`/game/${updateGameId}`).then((res) => res.data), {
+		onSuccess: (data) => {
+			//console.log("query-changed:", data)
+			userForm.setValue("id", data._id)
+			userForm.setValue("username", data.username)
+			userForm.setValue("role", data.role)
+			setRoleField(data.role)
+		},
+		onError: () => {
+			//console.log("Error: ", { res })
+			//cl('error', "CREATE USER FAILED!")
+			//makeToast(res.response.data.message, 'danger')
+			userForm.setValue("id", "")
+			userForm.setValue("username", "")
+			userForm.setValue("role", "")
+			setRoleField("")
+		},
+		onSettled: () => {
+			//console.log("Settled: ", {res})
+			//queryClient.invalidateQueries(["get-all-users"])
+			//queryClient.invalidateQueries(["get-user"])
+			//cancelModal()
+		},
+		refetchOnWindowFocus: false,
+		enabled: updateGameId !== null,
+	})
 
 	// UPDATE USER mutation (react-query)
 	const updateUserMutation = useMutation(async (user: IUser) => await axios.patch("http://localhost:3500/users", user), {
