@@ -13,7 +13,8 @@ const ToastViewport = React.forwardRef<
 	<ToastPrimitives.Viewport
 		ref={ref}
 		className={cn(
-			"fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
+			//"fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
+			"fixed top-0 left-[50%] z-[100] flex max-h-screen w-full translate-x-[-50%] flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]",
 			className
 		)}
 		{...props}
@@ -29,6 +30,12 @@ const toastVariants = cva(
 				default: "border bg-white text-slate-950 dark:bg-slate-950 dark:text-slate-50",
 				destructive:
 					"destructive group border-red-500 bg-red-500 text-slate-50 dark:border-red-900 dark:bg-red-900 dark:text-slate-50",
+				success:
+					"destructive group border-emerald-500 bg-emerald-500 text-slate-50 dark:border-emerald-900 dark:bg-emerald-900 dark:text-slate-50",
+				info: "destructive group border-sky-500 bg-sky-500 text-slate-50 dark:border-sky-900 dark:bg-sky-900 dark:text-slate-50",
+				warning:
+					"destructive group border-yellow-500 bg-yellow-500 text-slate-50 dark:border-yellow-900 dark:bg-yellow-900 dark:text-slate-50",
+				error: "destructive group border-red-500 bg-red-500 text-slate-50 dark:border-red-900 dark:bg-red-900 dark:text-slate-50",
 			},
 		},
 		defaultVariants: {

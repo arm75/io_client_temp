@@ -6,15 +6,22 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { SocketContextProvider } from "./app/context/socketContext.tsx"
 import { GameStateContextProvider } from "./components/game/contexts/gameStateContext.tsx"
+import { Toaster } from "./components/shadcn/ui/toaster.tsx"
+import { ToasterContextProvider } from "./app/context/toasterContext.tsx"
 const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<QueryClientProvider client={queryClient}>
-		<GameStateContextProvider>
-			<SocketContextProvider>
-				<App />
-			</SocketContextProvider>
-		</GameStateContextProvider>
+		<ToasterContextProvider>
+			<>
+				<GameStateContextProvider>
+					<SocketContextProvider>
+						<App />
+					</SocketContextProvider>
+				</GameStateContextProvider>
+				<Toaster />
+			</>
+		</ToasterContextProvider>
 		<ReactQueryDevtools />
 	</QueryClientProvider>
 )

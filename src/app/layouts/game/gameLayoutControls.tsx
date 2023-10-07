@@ -4,6 +4,8 @@ import IUser from "../../../models/interfaces/user"
 import { useEffect, useState } from "react"
 import { Button } from "../../../components/shadcn/ui/button"
 import { useSocketContext } from "../../context/socketContext"
+import StateMachineComponent from "../../../components/game/tests/turnStateTest"
+import StateMachineComponent2 from "../../../components/game/tests/turnStateTest2"
 
 export default function GameLayoutControls(props: any) {
 	// const {children, pageTitle} = props
@@ -61,7 +63,6 @@ export default function GameLayoutControls(props: any) {
 					</span>
 				</a>
 			</div>
-
 			{/* <!-- "NAVIGATION" Label --> */}
 			{/* <div className="text-gray-500 self-center uppercase">Navigation</div> */}
 			<hr className="text-emerald-900 my-10"></hr>
@@ -91,6 +92,7 @@ export default function GameLayoutControls(props: any) {
 					<></>
 				)}
 			</h1>
+			<StateMachineComponent2 />
 		</>
 	)
 }
