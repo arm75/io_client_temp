@@ -7,57 +7,42 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import IUser from "../../../models/interfaces/user"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/shadcn/ui/select"
 import useAxios from "../../../app/api/axios"
+import { useToasterContext } from "../../../app/context/toasterContext"
 
 export default function CreateUserDialog(props: any) {
 	const { isOpen, onClose, title, description } = props
 
+	const userForm = useForm({ mode: "onChange" })
+
+	const { showToast } = useToasterContext()
+
 	const api = useAxios()
-	// get query client (react-query)
+
 	const queryClient = useQueryClient()
 
-	// CREATE USER mutation (react-query)
 	const createUserMutation = useMutation(async (user: IUser) => await api.post("/users", user), {
-		onSuccess: () => {
-			//console.log("Success: ", {res})
-			//cl('info', "CREATE USER Successful!")
-			//cancelModal()
-			//makeToast(res.data.message, 'primary')
+		onSuccess: (data) => {
+			const message = data?.data?.message
+			console.log(message)
+			showToast("success", message)
 		},
-		onError: (res) => {
-			console.log("Error: ", { res })
-			//cl('error', "CREATE USER FAILED!")
-			//makeToast(res.response.data.message, 'danger')
+		onError: (error: any) => {
+			const message = error?.response?.data?.message
+			console.log(message)
+			showToast("error", message)
 		},
 		onSettled: () => {
-			//console.log("Settled: ", {res})
 			queryClient.invalidateQueries(["get-all-users"])
 			cancelModal()
 		},
 	})
 
-	const userForm = useForm({ mode: "onChange" })
-
 	const submitCreateUserForm: any = (data: any) => {
-		// { username, password, roles }: any
 		const { username, password, role } = data
-		console.log({ username })
-		console.log({ password })
-		console.log({ role })
-		console.log("submit function ran.")
-		// const newUser = {
-		// 	username: username,
-		// 	password: password,
-		// 	//firstname: firstname,
-		// 	//lastname: lastname,
-		// 	//email: email,
-		// 	roles: roles,
-		// 	//rolesArray: rolesArray,
-		// }
 		createUserMutation.mutate({ username, password, role })
 	}
 
 	const cancelModal = () => {
-		//makeToast('Cancel World!', 'primary')
 		userForm.reset()
 		onClose()
 	}

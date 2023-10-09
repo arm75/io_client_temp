@@ -3,94 +3,64 @@ import { Button } from "../../../components/shadcn/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../../components/shadcn/ui/dialog"
 import { Form } from "../../../components/shadcn/ui/form"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import axios from "axios"
 import { useState } from "react"
 import useAxios from "../../../app/api/axios"
+import { useToasterContext } from "../../../app/context/toasterContext"
 
 export default function DeleteUserDialog(props: any) {
 	const { isOpen, onClose, title, description, deleteUserId } = props
 
 	const [roleField, setRoleField] = useState("")
 
+	const userForm = useForm({ mode: "onChange" })
+
+	const { showToast } = useToasterContext()
+
 	const api = useAxios()
 
-	// get query client (react-query)
 	const queryClient = useQueryClient()
 
-	// GET USER QUERY (react-query)
 	const getUserQuery = useQuery([`get-user`], async () => await api.get(`/users/${deleteUserId}`).then((res) => res.data), {
 		onSuccess: (data) => {
-			//console.log("query-changed:", data)
 			userForm.setValue("id", data._id)
 			userForm.setValue("username", data.username)
 			userForm.setValue("role", data.role)
 			setRoleField(data.role)
 		},
 		onError: () => {
-			//console.log("Error: ", { res })
-			//cl('error', "CREATE USER FAILED!")
-			//makeToast(res.response.data.message, 'danger')
 			userForm.setValue("id", "")
 			userForm.setValue("username", "")
 			userForm.setValue("role", "")
 			setRoleField("")
 		},
-		onSettled: () => {
-			//console.log("Settled: ", {res})
-			//queryClient.invalidateQueries(["get-all-users"])
-			//queryClient.invalidateQueries(["get-user"])
-			//cancelModal()
-		},
 		refetchOnWindowFocus: false,
 		enabled: deleteUserId !== null,
 	})
 
-	// UPDATE USER mutation (react-query)
 	const deleteUserMutation = useMutation(async (id: string) => await api.delete(`/users/${id}`), {
-		onSuccess: () => {
-			//console.log("Success: ", {res})
-			//cl('info', "CREATE USER Successful!")
-			//cancelModal()
-			//makeToast(res.data.message, 'primary')
+		onSuccess: (data) => {
+			const message = data?.data?.message
+			console.log(message)
+			showToast("success", message)
 		},
-		onError: (res) => {
-			//console.log("Error: ", { res })
-			//cl('error', "CREATE USER FAILED!")
-			//makeToast(res.response.data.message, 'danger')
+		onError: (error: any) => {
+			const message = error?.response?.data?.message
+			console.log(message)
+			showToast("error", message)
 		},
 		onSettled: () => {
-			//console.log("Settled: ", {res})
 			queryClient.invalidateQueries(["get-all-users"])
-			// queryClient.invalidateQueries(["get-user"])
+			queryClient.invalidateQueries(["get-user"])
 			cancelModal()
 		},
 	})
 
-	const userForm = useForm({ mode: "onChange" })
-
 	const submitDeleteUserForm: any = (data: any) => {
-		// { username, password, roles }: any
-		//console.log("Form Submit Data: ", data)
 		const { id, username, password, role } = data
-		//console.log({ id })
-		// console.log({ username })
-		// console.log({ password })
-		// console.log({ role })
-		// console.log("submit function ran.")
-		// const newUser = {
-		// 	username: username,
-		// 	password: password,
-		// 	//firstname: firstname,
-		// 	//lastname: lastname,
-		// 	//email: email,
-		// 	roles: roles,
-		// 	//rolesArray: rolesArray,
-		// }
 		deleteUserMutation.mutate(id)
 	}
 
 	const cancelModal = () => {
-		//makeToast('Cancel World!', 'primary')
 		userForm.reset()
 		onClose()
 	}

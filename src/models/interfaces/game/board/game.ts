@@ -11,4 +11,5 @@ export default interface IGame {
 	started?: boolean
 	complete?: boolean
 	board?: ICell[][]
+	letterPool?: string[]
 }

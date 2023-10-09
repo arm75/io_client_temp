@@ -14,7 +14,7 @@ const ToastViewport = React.forwardRef<
 		ref={ref}
 		className={cn(
 			//"fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
-			"fixed top-0 left-[50%] z-[100] flex max-h-screen w-full translate-x-[-50%] flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]",
+			"fixed bottom-2 left-[50%] z-[100] flex max-h-screen w-full translate-x-[-50%] flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]",
 			className
 		)}
 		{...props}
@@ -36,6 +36,8 @@ const toastVariants = cva(
 				warning:
 					"destructive group border-yellow-500 bg-yellow-500 text-slate-50 dark:border-yellow-900 dark:bg-yellow-900 dark:text-slate-50",
 				error: "destructive group border-red-500 bg-red-500 text-slate-50 dark:border-red-900 dark:bg-red-900 dark:text-slate-50",
+				success_play:
+					"destructive group border-8 p-8 border-emerald-500 bg-black text-emerald-500 dark:border-emerald-500 dark:bg-black dark:text-emerald-500",
 			},
 		},
 		defaultVariants: {

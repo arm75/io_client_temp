@@ -24,11 +24,17 @@ export function GameStateContextProvider({ children }: { children: JSX.Element }
 	const [currentGameId, setCurrentGameId] = useState<string | null>(null)
 	const gameInProgress = currentGameId !== null
 
+	const [playerObject, setPlayerObject] = useState({})
+
 	let content: JSX.Element = <></>
 
 	const authMeQueryData = useQuery(["auth-me"], async () => await api.get("/auth/me").then((res: any) => res.data), {
 		refetchOnWindowFocus: false,
 	})
+
+	// useEffect(() => {
+	// 	const player =
+	//  },[])
 
 	const startNewGame = (gameId: string) => {
 		//console.log(`Game ID: ${gameId}`)

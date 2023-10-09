@@ -16,7 +16,7 @@ export function ToasterContextProvider({ children }: { children: JSX.Element }) 
 
 	const queryClient = useQueryClient()
 
-	const showToast = (variant: string) => {
+	const showToast = (variant: string, message = "Success!", title?: string) => {
 		let color = ""
 
 		switch (variant) {
@@ -45,14 +45,14 @@ export function ToasterContextProvider({ children }: { children: JSX.Element }) 
 
 		toast({
 			variant: variant as "default" | "destructive" | "success" | "info" | "warning" | "error" | null | undefined,
-			title: "Uh oh! Something went wrong.",
-			description: "There was a problem with your request.",
+			title: title,
+			description: message,
 			action: (
 				<ToastAction
 					className={`border border-${color}-700 p-2 rounded`}
-					altText="Try again"
+					altText="Close"
 				>
-					Try again
+					Close
 				</ToastAction>
 			),
 		})

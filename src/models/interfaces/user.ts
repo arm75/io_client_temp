@@ -10,5 +10,4 @@ export default interface IUser {
 	role?: string
 	inGame?: boolean
 	currentGameId?: string
-	//rolesArray?: Array<string>
 }

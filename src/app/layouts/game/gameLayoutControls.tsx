@@ -6,6 +6,37 @@ import { Button } from "../../../components/shadcn/ui/button"
 import { useSocketContext } from "../../context/socketContext"
 import StateMachineComponent from "../../../components/game/tests/turnStateTest"
 import StateMachineComponent2 from "../../../components/game/tests/turnStateTest2"
+import shuffleTokens from "../../../components/game/utils/shuffleTokens"
+import DisplayMyLetters from "../../../components/game/controls/displayMyLetters"
+
+const qtyMap = new Map([
+	["A", 8],
+	["B", 2],
+	["C", 2],
+	["D", 4],
+	["E", 12],
+	["F", 2],
+	["G", 3],
+	["H", 2],
+	["I", 9],
+	["J", 1],
+	["K", 1],
+	["L", 4],
+	["M", 2],
+	["N", 6],
+	["O", 8],
+	["P", 2],
+	["Q", 1],
+	["R", 6],
+	["S", 4],
+	["T", 6],
+	["U", 2],
+	["V", 2],
+	["W", 2],
+	["X", 1],
+	["Y", 2],
+	["Z", 1],
+])
 
 export default function GameLayoutControls(props: any) {
 	// const {children, pageTitle} = props
@@ -92,6 +123,7 @@ export default function GameLayoutControls(props: any) {
 					<></>
 				)}
 			</h1>
+			<DisplayMyLetters />
 			<StateMachineComponent2 />
 		</>
 	)
