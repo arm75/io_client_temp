@@ -148,14 +148,14 @@ export default function ChatBox() {
 	const socket = useSocketContext()
 
 	socket.on("connection", () => {
-		console.log(`I'm connected with the back-end`)
+		//console.log(`I'm connected with the back-end`)
 	})
 
 	const [message, setMessage] = useState("")
 	const [messages, setMessages] = useState<string[]>([])
 
 	useEffect(() => {
-		console.log("useEffect ran")
+		//console.log("useEffect ran")
 		socket.on("chat message", (message: string) => {
 			setMessages([...messages, message])
 		})

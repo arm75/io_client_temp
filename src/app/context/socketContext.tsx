@@ -37,6 +37,13 @@ export function SocketContextProvider({ children }: { children: JSX.Element }) {
 		socket.on("turnChanged", (data) => {
 			console.log("turnChanged event:", data)
 			queryClient.invalidateQueries(["get-game-in-progress"])
+			queryClient.refetchQueries(["get-game-in-progress"])
+		})
+
+		socket.on("turnPlayed", (data) => {
+			console.log("turnPlayed event:", data)
+			queryClient.invalidateQueries(["get-game-in-progress"])
+			queryClient.refetchQueries(["get-game-in-progress"])
 		})
 
 		return () => {

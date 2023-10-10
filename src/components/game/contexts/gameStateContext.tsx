@@ -31,17 +31,8 @@ export function GameStateContextProvider({ children }: { children: JSX.Element }
 
 	const [currentGameId, setCurrentGameId] = useState<string>("")
 	const [currentGame, setCurrentGame] = useState<Partial<IGame>>({})
-	//const [playerObject, setPlayerObject] = useState({})
+	const [playerObject, setPlayerObject] = useState({})
 	const gameInProgress = currentGameId !== null
-
-	useEffect(() => {
-		if (authContextData) {
-			const gameId = authContextData?.currentGameId as string
-			setCurrentGameId(gameId)
-		} else {
-			setCurrentGameId("")
-		}
-	}, [authContextData])
 
 	const getInProgressGameQuery = useQuery(
 		["get-game-in-progress"],
@@ -54,14 +45,33 @@ export function GameStateContextProvider({ children }: { children: JSX.Element }
 					return something
 				}),
 		{
-			onSuccess: (data) => {
-				console.log("QUERY I AM INTERESTED IN: ", data)
-				setCurrentGame(data)
+			onSettled: (data) => {
+				//console.log("QUERY I AM INTERESTED IN: ", data)
+				console.log("Get-game-query is providing: ", data)
+				setCurrentGame(data[0])
 			},
-			//enabled: currentGameId !== false,
+			//enabled: Boolean(authContextData.currentGameId),
 			refetchOnWindowFocus: false,
 		}
 	)
+
+	useEffect(() => {
+		if (authContextData) {
+			const gameId = authContextData?.currentGameId as string
+			setCurrentGameId(gameId)
+		} else {
+			setCurrentGameId("")
+		}
+	}, [authContextData])
+
+	useEffect(() => {
+		if (currentGame) {
+			const playersToSearch: any = currentGame?.players
+			setPlayerObject(playersToSearch?.find((player: any) => player.user._id === authContextData.id))
+		} else {
+			setPlayerObject({})
+		}
+	}, [authContextData.id, currentGame])
 
 	// useEffect(() => {
 	// 	const player =
@@ -87,6 +97,7 @@ export function GameStateContextProvider({ children }: { children: JSX.Element }
 		currentGameId,
 		currentGame,
 		startNewGame,
+		playerObject,
 		// hoverCoordinates,
 		// setHoverCoordinates,
 		// hoverCookieColor,

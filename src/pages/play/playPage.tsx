@@ -14,21 +14,21 @@ export default function PlayPage(props: any) {
 
 	let content: JSX.Element = <></>
 
-	const gameStateContextData = useGameStateContext()
+	const { gameInProgress, currentGameId, currentGame, startNewGame } = useGameStateContext()
 
-	console.log("gameStateContext: ", gameStateContextData)
+	//console.log("gameStateContext: ", gameStateContextData)
 
-	const [currentGameId, setCurrentGameId] = useState<string>("")
+	// const [currentGameId, setCurrentGameId] = useState<string>("")
 	// const [currentGame, setCurrentGame] = useState<Array<Partial<IGame>>>([{}])
 
-	useEffect(() => {
-		const gameId = gameStateContextData?.currentGameId as string
-		if (gameId) {
-			setCurrentGameId(gameId)
-		} else {
-			setCurrentGameId("")
-		}
-	}, [gameStateContextData.currentGameId])
+	// useEffect(() => {
+	// 	const gameId = gameStateContextData?.currentGameId as string
+	// 	if (gameId) {
+	// 		setCurrentGameId(gameId)
+	// 	} else {
+	// 		setCurrentGameId("")
+	// 	}
+	// }, [gameStateContextData.currentGameId])
 
 	// useEffect(() => {
 	// 	const game = gameStateContextData?.currentGame as Array<Partial<IGame>>
@@ -38,17 +38,19 @@ export default function PlayPage(props: any) {
 	// 		setCurrentGame([{}])
 	// 	}
 	// }, [gameStateContextData?.currentGame])
+	console.log("LOOKBRO-->: ", currentGame.board)
 
-	if (currentGameId !== "") {
+	//if (currentGameId !== "") {
+	if (currentGameId && currentGame) {
 		content = (
 			<>
 				<BoardHoverContextProvider>
 					<div className="grid grid-cols-12 h-screen">
 						<div className="col-span-6 h-full bg-emerald-600 px-8 pt-2 pb-8">
-							{currentGameId && gameStateContextData.currentGame[0].board ? (
+							{currentGameId && currentGame?.board ? (
 								<RenderBoard
 									gameId={currentGameId}
-									boardToRender={gameStateContextData.currentGame[0].board}
+									boardToRender={currentGame.board}
 								/>
 							) : (
 								<></>
