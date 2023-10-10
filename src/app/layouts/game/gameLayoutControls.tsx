@@ -1,6 +1,4 @@
-import { useQueryClient } from "@tanstack/react-query"
 import { useBoardHoverContext } from "../../../components/game/contexts/boardHoverContext"
-import IUser from "../../../models/interfaces/user"
 import { Button } from "../../../components/shadcn/ui/button"
 import { useSocketContext } from "../../context/socketContext"
 import { useGameStateContext } from "../../../components/game/contexts/gameStateContext"
