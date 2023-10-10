@@ -8,20 +8,25 @@ import { SocketContextProvider } from "./app/context/socketContext.tsx"
 import { GameStateContextProvider } from "./components/game/contexts/gameStateContext.tsx"
 import { Toaster } from "./components/shadcn/ui/toaster.tsx"
 import { ToasterContextProvider } from "./app/context/toasterContext.tsx"
+import { AuthContextProvider } from "./app/auth/authContext.tsx"
 const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<QueryClientProvider client={queryClient}>
-		<ToasterContextProvider>
+		<AuthContextProvider>
 			<>
-				<GameStateContextProvider>
-					<SocketContextProvider>
-						<App />
-					</SocketContextProvider>
-				</GameStateContextProvider>
-				<Toaster />
+				<ToasterContextProvider>
+					<>
+						<GameStateContextProvider>
+							<SocketContextProvider>
+								<App />
+							</SocketContextProvider>
+						</GameStateContextProvider>
+						<Toaster />
+					</>
+				</ToasterContextProvider>
+				<ReactQueryDevtools />
 			</>
-		</ToasterContextProvider>
-		<ReactQueryDevtools />
+		</AuthContextProvider>
 	</QueryClientProvider>
 )

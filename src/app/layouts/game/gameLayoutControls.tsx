@@ -4,79 +4,76 @@ import IUser from "../../../models/interfaces/user"
 import { useEffect, useState } from "react"
 import { Button } from "../../../components/shadcn/ui/button"
 import { useSocketContext } from "../../context/socketContext"
-import StateMachineComponent from "../../../components/game/tests/turnStateTest"
-import StateMachineComponent2 from "../../../components/game/tests/turnStateTest2"
-import shuffleTokens from "../../../components/game/utils/shuffleTokens"
-import DisplayMyLetters from "../../../components/game/controls/displayMyLetters"
-
-const qtyMap = new Map([
-	["A", 8],
-	["B", 2],
-	["C", 2],
-	["D", 4],
-	["E", 12],
-	["F", 2],
-	["G", 3],
-	["H", 2],
-	["I", 9],
-	["J", 1],
-	["K", 1],
-	["L", 4],
-	["M", 2],
-	["N", 6],
-	["O", 8],
-	["P", 2],
-	["Q", 1],
-	["R", 6],
-	["S", 4],
-	["T", 6],
-	["U", 2],
-	["V", 2],
-	["W", 2],
-	["X", 1],
-	["Y", 2],
-	["Z", 1],
-])
+import { useGameStateContext } from "../../../components/game/contexts/gameStateContext"
+import { useAuthContext } from "../../auth/authContext"
+import IGame from "../../../models/interfaces/game/board/game"
 
 export default function GameLayoutControls(props: any) {
 	// const {children, pageTitle} = props
-	const socket = useSocketContext()
-	//let content: JSX.Element = <></>
-	const queryClient = useQueryClient()
-	// const queryClient = useQueryClient()
-	const gameInProgressQueryData: any = queryClient.getQueryData(["get-game-in-progress"])
-	const authMeQueryData: IUser | undefined = queryClient.getQueryData(["auth-me"])
-
-	const { hoverCoordinates, hoverCookieColor, hoverCookie } = useBoardHoverContext()
-
-	console.log(gameInProgressQueryData)
 
 	const [gameId, setGameId] = useState<any>({})
-	const [me, setMe] = useState<any>({})
+	const [game, setGame] = useState<Partial<IGame>[]>([{}])
+	const [me, setMe] = useState<Partial<IUser>>({})
+	const [playerObj, setPlayerObj] = useState<any>({})
 
-	console.log("ME: ", me)
+	const socket = useSocketContext()
+	const gameStateContextData = useGameStateContext()
+	const authContextData = useAuthContext()
+	const { hoverCoordinates, hoverCookieColor, hoverCookie } = useBoardHoverContext()
+
+	// const queryClient = useQueryClient()
+	// const gameInProgressQueryData: any = queryClient.getQueryData(["get-game-in-progress"])
+	// const authMeQueryData: IUser | undefined = queryClient.getQueryData(["auth-me"])
+
+	//console.log(gameStateContextData)
+	//console.log("ME: ", me)
 
 	useEffect(() => {
-		console.log("hello")
-		const myId = authMeQueryData?.id
-		setGameId(gameInProgressQueryData._id)
-		setMe(gameInProgressQueryData.players.find((player: any) => player.user._id === myId))
-	}, [authMeQueryData, gameInProgressQueryData])
+		if (authContextData) {
+			const meToSet = authContextData as Partial<IUser>
+			setMe(meToSet)
+		} else {
+			setMe({})
+		}
+	}, [authContextData])
+
+	useEffect(() => {
+		if (gameStateContextData && me) {
+			const gameIdToSet = gameStateContextData?.currentGameId as string
+			setGameId(gameIdToSet)
+			const gameToSet = gameStateContextData?.currentGame as Partial<IGame>[]
+			setGame(gameToSet)
+		} else {
+			setGameId("")
+			setGame([{}])
+		}
+	}, [gameStateContextData, me])
+
+	useEffect(() => {
+		if (game && me) {
+			console.log("inside if")
+			const playersToSearch = game[0]?.players
+			console.log({ playersToSearch })
+			setPlayerObj(
+				playersToSearch?.find((player: any) => {
+					console.log("PLAYERRRR", player)
+					return player.user._id === me.id
+				})
+			)
+		} else {
+			setPlayerObj({})
+		}
+	}, [game, me])
 
 	const handlePassTurn = (id: any) => {
 		socket.emit("passTurn", { gameId, playerId: id })
 	}
 
-	// if (gameInProgressQueryData.isLoading || gameInProgressQueryData.isFetching) {
-	// 	content = <p>Loading...</p>
-	// }
+	// console.log({ me })
+	// console.log({ gameId })
+	// console.log({ game })
+	// console.log({ playerObj })
 
-	// if (gameInProgressQueryData.isError) {
-	// 	content = <p className="errmsg">whatev</p>
-	// }
-
-	// if (gameInProgressQueryData.isSuccess) {
-	// 	content = (
 	return (
 		<>
 			{/* <!-- Logo Section --> */}
@@ -107,13 +104,13 @@ export default function GameLayoutControls(props: any) {
 				<br />
 				Current Cookie: <span className="text-emerald-500 text-5xl">{hoverCookie}</span>
 				<br />
-				{me?.turn ? (
+				{playerObj?.turn ? (
 					<>
 						YOUR TURN
 						<br />
 						<Button
 							onClick={() => {
-								handlePassTurn(me._id)
+								handlePassTurn(playerObj._id)
 							}}
 						>
 							Pass Turn
@@ -123,8 +120,8 @@ export default function GameLayoutControls(props: any) {
 					<></>
 				)}
 			</h1>
-			<DisplayMyLetters />
-			<StateMachineComponent2 />
+			{/* <DisplayMyLetters />
+			<StateMachineComponent2 /> */}
 		</>
 	)
 }

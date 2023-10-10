@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import RenderCell from "./renderCell"
 import ICell from "../../../models/interfaces/game/board/cell"
-import createNewBoard from "../utils/createNewBoard"
 import { useBoardHoverContext } from "../contexts/boardHoverContext"
 
 // Define the dimensions of your grid

@@ -12,7 +12,9 @@ export default function GameLayout(props: any) {
 					<GameLayoutBoard pageTitle={pageTitle}>{children}</GameLayoutBoard>
 				</div>
 				<div className="col-span-6 h-full grid grid-rows-10 bg-slate-900">
-					<div className="row-start-1 row-end-7 bg-slate-600 p-8">{/* <GameLayoutControls /> */}</div>
+					<div className="row-start-1 row-end-7 bg-slate-600 p-8">
+						<GameLayoutControls />
+					</div>
 					<div className="row-start-7 row-end-11 bg-slate-700 p-8">
 						<GameLayoutChat />
 					</div>

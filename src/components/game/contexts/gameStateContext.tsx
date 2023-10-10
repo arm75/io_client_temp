@@ -1,6 +1,9 @@
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { createContext, useContext, useEffect, useState } from "react"
 import useAxios from "../../../app/api/axios"
+import IUser from "../../../models/interfaces/user"
+import { useAuthContext } from "../../../app/auth/authContext"
+import IGame from "../../../models/interfaces/game/board/game"
 
 // Create the context
 const GameStateContext = createContext<any>(null)
@@ -18,19 +21,47 @@ export function useGameStateContext() {
 // Create the AppProvider component
 export function GameStateContextProvider({ children }: { children: JSX.Element }) {
 	//const [gameInProgress, setGameInProgress] = useState(false)
+	//const queryClient = useQueryClient()
+
 	const api = useAxios()
-	//let content = <></>
-
-	const [currentGameId, setCurrentGameId] = useState<string | null>(null)
-	const gameInProgress = currentGameId !== null
-
-	const [playerObject, setPlayerObject] = useState({})
 
 	let content: JSX.Element = <></>
 
-	const authMeQueryData = useQuery(["auth-me"], async () => await api.get("/auth/me").then((res: any) => res.data), {
-		refetchOnWindowFocus: false,
-	})
+	const authContextData = useAuthContext()
+
+	const [currentGameId, setCurrentGameId] = useState<string>("")
+	const [currentGame, setCurrentGame] = useState<Partial<IGame>>({})
+	//const [playerObject, setPlayerObject] = useState({})
+	const gameInProgress = currentGameId !== null
+
+	useEffect(() => {
+		if (authContextData) {
+			const gameId = authContextData?.currentGameId as string
+			setCurrentGameId(gameId)
+		} else {
+			setCurrentGameId("")
+		}
+	}, [authContextData])
+
+	const getInProgressGameQuery = useQuery(
+		["get-game-in-progress"],
+		async () =>
+			await api
+				.get(`/game/${currentGameId}`)
+				.then((res) => res.data)
+				.then((something) => {
+					//console.log("SOMETHING", something)
+					return something
+				}),
+		{
+			onSuccess: (data) => {
+				console.log("QUERY I AM INTERESTED IN: ", data)
+				setCurrentGame(data)
+			},
+			//enabled: currentGameId !== false,
+			refetchOnWindowFocus: false,
+		}
+	)
 
 	// useEffect(() => {
 	// 	const player =
@@ -39,12 +70,14 @@ export function GameStateContextProvider({ children }: { children: JSX.Element }
 	const startNewGame = (gameId: string) => {
 		//console.log(`Game ID: ${gameId}`)
 		// Define an object to store in localStorage
+		setCurrentGameId(gameId)
+		//queryClient.invalidateQueries(["get-game-in-progress"])
+		getInProgressGameQuery.refetch()
 		const gameStateObjectToSet = { currentGameId: gameId }
 		// Convert the object to a JSON string
 		const jsonString = JSON.stringify(gameStateObjectToSet)
 		// Store the JSON string in localStorage under a specific key
 		localStorage.setItem("gameStateObject", jsonString)
-		//setCurrentGameId(gameId)
 		window.location.href = "/game/play"
 	}
 
@@ -52,6 +85,7 @@ export function GameStateContextProvider({ children }: { children: JSX.Element }
 	const contextValue = {
 		gameInProgress,
 		currentGameId,
+		currentGame,
 		startNewGame,
 		// hoverCoordinates,
 		// setHoverCoordinates,
@@ -61,20 +95,21 @@ export function GameStateContextProvider({ children }: { children: JSX.Element }
 		// setHoverCookie,
 	}
 
-	if (authMeQueryData.isLoading || authMeQueryData.isFetching) {
+	if (getInProgressGameQuery.isLoading || getInProgressGameQuery.isFetching) {
 		content = <></>
 	}
 
-	if (authMeQueryData.isError) {
+	if (getInProgressGameQuery.isError) {
 		content = <></>
 	}
 
-	if (authMeQueryData.isSuccess) {
+	if (getInProgressGameQuery.isSuccess) {
 		content = (
 			<>
 				<GameStateContext.Provider value={contextValue}>{children}</GameStateContext.Provider>
 			</>
 		)
 	}
+
 	return content
 }

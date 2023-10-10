@@ -1,18 +1,24 @@
-import { useQueryClient } from '@tanstack/react-query'
-import { Navigate, useLocation } from 'react-router-dom'
-import IUser from '../../models/interfaces/user'
+import { Navigate, useLocation } from "react-router-dom"
+import { useAuthContext } from "./authContext"
 
-export default function AuthGuard({ children }: { children: JSX.Element }) {       
+export default function AuthGuard({ children }: { children: JSX.Element }) {
+	const location = useLocation()
 
-    const location = useLocation()
+	let content: JSX.Element = <></>
 
-    const queryClient = useQueryClient()
+	const authContextData = useAuthContext()
 
-    const authMeQueryData:IUser|undefined = queryClient.getQueryData(["auth-me"])
-  
-    if (!authMeQueryData) {
-        return <Navigate to="/login" state={{ from: location }} replace />
-    } else {
-        return children
-    }
+	if (!authContextData) {
+		content = (
+			<Navigate
+				to="/login"
+				state={{ from: location }}
+				replace
+			/>
+		)
+	} else {
+		content = children
+	}
+
+	return content
 }
