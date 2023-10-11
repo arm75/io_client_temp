@@ -74,6 +74,10 @@ export default function GameLayoutControls(props: any) {
 		socket.emit("playTurn", { currentGameId, playerId, cell, row, letter })
 	}
 
+	const handleEndGame = () => {
+		socket.emit("endGame", currentGameId)
+	}
+
 	// console.log({ gameInProgress })
 	// console.log({ currentGameId })
 	// console.log({ currentGame })
@@ -104,17 +108,27 @@ export default function GameLayoutControls(props: any) {
 				<h1 className="text-slate-500 text-xl">
 					{playerObject?.turn ? (
 						<>
-							<h1 className="text-3xl text-yellow-500">YOUR TURN</h1>
+							<h1 className="text-3xl text-green-500">YOUR TURN</h1>
 							<br />
 							<Button
+								className="bg-emerald-600 hover:bg-emerald-500 text-emerald-300 hover:text-white m-2"
 								onClick={() => {
 									handlePassTurn(playerObject?._id)
 								}}
 							>
 								Pass Turn
 							</Button>
+							<Button
+								className="bg-emerald-600 hover:bg-emerald-500 text-emerald-300 hover:text-white m-2"
+								onClick={() => {
+									handleEndGame()
+								}}
+							>
+								END GAME
+							</Button>
 							<br />
 							<Button
+								className="bg-blue-600 hover:bg-blue-500 text-blue-300 hover:text-white m-2"
 								onClick={() => {
 									handlePlayTurn(playerObject?._id, 1, 1, "F")
 								}}
@@ -122,14 +136,15 @@ export default function GameLayoutControls(props: any) {
 								Play (1,1,F)
 							</Button>
 							<Button
+								className="bg-blue-600 hover:bg-blue-500 text-blue-300 hover:text-white m-2"
 								onClick={() => {
 									handlePlayTurn(playerObject?._id, 1, 1, "")
 								}}
 							>
 								Remove (1,1,F)
 							</Button>
-							<br />
 							<Button
+								className="bg-amber-600 hover:bg-amber-500 text-amber-300 hover:text-white m-2"
 								onClick={() => {
 									handlePlayTurn(playerObject?._id, 2, 1, "V")
 								}}
@@ -137,6 +152,7 @@ export default function GameLayoutControls(props: any) {
 								Play (2,1,V)
 							</Button>
 							<Button
+								className="bg-amber-600 hover:bg-amber-500 text-amber-300 hover:text-white m-2"
 								onClick={() => {
 									handlePlayTurn(playerObject?._id, 2, 1, "")
 								}}
@@ -148,7 +164,7 @@ export default function GameLayoutControls(props: any) {
 						</>
 					) : (
 						<>
-							<h1 className="text-3xl text-yellow-800">NOT YOUR TURN</h1>
+							<h1 className="text-3xl text-red-600">NOT YOUR TURN</h1>
 							<br />
 						</>
 					)}
@@ -162,7 +178,7 @@ export default function GameLayoutControls(props: any) {
 					<></>
 				)}
 				Current Cell:{" "}
-				<span className="text-emerald-500 text-xl">
+				<span className="text-emerald-500 text-md">
 					{hoverCoordinates.row}, {hoverCoordinates.col}
 				</span>
 				<br />

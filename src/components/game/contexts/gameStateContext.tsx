@@ -78,8 +78,6 @@ export function GameStateContextProvider({ children }: { children: JSX.Element }
 	//  },[])
 
 	const startNewGame = (gameId: string) => {
-		//console.log(`Game ID: ${gameId}`)
-		// Define an object to store in localStorage
 		setCurrentGameId(gameId)
 		//queryClient.invalidateQueries(["get-game-in-progress"])
 		getInProgressGameQuery.refetch()
@@ -98,12 +96,6 @@ export function GameStateContextProvider({ children }: { children: JSX.Element }
 		currentGame,
 		startNewGame,
 		playerObject,
-		// hoverCoordinates,
-		// setHoverCoordinates,
-		// hoverCookieColor,
-		// setHoverCookieColor,
-		// hoverCookie,
-		// setHoverCookie,
 	}
 
 	if (getInProgressGameQuery.isLoading || getInProgressGameQuery.isFetching) {

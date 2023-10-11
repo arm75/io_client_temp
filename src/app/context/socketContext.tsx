@@ -13,15 +13,12 @@ export function useSocketContext() {
 export function SocketContextProvider({ children }: { children: JSX.Element }) {
 	const initialSocket = io(SOCKET_SERVER, {
 		withCredentials: true,
-	}) // Initialize the socket
+	})
+
 	const [socket, setSocket] = useState(initialSocket)
 
 	const queryClient = useQueryClient()
 	const { startNewGame } = useGameStateContext()
-
-	// useEffect(() => {
-	// 	setSocket(socket)
-	// }, [socket])
 
 	useEffect(() => {
 		socket.on("startNewGame", (data) => {
@@ -37,13 +34,18 @@ export function SocketContextProvider({ children }: { children: JSX.Element }) {
 		socket.on("turnChanged", (data) => {
 			console.log("turnChanged event:", data)
 			queryClient.invalidateQueries(["get-game-in-progress"])
-			queryClient.refetchQueries(["get-game-in-progress"])
+			//queryClient.refetchQueries(["get-game-in-progress"])
 		})
 
 		socket.on("turnPlayed", (data) => {
 			console.log("turnPlayed event:", data)
 			queryClient.invalidateQueries(["get-game-in-progress"])
-			queryClient.refetchQueries(["get-game-in-progress"])
+			//queryClient.refetchQueries(["get-game-in-progress"])
+		})
+
+		socket.on("gameEnded", (data) => {
+			console.log("Received endGame event:", data)
+			window.location.href = "/"
 		})
 
 		return () => {

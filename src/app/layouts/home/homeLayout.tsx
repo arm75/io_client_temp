@@ -3,8 +3,8 @@ import HomeLayoutSidebar from "./homeLayoutSidebar"
 
 export default function HomeLayout(props: any) {
 	const { children } = props
-	console.log(import.meta.env.VITE_APP_API_KEY)
-	console.log(import.meta.env.VITE_APP_BASE_URL)
+	//console.log(import.meta.env.VITE_APP_API_KEY)
+	//console.log(import.meta.env.VITE_APP_BASE_URL)
 	return (
 		<>
 			<div className="min-h-screen grid grid-cols-12">

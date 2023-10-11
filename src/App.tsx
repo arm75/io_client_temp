@@ -39,7 +39,6 @@ export default function App() {
 						}
 					/>
 					<Route path="/game">
-						{/* Nested route for "/game/play" */}
 						<Route
 							path="play"
 							element={

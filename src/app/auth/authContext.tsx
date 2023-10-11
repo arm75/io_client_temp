@@ -10,11 +10,13 @@ export function useAuthContext() {
 }
 
 export function AuthContextProvider({ children }: { children: JSX.Element }) {
+	let content: JSX.Element = <></>
+
 	const [me, setMe] = useState({})
 
 	const api = useAxios()
 
-	useQuery(["auth-me"], async () => await api.get("/auth/me").then((res: any) => res.data), {
+	const authQueryData = useQuery(["auth-me"], async () => await api.get("/auth/me").then((res: any) => res.data), {
 		onSettled: (data) => {
 			console.log("Auth Context is providing: ", data)
 			setMe(data)
@@ -22,5 +24,17 @@ export function AuthContextProvider({ children }: { children: JSX.Element }) {
 		refetchOnWindowFocus: false,
 	})
 
-	return <AuthContext.Provider value={me}>{children}</AuthContext.Provider>
+	if (authQueryData.isLoading || authQueryData.isFetching) {
+		content = <></>
+	}
+
+	if (authQueryData.isError) {
+		content = <></>
+	}
+
+	if (authQueryData.isSuccess) {
+		content = <AuthContext.Provider value={me}>{children}</AuthContext.Provider>
+	}
+
+	return content
 }
