@@ -47,7 +47,7 @@ export default function HomeLayoutHeader(props: any) {
 						</a>*/}
 						<button
 							onClick={logout}
-							className="mx-1 py-1 px-3 text-slate-600 font-light hover:py-1 hover:px-3 hover:rounded-full hover:bg-emerald-600 hover:text-white"
+							className="mx-1 py-1 px-3 text-slate-600 font-light hover:py-1 hover:px-3 hover:rounded-full hover:bg-emerald-500 hover:text-white"
 						>
 							Logout
 						</button>
