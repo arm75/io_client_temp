@@ -37,14 +37,14 @@ export default function HomeLayoutSidebar(props: any) {
 				</a>
 			</div>
 
-			<div>
+			{/* <div>
 				<a
 					className="text-emerald-600 text-2xl hover:text-white"
 					href="/game/play"
 				>
 					Play
 				</a>
-			</div>
+			</div> */}
 			<div>
 				<a
 					className="text-emerald-600 text-2xl hover:text-white"
