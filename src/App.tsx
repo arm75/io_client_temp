@@ -6,25 +6,10 @@ import UsersPage from "./pages/users/usersPage"
 import PlayPage from "./pages/play/playPage"
 import GamesPage from "./pages/games/gamesPage"
 
+const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
+
 export default function App() {
-	// let content: JSX.Element = <></>
-
-	// const api = useAxios(SOCKET_SERVER)
-
-	// const authMeQueryData = useQuery(["auth-me"], async () => await api.get("auth/me").then((res: any) => res.data), {
-	// 	refetchOnWindowFocus: false,
-	// })
-
-	// if (authMeQueryData.isLoading || authMeQueryData.isFetching) {
-	// 	content = <p className="">Loading...</p>
-	// }
-
-	// if (authMeQueryData.isError) {
-	// 	content = <p className="errmsg">whatev</p>
-	// }
-
-	// if (authMeQueryData.isSuccess) {
-	// 	content = (
+	if (RENDER_LOG === "true") console.log("<App> rendered...")
 
 	return (
 		<>

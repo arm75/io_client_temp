@@ -1,5 +1,7 @@
 import { createContext, useContext, useState } from "react"
 
+const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
+
 // Create the context
 const BoardHoverContext = createContext<any>(null)
 
@@ -14,13 +16,8 @@ export function useBoardHoverContext() {
 
 // Create the AppProvider component
 export function BoardHoverContextProvider({ children }: { children: JSX.Element }) {
-	const [hoverCoordinates, setHoverCoordinates] = useState<any>({
-		// Initialize your context state here
-		// For example:
-		row: 0,
-		col: 0,
-	})
-
+	if (RENDER_LOG === "true") console.log("<BoardHoverContextProvider> rendered...")
+	const [hoverCoordinates, setHoverCoordinates] = useState<any>({ row: 0, col: 0 })
 	const [hoverCookieColor, setHoverCookieColor] = useState("")
 	const [hoverCookie, setHoverCookie] = useState("")
 

@@ -7,9 +7,12 @@ import UpdateGameDialog from "./dialogs/updateGameDialog"
 import CancelGameDialog from "./dialogs/cancelGameDialog"
 import DeleteGameDialog from "./dialogs/deleteGameDialog"
 import JoinGameDialog from "./dialogs/joinGameDialog"
-import { useSocketContext } from "../../app/context/socketContext"
+
+const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
 
 export default function GamesPage() {
+	if (RENDER_LOG === "true") console.log("<GamesPage> rendered...")
+
 	//const socket = useSocketContext()
 
 	// CREATE Game modal state

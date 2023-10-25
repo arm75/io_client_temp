@@ -5,8 +5,10 @@ import { Input } from "../../../components/shadcn/ui/input"
 import { Form, FormControl, FormField, FormItem } from "../../../components/shadcn/ui/form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import IUser from "../../../models/interfaces/user"
-import { useSocketContext } from "../../../app/context/socketContext"
+//import { useSocketContext } from "../../../app/context/socketContext"
 import useAxios from "../../../app/api/axios"
+import { useAtomValue } from "jotai"
+import { socketAtom } from "../../play/atoms/socketAtoms"
 
 export default function JoinGameDialog(props: any) {
 	const { isOpen, onClose, title, description, joinGameId } = props
@@ -14,7 +16,8 @@ export default function JoinGameDialog(props: any) {
 	const api = useAxios()
 
 	//const [roleField, setRoleField] = useState("")
-	const socket = useSocketContext()
+	//const socket2 = useSocketContext()
+	const socket = useAtomValue(socketAtom)
 	// get query client (react-query)
 	const queryClient = useQueryClient()
 

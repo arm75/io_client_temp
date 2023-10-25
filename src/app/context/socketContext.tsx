@@ -14,6 +14,7 @@ export function SocketContextProvider({ children }: { children: JSX.Element }) {
 	const initialSocket = io(SOCKET_SERVER, {
 		withCredentials: true,
 	})
+	console.log("socketContextRender")
 
 	const [socket, setSocket] = useState(initialSocket)
 

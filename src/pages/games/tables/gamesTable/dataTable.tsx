@@ -23,6 +23,8 @@ import React from "react"
 import { PencilIcon, Trash2Icon } from "lucide-react"
 import { useGameStateContext } from "../../../../components/game/contexts/gameStateContext"
 import { useSocketContext } from "../../../../app/context/socketContext"
+import { useAtomValue } from "jotai"
+import { socketAtom } from "../../../play/atoms/socketAtoms"
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
@@ -41,9 +43,9 @@ export function DataTable<TData, TValue>({
 	cancelGameFn,
 	deleteGameFn,
 }: DataTableProps<TData, TValue>) {
-	const { startNewGame } = useGameStateContext()
+	//const { startNewGame } = useGameStateContext()
 
-	const socket = useSocketContext()
+	const socket = useAtomValue(socketAtom)
 
 	const [sorting, setSorting] = React.useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -84,6 +86,7 @@ export function DataTable<TData, TValue>({
 	// }, [messages])
 
 	const handleStartGame = (id: any) => {
+		console.log("StartGame Clicked with ID: ", id)
 		socket.emit("startGame", id)
 	}
 

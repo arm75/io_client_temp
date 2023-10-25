@@ -1,4 +1,4 @@
-import { useBoardHoverContext } from "../contexts/boardHoverContext"
+import { hoverCookieAtom, hoverCookieColorAtom, hoverCoordinatesAtom } from "../../../pages/play/atoms/hoverAtoms"
 import TokenBlue1 from "../tokens/bonusCookies/blue/tokenBlue1"
 import TokenBlue10 from "../tokens/bonusCookies/blue/tokenBlue10"
 import TokenBlue3 from "../tokens/bonusCookies/blue/tokenBlue3"
@@ -43,19 +43,19 @@ import LetterTileW from "../tokens/letterTiles/html/LetterTileW"
 import LetterTileX from "../tokens/letterTiles/html/LetterTileX"
 import LetterTileY from "../tokens/letterTiles/html/LetterTileY"
 import LetterTileZ from "../tokens/letterTiles/html/LetterTileZ"
+import { useSetAtom } from "jotai"
+
+const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
 
 export default function RenderCell(props: any) {
+	if (RENDER_LOG === "true") console.log("<RenderCell> rendered...")
 	const { cell } = props
 
-	if (cell.col === 1 && cell.row === 1) {
-		console.log("Cell I'm Looking at: ", cell)
-	}
-
-	const { setHoverCoordinates, setHoverCookieColor, setHoverCookie } = useBoardHoverContext()
+	const setHoverCoordinates = useSetAtom(hoverCoordinatesAtom)
+	const setHoverCookieColor = useSetAtom(hoverCookieColorAtom)
+	const setHoverCookie = useSetAtom(hoverCookieAtom)
 
 	const handleMouseOver = (currentRow: number, currentCol: number, currentCookieColor: string, currentCookie: string) => {
-		//console.log("handleMouseOver\n")
-		//console.log("row: ", currentRow, ", col:", currentCol, "\n")
 		setHoverCoordinates({ row: currentRow, col: currentCol })
 		setHoverCookieColor(currentCookieColor)
 		setHoverCookie(currentCookie)
@@ -232,9 +232,6 @@ export default function RenderCell(props: any) {
 		return returnElement
 	}
 
-	//console.log(cell)
-	// className="text-slate-700 bg-slate-300 hover:bg-yellow-300 flex justify-center items-center w-[46px] h-[46px]"
-
 	return (
 		<>
 			<div
@@ -242,14 +239,9 @@ export default function RenderCell(props: any) {
 				onMouseOver={() => handleMouseOver(cell.row, cell.col, cell.bonusCookieColor, cell.bonusCookie)}
 			>
 				<div className="select-none">
-					{/* {cell.row}, {cell.col} */}
-					{/* {cell.color}, {cell.cookie} */}
-					{/* {cell.bonusCookieColor} */}
 					{cell?.letterTile ? letterTileToRender(cell?.letterTile) : bonusCookieToRender(cell.bonusCookieColor, cell.bonusCookie)}
 				</div>
 			</div>
 		</>
 	)
-
-	//return <RandomToken />
 }

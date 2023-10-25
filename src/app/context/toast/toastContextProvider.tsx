@@ -1,14 +1,10 @@
-import { createContext, useContext } from "react"
-import { useToast } from "../../components/shadcn/ui/use-toast"
 import { ToastAction } from "@radix-ui/react-toast"
+import { useToast } from "../../../components/shadcn/ui/use-toast"
+import toastContext from "./toastContext"
 
-const ToasterContext = createContext<any>({})
+export function ToastContextProvider({ children }: { children: JSX.Element }) {
+	const ToastContext = toastContext()
 
-export function useToasterContext() {
-	return useContext(ToasterContext)
-}
-
-export function ToasterContextProvider({ children }: { children: JSX.Element }) {
 	const { toast } = useToast()
 
 	const showToast = (variant: string, message = "Success!", title?: string) => {
@@ -57,5 +53,5 @@ export function ToasterContextProvider({ children }: { children: JSX.Element }) 
 		showToast,
 	}
 
-	return <ToasterContext.Provider value={contextValue}>{children}</ToasterContext.Provider>
+	return <ToastContext.Provider value={contextValue}>{children}</ToastContext.Provider>
 }

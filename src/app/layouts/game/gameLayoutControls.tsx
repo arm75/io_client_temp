@@ -1,90 +1,55 @@
-import { useBoardHoverContext } from "../../../components/game/contexts/boardHoverContext"
 import { Button } from "../../../components/shadcn/ui/button"
-import { useSocketContext } from "../../context/socketContext"
-import { useGameStateContext } from "../../../components/game/contexts/gameStateContext"
-import { useAuthContext } from "../../auth/authContext"
 import DisplayMyLetters from "../../../components/game/controls/displayMyLetters"
+import { useEffect, useState } from "react"
+import { useAtomValue } from "jotai"
+import { hoverCoordinatesAtom, hoverCookieColorAtom, hoverCookieAtom } from "../../../pages/play/atoms/hoverAtoms"
+import { socketAtom } from "../../../pages/play/atoms/socketAtoms"
+import { useAuthContext } from "../../auth/authContext"
+import { useQueryClient } from "@tanstack/react-query"
+import IUser from "../../../models/interfaces/user"
 
 export default function GameLayoutControls(props: any) {
-	// const {children, pageTitle} = props
-
 	let content: JSX.Element = <></>
 
-	// const [gameId, setGameId] = useState<any>({})
-	// const [game, setGame] = useState<Partial<IGame>[]>([{}])
-	// const [me, setMe] = useState<Partial<IUser>>({})
-	// const [playerObj, setPlayerObj] = useState<any>({})
+	const queryClient = useQueryClient()
 
-	const socket = useSocketContext()
-	const { gameInProgress, currentGameId, currentGame, startNewGame, playerObject } = useGameStateContext()
-	const authContextData = useAuthContext()
-	const { hoverCoordinates, hoverCookieColor, hoverCookie } = useBoardHoverContext()
+	const authMeQueryData: IUser | undefined = queryClient.getQueryData(["auth-me"])
 
-	// const queryClient = useQueryClient()
-	// const gameInProgressQueryData: any = queryClient.getQueryData(["get-game-in-progress"])
-	// const authMeQueryData: IUser | undefined = queryClient.getQueryData(["auth-me"])
+	//const me = useAuthContext()
 
-	//console.log(gameStateContextData)
-	//console.log("ME: ", me)
+	const currentGame: any = queryClient.getQueryData(["get-game-in-progress"])
 
-	// useEffect(() => {
-	// 	if (authContextData) {
-	// 		const meToSet = authContextData as Partial<IUser>
-	// 		setMe(meToSet)
-	// 	} else {
-	// 		setMe({})
-	// 	}
-	// }, [authContextData])
+	const socket = useAtomValue(socketAtom)
+	const hoverCoordinates = useAtomValue(hoverCoordinatesAtom)
+	const hoverCookieColor = useAtomValue(hoverCookieColorAtom)
+	const hoverCookie = useAtomValue(hoverCookieAtom)
 
-	// useEffect(() => {
-	// 	if (gameStateContextData && me) {
-	// 		const gameIdToSet = gameStateContextData?.currentGameId as string
-	// 		setGameId(gameIdToSet)
-	// 		const gameToSet = gameStateContextData?.currentGame as Partial<IGame>[]
-	// 		setGame(gameToSet)
-	// 	} else {
-	// 		setGameId("")
-	// 		setGame([{}])
-	// 	}
-	// }, [gameStateContextData, me])
+	//const [currentGameId, setCurrentGameId] = useState(authMeQueryData?.currentGameId)
+	//const [currentGame, setCurrentGame] = useState(true)
+	const [playerObject, setPlayerObject] = useState<any>({})
 
-	// useEffect(() => {
-	// 	if (game && me) {
-	// 		//console.log("inside if")
-	// 		const playersToSearch = game[0]?.players
-	// 		//console.log({ playersToSearch })
-	// 		setPlayerObj(
-	// 			playersToSearch?.find((player: any) => {
-	// 				//console.log("PLAYERRRR", player)
-	// 				return player.user._id === me.id
-	// 			})
-	// 		)
-	// 	} else {
-	// 		setPlayerObj({})
-	// 	}
-	// }, [game, me])
+	useEffect(() => {
+		if (currentGame) {
+			const playersToSearch: any = currentGame?.players
+			setPlayerObject(playersToSearch?.find((player: any) => player.user._id === authMeQueryData?.id))
+		} else {
+			setPlayerObject({})
+		}
+	}, [authMeQueryData?.id, currentGame])
 
-	const handlePassTurn = (playerId: any) => {
-		//console.log({ currentGameId })
-		//console.log({})
+	const handlePassTurn = (currentGameId: any, playerId: any) => {
 		socket.emit("passTurn", { currentGameId, playerId })
 	}
 
-	const handlePlayTurn = (playerId: any, cell: number, row: number, letter: string) => {
+	const handlePlayTurn = (currentGameId: any, playerId: any, cell: number, row: number, letter: string) => {
 		socket.emit("playTurn", { currentGameId, playerId, cell, row, letter })
 	}
 
-	const handleEndGame = () => {
+	const handleEndGame = (currentGameId: any) => {
 		socket.emit("endGame", currentGameId)
 	}
 
-	// console.log({ gameInProgress })
-	// console.log({ currentGameId })
-	// console.log({ currentGame })
-	// console.log({ startNewGame })
-	// console.log({ playerObject })
-
-	if (currentGameId && currentGame) {
+	if (authMeQueryData?.currentGameId && currentGame) {
 		content = (
 			<>
 				{/* <!-- Logo Section --> */}
@@ -105,78 +70,76 @@ export default function GameLayoutControls(props: any) {
 				{/* <!-- "NAVIGATION" Label --> */}
 				{/* <div className="text-gray-500 self-center uppercase">Navigation</div> */}
 				<hr className="text-emerald-900 my-10"></hr>
-				<h1 className="text-slate-500 text-xl">
-					{playerObject?.turn ? (
-						<>
-							<h1 className="text-3xl text-green-500">YOUR TURN</h1>
-							<br />
-							<Button
-								className="bg-emerald-600 hover:bg-emerald-500 text-emerald-300 hover:text-white m-2"
-								onClick={() => {
-									handlePassTurn(playerObject?._id)
-								}}
-							>
-								Pass Turn
-							</Button>
-							<Button
-								className="bg-emerald-600 hover:bg-emerald-500 text-emerald-300 hover:text-white m-2"
-								onClick={() => {
-									handleEndGame()
-								}}
-							>
-								END GAME
-							</Button>
-							<br />
-							<Button
-								className="bg-blue-600 hover:bg-blue-500 text-blue-300 hover:text-white m-2"
-								onClick={() => {
-									handlePlayTurn(playerObject?._id, 1, 1, "F")
-								}}
-							>
-								Play (1,1,F)
-							</Button>
-							<Button
-								className="bg-blue-600 hover:bg-blue-500 text-blue-300 hover:text-white m-2"
-								onClick={() => {
-									handlePlayTurn(playerObject?._id, 1, 1, "")
-								}}
-							>
-								Remove (1,1,F)
-							</Button>
-							<Button
-								className="bg-amber-600 hover:bg-amber-500 text-amber-300 hover:text-white m-2"
-								onClick={() => {
-									handlePlayTurn(playerObject?._id, 2, 1, "V")
-								}}
-							>
-								Play (2,1,V)
-							</Button>
-							<Button
-								className="bg-amber-600 hover:bg-amber-500 text-amber-300 hover:text-white m-2"
-								onClick={() => {
-									handlePlayTurn(playerObject?._id, 2, 1, "")
-								}}
-							>
-								Remove (2,1,V)
-							</Button>
-							<br />
-							<br />
-						</>
-					) : (
-						<>
-							<h1 className="text-3xl text-red-600">NOT YOUR TURN</h1>
-							<br />
-						</>
-					)}
-				</h1>
-				{playerObject?.letters ? (
+				{playerObject?.turn ? (
+					<>
+						<h1 className="text-3xl text-green-500">YOUR TURN</h1>
+						<br />
+						<Button
+							className="bg-emerald-600 hover:bg-emerald-500 text-emerald-300 hover:text-white m-2"
+							onClick={() => {
+								handlePassTurn(authMeQueryData?.currentGameId, playerObject?._id)
+							}}
+						>
+							Pass Turn
+						</Button>
+						<Button
+							className="bg-emerald-600 hover:bg-emerald-500 text-emerald-300 hover:text-white m-2"
+							onClick={() => {
+								handleEndGame(authMeQueryData?.currentGameId)
+							}}
+						>
+							END GAME
+						</Button>
+						<br />
+						<Button
+							className="bg-blue-600 hover:bg-blue-500 text-blue-300 hover:text-white m-2"
+							onClick={() => {
+								handlePlayTurn(authMeQueryData?.currentGameId, playerObject?._id, 8, 1, "F")
+							}}
+						>
+							Play (8,1,F)
+						</Button>
+						<Button
+							className="bg-blue-600 hover:bg-blue-500 text-blue-300 hover:text-white m-2"
+							onClick={() => {
+								handlePlayTurn(authMeQueryData?.currentGameId, playerObject?._id, 8, 1, "")
+							}}
+						>
+							Remove (8,1,F)
+						</Button>
+						<Button
+							className="bg-amber-600 hover:bg-amber-500 text-amber-300 hover:text-white m-2"
+							onClick={() => {
+								handlePlayTurn(authMeQueryData?.currentGameId, playerObject?._id, 2, 1, "V")
+							}}
+						>
+							Play (2,1,V)
+						</Button>
+						<Button
+							className="bg-amber-600 hover:bg-amber-500 text-amber-300 hover:text-white m-2"
+							onClick={() => {
+								handlePlayTurn(authMeQueryData?.currentGameId, playerObject?._id, 2, 1, "")
+							}}
+						>
+							Remove (2,1,V)
+						</Button>
+						<br />
+						<br />
+					</>
+				) : (
+					<>
+						<h1 className="text-3xl text-red-600">NOT YOUR TURN</h1>
+						<br />
+					</>
+				)}
+				{/* {playerObject?.letters ? (
 					<>
 						<h6>YOUR LETTERS</h6>
 						<DisplayMyLetters letters={playerObject?.letters} />
 					</>
 				) : (
 					<></>
-				)}
+				)} */}
 				Current Cell:{" "}
 				<span className="text-emerald-500 text-md">
 					{hoverCoordinates.row}, {hoverCoordinates.col}

@@ -1,32 +1,35 @@
 import "./index.css"
-//import { useState, useMemo, createContext } from 'react'
 import ReactDOM from "react-dom/client"
-import App from "./App.tsx"
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
-import { SocketContextProvider } from "./app/context/socketContext.tsx"
-import { GameStateContextProvider } from "./components/game/contexts/gameStateContext.tsx"
-import { Toaster } from "./components/shadcn/ui/toaster.tsx"
-import { ToasterContextProvider } from "./app/context/toasterContext.tsx"
 import { AuthContextProvider } from "./app/auth/authContext.tsx"
+import { SocketContextProvider } from "./app/context/socketContext.tsx"
+import { ToasterContextProvider } from "./app/context/toasterContext.tsx"
+import { GameStateContextProvider } from "./components/game/contexts/gameStateContext.tsx"
+import App from "./App.tsx"
+import { Toaster } from "./components/shadcn/ui/toaster.tsx"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import SocketProvider from "./app/providers/socketProvider.tsx"
+
+const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
 const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<QueryClientProvider client={queryClient}>
 		<AuthContextProvider>
-			<>
-				<ToasterContextProvider>
+			<ToasterContextProvider>
+				{/* <GameStateContextProvider>
+					<SocketContextProvider> */}
+				<SocketProvider>
 					<>
-						<GameStateContextProvider>
-							<SocketContextProvider>
-								<App />
-							</SocketContextProvider>
-						</GameStateContextProvider>
+						{RENDER_LOG === "true" ? console.log("<Main> rendered...") : null}
+						<App />
 						<Toaster />
+						<ReactQueryDevtools />
 					</>
-				</ToasterContextProvider>
-				<ReactQueryDevtools />
-			</>
+				</SocketProvider>
+				{/* </SocketContextProvider>
+				</GameStateContextProvider> */}
+			</ToasterContextProvider>
 		</AuthContextProvider>
 	</QueryClientProvider>
 )

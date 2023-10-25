@@ -1,7 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { createContext, useContext, useEffect, useState } from "react"
 import useAxios from "../../../app/api/axios"
-import IUser from "../../../models/interfaces/user"
 import { useAuthContext } from "../../../app/auth/authContext"
 import IGame from "../../../models/interfaces/game/board/game"
 
@@ -20,12 +19,9 @@ export function useGameStateContext() {
 
 // Create the AppProvider component
 export function GameStateContextProvider({ children }: { children: JSX.Element }) {
-	//const [gameInProgress, setGameInProgress] = useState(false)
-	//const queryClient = useQueryClient()
+	let content: JSX.Element = <></>
 
 	const api = useAxios()
-
-	let content: JSX.Element = <></>
 
 	const authContextData = useAuthContext()
 

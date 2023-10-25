@@ -6,7 +6,11 @@ import HomeLayout from "../../app/layouts/home/homeLayout"
 import UpdateUserDialog from "./dialogs/updateUserDialog"
 import DeleteUserDialog from "./dialogs/deleteUserDialog"
 
+const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
+
 export default function UsersPage() {
+	if (RENDER_LOG === "true") console.log("<UsersPage> rendered...")
+
 	// CREATE USER modal state
 	const [showCreateModal, setShowCreateModal] = useState(false)
 

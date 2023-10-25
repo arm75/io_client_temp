@@ -36,21 +36,20 @@ export default function HomeLayoutSidebar(props: any) {
 					Games
 				</a>
 			</div>
-
-			{/* <div>
-				<a
-					className="text-emerald-600 text-2xl hover:text-white"
-					href="/game/play"
-				>
-					Play
-				</a>
-			</div> */}
 			<div>
 				<a
 					className="text-emerald-600 text-2xl hover:text-white"
 					href="/admin/users"
 				>
 					Users
+				</a>
+			</div>
+			<div>
+				<a
+					className="text-emerald-600 text-2xl hover:text-white"
+					href="/game/play"
+				>
+					Play
 				</a>
 			</div>
 		</>
