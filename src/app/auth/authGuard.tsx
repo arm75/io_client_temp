@@ -1,17 +1,18 @@
 import { Navigate, useLocation } from "react-router-dom"
-import { useAuthContext } from "./authContext"
+import { useAuthMe } from "./useAuthMe"
 
 const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
 
 export default function AuthGuard({ children }: { children: JSX.Element }) {
 	if (RENDER_LOG === "true") console.log("<AuthGuard> rendered...")
+
+	let content = <>{children}</>
+
 	const location = useLocation()
 
-	let content: JSX.Element = <></>
+	const authMeQueryData = useAuthMe()
 
-	const authContextData = useAuthContext()
-
-	if (!authContextData) {
+	if (authMeQueryData?.data === "") {
 		content = (
 			<Navigate
 				to="/login"
@@ -19,8 +20,6 @@ export default function AuthGuard({ children }: { children: JSX.Element }) {
 				replace
 			/>
 		)
-	} else {
-		content = children
 	}
 
 	return content

@@ -1,31 +1,28 @@
 import RenderBoard from "../../components/game/board/renderBoard"
 import GameLayoutControls from "../../app/layouts/game/gameLayoutControls"
-import { useEffect, useState } from "react"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
-import useAxios from "../../app/api/axios"
-import { useAtomValue } from "jotai"
-import { socketAtom } from "./atoms/socketAtoms"
-import { useAuthContext } from "../../app/auth/authContext"
-//import ChatBox from "../../components/chat/chatBox"
-//import { useGameStateContext } from "../../components/game/contexts/gameStateContext"
-//import { BoardHoverContextProvider } from "../../components/game/contexts/boardHoverContext"
+import SocketEventsStateContainer from "./containers/socketEventsStateContainer"
+import { useCurrentGame } from "./queries/useCurrentGame"
+import { useAuthMe } from "../../app/auth/useAuthMe"
+import { useEffect } from "react"
 
 const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
 
-export default function PlayPage(props: any) {
+export default function PlayPage() {
 	if (RENDER_LOG === "true") console.log("<PlayPage> rendered...")
 
-	let content: React.JSX.Element = <></>
+	let content = <></>
 
-	const authContextData = useAuthContext()
+	//const queryClient = useQueryClient()
 
-	const api = useAxios()
+	//const authQueryData: any = queryClient.getQueryData(["auth-me"])
+
+	//const api = useAxios()
 
 	//const queryClient = useQueryClient()
 	//const { gameInProgress, currentGameId, currentGame, startNewGame } = useGameStateContext()
 
 	//console.log("LOOKBRO-->: ", currentGame.board)
-	const [currentGameId, setCurrentGameId] = useState("65386bc9bbc29a896541aa94")
+	//const [currentGameId, setCurrentGameId] = useState("65386bc9bbc29a896541aa94")
 	//const [currentGame, setCurrentGame] = useState(true)
 
 	// const socket = useAtomValue(socketAtom)
@@ -83,41 +80,52 @@ export default function PlayPage(props: any) {
 	// const [hoverCookieColor, setHoverCookieColor] = useState("")
 	// const [hoverCookie, setHoverCookie] = useState("")
 
-	const getInProgressGameQuery = useQuery(
-		["get-game-in-progress"],
-		async () =>
-			await api
-				.get(`/game/${authContextData?.currentGameId}`)
-				.then((res: any) => res.data)
-				.then((something: any) => {
-					//console.log("SOMETHING", something)
-					return something
-				}),
-		{
-			onSettled: (data) => {
-				//console.log("QUERY I AM INTERESTED IN: ", data)
-				console.log("Get-game-query is providing: ", data)
-				//setCurrentGame(data[0])
-			},
-			enabled: Boolean(authContextData.currentGameId),
-			refetchOnWindowFocus: false,
-		}
-	)
+	const authMeQueryData = useAuthMe()
 
-	if (authContextData.currentGameId && getInProgressGameQuery.data) {
-		content = (
-			<>
-				{/* <SocketProviderNew> */}
-				{/* <BoardHoverContextProvider> */}
+	const currentGameQueryData = useCurrentGame(authMeQueryData.data?.currentGameId)
+
+	useEffect(() => {
+		const handleBeforeUnload = (e: any) => {
+			console.log({ e })
+			const currentLocation = window.location.pathname
+			console.log({ currentLocation })
+			// Check if the current location is '/game/play'
+			if (currentLocation === "/game/play") {
+				console.log("A reload has ocurred...")
+				// Run your function here
+				// This code will execute when navigating away from '/game/play', not during a page reload
+				// For example, you can show a confirmation message or save data before leaving
+			} else {
+				console.log("A navigation away has occurred...")
+			}
+			// Optionally set a confirmation message (not allowed in all browsers)
+			//e.preventDefault()
+			//e.returnValue = "" // Display a message (not guaranteed in all browsers)
+		}
+
+		window.addEventListener("beforeunload", handleBeforeUnload)
+
+		return () => {
+			window.removeEventListener("beforeunload", handleBeforeUnload)
+		}
+	}, [])
+
+	//if (authMeQueryData?.data?.currentGameId && gameInProgressQueryData?.data) {
+	// if (authMeQueryData?.data?.currentGameId && currentGameQueryData?.data) {
+	content = (
+		<>
+			<SocketEventsStateContainer>
 				<div className="grid grid-cols-12 h-screen">
 					<div className="col-span-6 h-full bg-emerald-600 px-8 pt-2 pb-8">
-						{currentGameId && getInProgressGameQuery?.data?.board ? (
+						{authMeQueryData?.data?.currentGameId && currentGameQueryData?.data?.board ? (
 							<RenderBoard
-								gameId={authContextData?.currentGameId}
-								boardToRender={getInProgressGameQuery?.data?.board}
+								gameId={authMeQueryData?.data?.currentGameId}
+								boardToRender={currentGameQueryData?.data?.board}
 							/>
 						) : (
-							<></>
+							<>
+								<h1>NO GAME IN PROGRESS</h1>
+							</>
 						)}
 					</div>
 					<div className="col-span-6 h-full grid grid-rows-10 bg-slate-900">
@@ -130,13 +138,12 @@ export default function PlayPage(props: any) {
 						</div>
 					</div>
 				</div>
-				{/* </BoardHoverContextProvider> */}
-				{/* </SocketProviderNew> */}
-			</>
-		)
-	} else {
-		content = <></>
-	}
+			</SocketEventsStateContainer>
+		</>
+	)
+	// } else {
+	// 	content = <></>
+	// }
 
 	return content
 }

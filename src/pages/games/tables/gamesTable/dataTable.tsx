@@ -21,10 +21,8 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../../components/shadcn/ui/table"
 import React from "react"
 import { PencilIcon, Trash2Icon } from "lucide-react"
-import { useGameStateContext } from "../../../../components/game/contexts/gameStateContext"
-import { useSocketContext } from "../../../../app/context/socketContext"
 import { useAtomValue } from "jotai"
-import { socketAtom } from "../../../play/atoms/socketAtoms"
+import { socketAtom } from "../../../../app/atoms/socketAtom"
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
@@ -87,7 +85,7 @@ export function DataTable<TData, TValue>({
 
 	const handleStartGame = (id: any) => {
 		console.log("StartGame Clicked with ID: ", id)
-		socket.emit("startGame", id)
+		//socket.emit("startGame", id)
 	}
 
 	const handleJoinGameClick = (row: any): void => {

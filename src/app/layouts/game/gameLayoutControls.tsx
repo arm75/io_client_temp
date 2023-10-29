@@ -3,10 +3,9 @@ import DisplayMyLetters from "../../../components/game/controls/displayMyLetters
 import { useEffect, useState } from "react"
 import { useAtomValue } from "jotai"
 import { hoverCoordinatesAtom, hoverCookieColorAtom, hoverCookieAtom } from "../../../pages/play/atoms/hoverAtoms"
-import { socketAtom } from "../../../pages/play/atoms/socketAtoms"
-import { useAuthContext } from "../../auth/authContext"
 import { useQueryClient } from "@tanstack/react-query"
 import IUser from "../../../models/interfaces/user"
+import { socketAtom } from "../../atoms/socketAtom"
 
 export default function GameLayoutControls(props: any) {
 	let content: JSX.Element = <></>

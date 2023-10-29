@@ -1,32 +1,16 @@
-import { useAtom } from "jotai"
+import { useAtomValue } from "jotai"
 import { useEffect } from "react"
-import { io } from "socket.io-client"
-import { socketAtom } from "../../pages/play/atoms/socketAtoms"
 import { useQueryClient } from "@tanstack/react-query"
+import { socketAtom } from "../../../app/atoms/socketAtom"
 
-const SOCKET_SERVER = import.meta.env.VITE_APP_BASE_URL
 const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
 
-export default function SocketProvider(props: any) {
-	if (RENDER_LOG === "true") console.log("<SocketProvider> rendered...")
-
-	const { children } = props
+export default function SocketEventsStateContainer({ children }: any) {
+	if (RENDER_LOG === "true") console.log("<SocketEventsStateContainer> rendered...")
 
 	const queryClient = useQueryClient()
 
-	const [socket, setSocket] = useAtom(socketAtom)
-
-	useEffect(() => {
-		const socketInstance = io(SOCKET_SERVER, {
-			withCredentials: true,
-		})
-		setSocket(socketInstance)
-
-		return () => {
-			console.log("Disconnect ran.")
-			socketInstance.disconnect()
-		}
-	}, [setSocket])
+	const socket = useAtomValue(socketAtom)
 
 	useEffect(() => {
 		if (socket) {
@@ -42,13 +26,13 @@ export default function SocketProvider(props: any) {
 
 			const turnChanged = (data: any) => {
 				console.log("turnChanged event:", data)
-				queryClient.invalidateQueries(["get-game-in-progress"])
+				queryClient.invalidateQueries(["get-current-game"])
 				//queryClient.refetchQueries(["get-game-in-progress"])
 			}
 
 			const turnPlayed = (data: any) => {
 				console.log("turnPlayed event:", data)
-				queryClient.invalidateQueries(["get-game-in-progress"])
+				queryClient.invalidateQueries(["get-current-game"])
 				//queryClient.refetchQueries(["get-game-in-progress"])
 			}
 
@@ -63,12 +47,16 @@ export default function SocketProvider(props: any) {
 			socket.on("turnPlayed", turnPlayed)
 			socket.on("gameEnded", gameEnded)
 
+			console.log("useEffect in SocketEventsStateContainer RAN...")
+
 			return () => {
 				socket.off("startNewGame", startNewGame)
 				socket.off("gamePlayerAdded", gamePlayerAdded)
 				socket.off("turnChanged", turnChanged)
 				socket.off("turnPlayed", turnPlayed)
 				socket.off("gameEnded", gameEnded)
+
+				console.log("useEffect in SocketEventsStateContainer DISMOUNTED...")
 			}
 		}
 	}, [queryClient, socket])

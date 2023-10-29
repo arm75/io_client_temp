@@ -30,18 +30,14 @@ import {
 	DropdownMenuTrigger,
 } from "../shadcn/ui/dropdown-menu"
 import AvatarDemo from "./avatar"
-import { useAuthContext } from "../../app/auth/authContext"
+import { useAuthMe } from "../../app/auth/useAuthMe"
 
 export default function DropDownMenuDemo() {
-	//const queryClient = useQueryClient()
+	let content = <></>
 
-	let content: JSX.Element = <></>
+	const authMeQueryData = useAuthMe()
 
-	const { username } = useAuthContext()
-
-	//const authMeQueryData: IUser | undefined = queryClient.getQueryData(["auth-me"])
-
-	if (username) {
+	if (authMeQueryData?.data) {
 		content = (
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
@@ -50,7 +46,7 @@ export default function DropDownMenuDemo() {
 						className="focus:hidden hover:no-underline"
 					>
 						<AvatarDemo />
-						<span className="text-lg ml-3 mb-2">{username}</span>
+						<span className="text-lg ml-3 mb-2">{authMeQueryData?.data?.username}</span>
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent className="w-56 mr-8">

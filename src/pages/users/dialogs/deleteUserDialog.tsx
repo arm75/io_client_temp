@@ -34,7 +34,7 @@ export default function DeleteUserDialog(props: any) {
 			setRoleField("")
 		},
 		refetchOnWindowFocus: false,
-		enabled: deleteUserId !== null,
+		enabled: !!deleteUserId,
 	})
 
 	const deleteUserMutation = useMutation(async (id: string) => await api.delete(`/users/${id}`), {

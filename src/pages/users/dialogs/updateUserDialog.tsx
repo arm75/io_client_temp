@@ -87,98 +87,75 @@ export default function UpdateUserDialog(props: any) {
 							control={userForm.control}
 							name="id"
 							defaultValue=""
-							render={({ field }) => {
-								//console.log("id field:", field)
-								return (
-									<FormItem>
-										{/* <FormLabel>Username</FormLabel> */}
-										<FormControl>
-											<Input
-												type="hidden"
-												// placeholder=""
-												{...field}
-											/>
-										</FormControl>
-										{/* <FormDescription>Please enter a username.</FormDescription>
-										<FormMessage /> */}
-									</FormItem>
-								)
-							}}
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Input
+											type="hidden"
+											// placeholder=""
+											{...field}
+										/>
+									</FormControl>
+								</FormItem>
+							)}
 						/>
 						<FormField
-							//control={userForm.control}
 							name="username"
 							defaultValue=""
-							render={({ field }) => {
-								//console.log("username field:", field)
-								return (
-									<FormItem>
-										<FormLabel>Username</FormLabel>
-										<FormControl>
-											<Input
-												// placeholder=""
-												{...field}
-											/>
-										</FormControl>
-										<FormDescription>Please enter a username.</FormDescription>
-										<FormMessage />
-									</FormItem>
-								)
-							}}
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Username</FormLabel>
+									<FormControl>
+										<Input {...field} />
+									</FormControl>
+									<FormDescription>Please enter a username.</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
 						/>
 						<FormField
-							//control={userForm.control}
 							name="password"
 							defaultValue=""
-							render={({ field }) => {
-								//console.log("password field:", field)
-								return (
-									<FormItem>
-										<FormLabel>Password</FormLabel>
-										<FormControl>
-											<Input
-												// placeholder=""
-												{...field}
-											/>
-										</FormControl>
-										<FormDescription>Please enter a password.</FormDescription>
-										<FormMessage />
-									</FormItem>
-								)
-							}}
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Password</FormLabel>
+									<FormControl>
+										<Input {...field} />
+									</FormControl>
+									<FormDescription>Please enter a password.</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
 						/>
 						<FormField
 							control={userForm.control}
 							name="role"
 							defaultValue=""
-							render={({ field }) => {
-								//console.log("role field:", field)
-								return (
-									<FormItem>
-										<FormLabel>Role</FormLabel>
-										<FormControl>
-											<Select
-												onValueChange={(value) => {
-													userForm.setValue("role", value)
-													setRoleField(value)
-												}}
-												value={roleField}
-												defaultValue=""
-											>
-												<SelectTrigger className="w-[180px]">
-													<SelectValue placeholder="" />
-												</SelectTrigger>
-												<SelectContent>
-													<SelectItem value="Player">Player</SelectItem>
-													<SelectItem value="Admin">Admin</SelectItem>
-												</SelectContent>
-											</Select>
-										</FormControl>
-										<FormDescription>Please select a role.</FormDescription>
-										<FormMessage />
-									</FormItem>
-								)
-							}}
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Role</FormLabel>
+									<FormControl>
+										<Select
+											onValueChange={(value) => {
+												userForm.setValue("role", value)
+												setRoleField(value)
+											}}
+											value={roleField}
+											defaultValue=""
+										>
+											<SelectTrigger className="w-[180px]">
+												<SelectValue placeholder="" />
+											</SelectTrigger>
+											<SelectContent>
+												<SelectItem value="Player">Player</SelectItem>
+												<SelectItem value="Admin">Admin</SelectItem>
+											</SelectContent>
+										</Select>
+									</FormControl>
+									<FormDescription>Please select a role.</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
 						/>
 						<DialogFooter className="mt-8">
 							<Button

@@ -63,72 +63,57 @@ export default function CreateUserDialog(props: any) {
 							control={userForm.control}
 							name="username"
 							defaultValue=""
-							render={({ field }) => {
-								//console.log({ field })
-								return (
-									<FormItem>
-										<FormLabel>Username</FormLabel>
-										<FormControl>
-											<Input
-												// placeholder=""
-												{...field}
-											/>
-										</FormControl>
-										<FormDescription>Please enter a username.</FormDescription>
-										<FormMessage />
-									</FormItem>
-								)
-							}}
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Username</FormLabel>
+									<FormControl>
+										<Input {...field} />
+									</FormControl>
+									<FormDescription>Please enter a username.</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
 						/>
 						<FormField
 							control={userForm.control}
 							name="password"
 							defaultValue=""
-							render={({ field }) => {
-								//console.log({ field })
-								return (
-									<FormItem>
-										<FormLabel>Password</FormLabel>
-										<FormControl>
-											<Input
-												// placeholder=""
-												{...field}
-											/>
-										</FormControl>
-										<FormDescription>Please enter a password.</FormDescription>
-										<FormMessage />
-									</FormItem>
-								)
-							}}
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Password</FormLabel>
+									<FormControl>
+										<Input {...field} />
+									</FormControl>
+									<FormDescription>Please enter a password.</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
 						/>
 						<FormField
 							control={userForm.control}
 							name="role"
 							defaultValue=""
-							render={({ field }) => {
-								//console.log({ field })
-								return (
-									<FormItem>
-										<FormLabel>Role</FormLabel>
-										<FormControl>
-											<Select
-												onValueChange={field.onChange}
-												defaultValue={field.value}
-											>
-												<SelectTrigger className="w-[180px]">
-													<SelectValue placeholder="" />
-												</SelectTrigger>
-												<SelectContent>
-													<SelectItem value="Player">Player</SelectItem>
-													<SelectItem value="Admin">Admin</SelectItem>
-												</SelectContent>
-											</Select>
-										</FormControl>
-										<FormDescription>Please select a role.</FormDescription>
-										<FormMessage />
-									</FormItem>
-								)
-							}}
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Role</FormLabel>
+									<FormControl>
+										<Select
+											onValueChange={field.onChange}
+											defaultValue={field.value}
+										>
+											<SelectTrigger className="w-[180px]">
+												<SelectValue placeholder="" />
+											</SelectTrigger>
+											<SelectContent>
+												<SelectItem value="Player">Player</SelectItem>
+												<SelectItem value="Admin">Admin</SelectItem>
+											</SelectContent>
+										</Select>
+									</FormControl>
+									<FormDescription>Please select a role.</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
 						/>
 						<DialogFooter className="mt-8">
 							<Button

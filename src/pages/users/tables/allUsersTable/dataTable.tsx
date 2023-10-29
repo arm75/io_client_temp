@@ -58,13 +58,11 @@ export function DataTable<TData, TValue>({ columns, data, updateUserFn, deleteUs
 	const handleUpdateUserClick = (row: any): void => {
 		const rowIdClicked = row
 		updateUserFn(rowIdClicked)
-		//console.log(rowIdClicked)
 	}
 
 	const handleDeleteUserClick = (row: any): void => {
 		const rowIdClicked = row
 		deleteUserFn(rowIdClicked)
-		//console.log(rowIdClicked)
 	}
 
 	return (
@@ -89,18 +87,16 @@ export function DataTable<TData, TValue>({ columns, data, updateUserFn, deleteUs
 						{table
 							.getAllColumns()
 							.filter((column) => column.getCanHide())
-							.map((column) => {
-								return (
-									<DropdownMenuCheckboxItem
-										key={column.id}
-										className="capitalize"
-										checked={column.getIsVisible()}
-										onCheckedChange={(value) => column.toggleVisibility(!!value)}
-									>
-										{column.id}
-									</DropdownMenuCheckboxItem>
-								)
-							})}
+							.map((column) => (
+								<DropdownMenuCheckboxItem
+									key={column.id}
+									className="capitalize"
+									checked={column.getIsVisible()}
+									onCheckedChange={(value) => column.toggleVisibility(!!value)}
+								>
+									{column.id}
+								</DropdownMenuCheckboxItem>
+							))}
 					</DropdownMenuContent>
 				</DropdownMenu>
 			</div>
@@ -109,52 +105,42 @@ export function DataTable<TData, TValue>({ columns, data, updateUserFn, deleteUs
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (
 							<TableRow key={headerGroup.id}>
-								{headerGroup.headers.map((header) => {
-									return (
-										<TableHead key={header.id}>
-											{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-										</TableHead>
-									)
-								})}
+								{headerGroup.headers.map((header) => (
+									<TableHead key={header.id}>
+										{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+									</TableHead>
+								))}
 							</TableRow>
 						))}
 					</TableHeader>
 					<TableBody>
 						{table.getRowModel().rows?.length ? (
-							table.getRowModel().rows.map((row) => {
-								//console.log({ row })
-								return (
-									<TableRow
-										key={row.id}
-										data-state={row.getIsSelected() && "selected"}
-									>
-										{row.getVisibleCells().map((cell) => {
-											//console.log({ cell })
-											return (
-												<TableCell key={cell.id}>
-													{flexRender(cell.column.columnDef.cell, cell.getContext())}
-												</TableCell>
-											)
-										})}
-										<TableCell>
-											<Button
-												onClick={() => handleUpdateUserClick(row.getValue("_id"))}
-												className="text-white bg-emerald-500 border border-emerald-900 hover:bg-emerald-800 mx-1"
-												size="sm"
-											>
-												<PencilIcon className="h-4 w-4" />
-											</Button>
-											<Button
-												onClick={() => handleDeleteUserClick(row.getValue("_id"))}
-												className="text-white bg-red-500 border border-red-900 hover:bg-red-800 mx-1"
-												size="sm"
-											>
-												<Trash2Icon className="h-4 w-4" />
-											</Button>
-										</TableCell>
-									</TableRow>
-								)
-							})
+							table.getRowModel().rows.map((row) => (
+								<TableRow
+									key={row.id}
+									data-state={row.getIsSelected() && "selected"}
+								>
+									{row.getVisibleCells().map((cell) => (
+										<TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+									))}
+									<TableCell>
+										<Button
+											onClick={() => handleUpdateUserClick(row.getValue("_id"))}
+											className="text-white bg-emerald-500 border border-emerald-900 hover:bg-emerald-800 mx-1"
+											size="sm"
+										>
+											<PencilIcon className="h-4 w-4" />
+										</Button>
+										<Button
+											onClick={() => handleDeleteUserClick(row.getValue("_id"))}
+											className="text-white bg-red-500 border border-red-900 hover:bg-red-800 mx-1"
+											size="sm"
+										>
+											<Trash2Icon className="h-4 w-4" />
+										</Button>
+									</TableCell>
+								</TableRow>
+							))
 						) : (
 							<TableRow>
 								<TableCell

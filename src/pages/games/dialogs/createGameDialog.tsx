@@ -46,15 +46,15 @@ export default function CreateGameDialog(props: any) {
 		console.log({ name })
 		console.log({ description })
 
-		if (!authMeQueryData) return
+		//if (!authMeQueryData) return
 
-		const creator: IUser = {
-			id: authMeQueryData.id,
-			username: authMeQueryData.username,
-			role: authMeQueryData.role,
-		}
+		// const creator: IUser = {
+		// 	id: authMeQueryData.id,
+		// 	username: authMeQueryData.username,
+		// 	role: authMeQueryData.role,
+		// }
 
-		createGameMutation.mutate({ name, description, creator })
+		createGameMutation.mutate({ name, description })
 
 		// const newUser = {
 		// 	username: username,

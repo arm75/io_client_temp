@@ -92,7 +92,7 @@ export default function LoginPage() {
 					{errorMessage ? <div className="text-white bg-red-700 border-1 border-red-950 p-4 m-2 mb-4">{errorMessage}</div> : ""}
 					<button
 						type="submit"
-						className="w-full bg-amber-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-blue-300"
+						className="w-full bg-emerald-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-blue-300"
 					>
 						Login
 					</button>

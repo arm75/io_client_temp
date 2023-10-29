@@ -11,14 +11,11 @@ const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
 export default function UsersPage() {
 	if (RENDER_LOG === "true") console.log("<UsersPage> rendered...")
 
-	// CREATE USER modal state
 	const [showCreateModal, setShowCreateModal] = useState(false)
 
-	// UPDATE USER modal state and USERID to be loaded
 	const [updateUserId, setUpdateUserId] = useState(null)
 	const showUpdateModal = updateUserId !== null
 
-	// DELETE USER modal state
 	const [deleteUserId, setDeleteUserId] = useState(null)
 	const showDeleteModal = deleteUserId !== null
 
