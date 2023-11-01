@@ -3,18 +3,15 @@ import { Button } from "../../../components/shadcn/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../../components/shadcn/ui/dialog"
 import { Form } from "../../../components/shadcn/ui/form"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { useState } from "react"
 import useAxios from "../../../app/api/axios"
 import { useToasterContext } from "../../../app/context/toasterContext"
 
 export default function DeleteUserDialog(props: any) {
 	const { isOpen, onClose, title, description, deleteUserId } = props
 
-	const [roleField, setRoleField] = useState("")
-
 	const userForm = useForm({ mode: "onChange" })
 
-	const { showToast } = useToasterContext()
+	//const { showToast } = useToasterContext()
 
 	const api = useAxios()
 
@@ -25,32 +22,32 @@ export default function DeleteUserDialog(props: any) {
 			userForm.setValue("id", data._id)
 			userForm.setValue("username", data.username)
 			userForm.setValue("role", data.role)
-			setRoleField(data.role)
+			//setRoleField(data.role)
 		},
 		onError: () => {
 			userForm.setValue("id", "")
 			userForm.setValue("username", "")
 			userForm.setValue("role", "")
-			setRoleField("")
+			//setRoleField("")
 		},
 		refetchOnWindowFocus: false,
-		enabled: !!deleteUserId,
+		enabled: deleteUserId !== null,
 	})
 
 	const deleteUserMutation = useMutation(async (id: string) => await api.delete(`/users/${id}`), {
 		onSuccess: (data) => {
 			const message = data?.data?.message
 			console.log(message)
-			showToast("success", message)
+			//showToast("success", message)
 		},
 		onError: (error: any) => {
 			const message = error?.response?.data?.message
 			console.log(message)
-			showToast("error", message)
+			//showToast("error", message)
 		},
 		onSettled: () => {
 			queryClient.invalidateQueries(["get-all-users"])
-			queryClient.invalidateQueries(["get-user"])
+			//queryClient.invalidateQueries(["get-user"])
 			cancelModal()
 		},
 	})

@@ -3,55 +3,45 @@ import { Button } from "../../../components/shadcn/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../../components/shadcn/ui/dialog"
 import { Form } from "../../../components/shadcn/ui/form"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import axios from "axios"
 import useAxios from "../../../app/api/axios"
 
 export default function DeleteGameDialog(props: any) {
 	const { isOpen, onClose, title, description, deleteGameId } = props
 
-	//const [roleField, setRoleField] = useState("")
+	const gameForm = useForm({ mode: "onChange" })
+
 	const api = useAxios()
 
-	// get query client (react-query)
 	const queryClient = useQueryClient()
 
-	// GET USER QUERY (react-query)
-	const getGameQuery = useQuery(
-		[`get-game-delete-game`],
-		async () =>
-			await api.get(`/game/${deleteGameId}`).then((res) => {
-				return res.data
-			}),
-		{
-			onSuccess: (data) => {
-				//console.log("query-changed:", data)
-				gameForm.setValue("id", data._id)
-				gameForm.setValue("name", data.name)
-				//userForm.setValue("role", data.role)
-				//setRoleField(data.role)
-			},
-			onError: () => {
-				//console.log("Error: ", { res })
-				//cl('error', "CREATE USER FAILED!")
-				//makeToast(res.response.data.message, 'danger')
-				gameForm.setValue("id", "")
-				gameForm.setValue("name", "")
-				//userForm.setValue("username", "")
-				//userForm.setValue("role", "")
-				//setRoleField("")
-			},
-			onSettled: () => {
-				//console.log("Settled: ", {res})
-				//queryClient.invalidateQueries(["get-all-users"])
-				//queryClient.invalidateQueries(["get-user"])
-				//cancelModal()
-			},
-			refetchOnWindowFocus: false,
-			enabled: deleteGameId !== null,
-		}
-	)
+	const getGameQuery = useQuery([`get-game-delete-game`], async () => await api.get(`/game/${deleteGameId}`).then((res) => res.data), {
+		onSuccess: (data) => {
+			//console.log("query-changed:", data)
+			gameForm.setValue("id", data._id)
+			gameForm.setValue("name", data.name)
+			//userForm.setValue("role", data.role)
+			//setRoleField(data.role)
+		},
+		onError: () => {
+			//console.log("Error: ", { res })
+			//cl('error', "CREATE USER FAILED!")
+			//makeToast(res.response.data.message, 'danger')
+			gameForm.setValue("id", "")
+			gameForm.setValue("name", "")
+			//userForm.setValue("username", "")
+			//userForm.setValue("role", "")
+			//setRoleField("")
+		},
+		onSettled: () => {
+			//console.log("Settled: ", {res})
+			//queryClient.invalidateQueries(["get-all-users"])
+			//queryClient.invalidateQueries(["get-user"])
+			//cancelModal()
+		},
+		refetchOnWindowFocus: false,
+		enabled: deleteGameId !== null,
+	})
 
-	// DELETE GAME mutation (react-query)
 	const deleteGameMutation = useMutation(async (id: string) => await api.delete(`/game/${id}`), {
 		onSuccess: () => {
 			//console.log("Success: ", {res})
@@ -72,8 +62,6 @@ export default function DeleteGameDialog(props: any) {
 			cancelModal()
 		},
 	})
-
-	const gameForm = useForm({ mode: "onChange" })
 
 	const submitDeleteGameForm: any = (data: any) => {
 		// { username, password, roles }: any

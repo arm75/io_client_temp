@@ -1,22 +1,17 @@
 import { Button } from "../../../components/shadcn/ui/button"
-import DisplayMyLetters from "../../../components/game/controls/displayMyLetters"
 import { useEffect, useState } from "react"
 import { useAtomValue } from "jotai"
-import { hoverCoordinatesAtom, hoverCookieColorAtom, hoverCookieAtom } from "../../../pages/play/atoms/hoverAtoms"
-import { useQueryClient } from "@tanstack/react-query"
-import IUser from "../../../models/interfaces/user"
-import { socketAtom } from "../../atoms/socketAtom"
+import { hoverCoordinatesAtom, hoverCookieColorAtom, hoverCookieAtom } from "../atoms/hoverAtoms"
+import { useCurrentGame } from "../queries/useCurrentGame"
+import { useAuthMe } from "../../../app/auth/useAuthMe"
+import { socketAtom } from "../../../app/atoms/socketAtom"
 
-export default function GameLayoutControls(props: any) {
+export default function GameControls(props: any) {
 	let content: JSX.Element = <></>
 
-	const queryClient = useQueryClient()
+	const authMeQuery = useAuthMe()
 
-	const authMeQueryData: IUser | undefined = queryClient.getQueryData(["auth-me"])
-
-	//const me = useAuthContext()
-
-	const currentGame: any = queryClient.getQueryData(["get-game-in-progress"])
+	const currentGameQuery = useCurrentGame(authMeQuery.data?.currentGameId)
 
 	const socket = useAtomValue(socketAtom)
 	const hoverCoordinates = useAtomValue(hoverCoordinatesAtom)
@@ -28,13 +23,13 @@ export default function GameLayoutControls(props: any) {
 	const [playerObject, setPlayerObject] = useState<any>({})
 
 	useEffect(() => {
-		if (currentGame) {
-			const playersToSearch: any = currentGame?.players
-			setPlayerObject(playersToSearch?.find((player: any) => player.user._id === authMeQueryData?.id))
+		if (currentGameQuery?.data?.players) {
+			const playersToSearch: any = currentGameQuery?.data?.players
+			setPlayerObject(playersToSearch?.find((player: any) => player.user._id === authMeQuery?.data?.id))
 		} else {
 			setPlayerObject({})
 		}
-	}, [authMeQueryData?.id, currentGame])
+	}, [authMeQuery?.data?.id, currentGameQuery?.data?.players])
 
 	const handlePassTurn = (currentGameId: any, playerId: any) => {
 		socket.emit("passTurn", { currentGameId, playerId })
@@ -48,7 +43,7 @@ export default function GameLayoutControls(props: any) {
 		socket.emit("endGame", currentGameId)
 	}
 
-	if (authMeQueryData?.currentGameId && currentGame) {
+	if (authMeQuery?.data?.currentGameId && currentGameQuery?.data) {
 		content = (
 			<>
 				{/* <!-- Logo Section --> */}
@@ -76,7 +71,7 @@ export default function GameLayoutControls(props: any) {
 						<Button
 							className="bg-emerald-600 hover:bg-emerald-500 text-emerald-300 hover:text-white m-2"
 							onClick={() => {
-								handlePassTurn(authMeQueryData?.currentGameId, playerObject?._id)
+								handlePassTurn(authMeQuery?.data?.currentGameId, playerObject?._id)
 							}}
 						>
 							Pass Turn
@@ -84,7 +79,7 @@ export default function GameLayoutControls(props: any) {
 						<Button
 							className="bg-emerald-600 hover:bg-emerald-500 text-emerald-300 hover:text-white m-2"
 							onClick={() => {
-								handleEndGame(authMeQueryData?.currentGameId)
+								handleEndGame(authMeQuery?.data?.currentGameId)
 							}}
 						>
 							END GAME
@@ -93,7 +88,7 @@ export default function GameLayoutControls(props: any) {
 						<Button
 							className="bg-blue-600 hover:bg-blue-500 text-blue-300 hover:text-white m-2"
 							onClick={() => {
-								handlePlayTurn(authMeQueryData?.currentGameId, playerObject?._id, 8, 1, "F")
+								handlePlayTurn(authMeQuery?.data?.currentGameId, playerObject?._id, 8, 1, "F")
 							}}
 						>
 							Play (8,1,F)
@@ -101,7 +96,7 @@ export default function GameLayoutControls(props: any) {
 						<Button
 							className="bg-blue-600 hover:bg-blue-500 text-blue-300 hover:text-white m-2"
 							onClick={() => {
-								handlePlayTurn(authMeQueryData?.currentGameId, playerObject?._id, 8, 1, "")
+								handlePlayTurn(authMeQuery?.data?.currentGameId, playerObject?._id, 8, 1, "")
 							}}
 						>
 							Remove (8,1,F)
@@ -109,7 +104,7 @@ export default function GameLayoutControls(props: any) {
 						<Button
 							className="bg-amber-600 hover:bg-amber-500 text-amber-300 hover:text-white m-2"
 							onClick={() => {
-								handlePlayTurn(authMeQueryData?.currentGameId, playerObject?._id, 2, 1, "V")
+								handlePlayTurn(authMeQuery?.data?.currentGameId, playerObject?._id, 2, 1, "V")
 							}}
 						>
 							Play (2,1,V)
@@ -117,7 +112,7 @@ export default function GameLayoutControls(props: any) {
 						<Button
 							className="bg-amber-600 hover:bg-amber-500 text-amber-300 hover:text-white m-2"
 							onClick={() => {
-								handlePlayTurn(authMeQueryData?.currentGameId, playerObject?._id, 2, 1, "")
+								handlePlayTurn(authMeQuery?.data?.currentGameId, playerObject?._id, 2, 1, "")
 							}}
 						>
 							Remove (2,1,V)
