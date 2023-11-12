@@ -3,9 +3,7 @@ import { DataTable } from "./dataTable"
 import { useQuery } from "@tanstack/react-query"
 import useAxios from "../../../../app/api/axios"
 
-export default function GamesTable(props: any) {
-	const { joinGameFn, updateGameFn, cancelGameFn, deleteGameFn } = props
-
+export default function GamesTable({ joinGameFn, updateGameFn, cancelGameFn, deleteGameFn }: any) {
 	let content: JSX.Element = <></>
 
 	const api = useAxios()

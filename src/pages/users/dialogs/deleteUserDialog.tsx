@@ -4,14 +4,12 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Form } from "../../../components/shadcn/ui/form"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import useAxios from "../../../app/api/axios"
-import { useToasterContext } from "../../../app/context/toasterContext"
+import useToastContext from "../../../app/context/toast/useToastContext"
 
-export default function DeleteUserDialog(props: any) {
-	const { isOpen, onClose, title, description, deleteUserId } = props
+export default function DeleteUserDialog({ isOpen, onClose, title, description, deleteUserId }: any) {
+	const deleteUserForm = useForm({ mode: "onChange" })
 
-	const userForm = useForm({ mode: "onChange" })
-
-	//const { showToast } = useToasterContext()
+	const { showToast } = useToastContext()
 
 	const api = useAxios()
 
@@ -19,16 +17,14 @@ export default function DeleteUserDialog(props: any) {
 
 	const getUserQuery = useQuery([`get-user`], async () => await api.get(`/users/${deleteUserId}`).then((res) => res.data), {
 		onSuccess: (data) => {
-			userForm.setValue("id", data._id)
-			userForm.setValue("username", data.username)
-			userForm.setValue("role", data.role)
-			//setRoleField(data.role)
+			deleteUserForm.setValue("id", data._id)
+			deleteUserForm.setValue("username", data.username)
+			deleteUserForm.setValue("role", data.role)
 		},
 		onError: () => {
-			userForm.setValue("id", "")
-			userForm.setValue("username", "")
-			userForm.setValue("role", "")
-			//setRoleField("")
+			deleteUserForm.setValue("id", "")
+			deleteUserForm.setValue("username", "")
+			deleteUserForm.setValue("role", "")
 		},
 		refetchOnWindowFocus: false,
 		enabled: deleteUserId !== null,
@@ -38,27 +34,26 @@ export default function DeleteUserDialog(props: any) {
 		onSuccess: (data) => {
 			const message = data?.data?.message
 			console.log(message)
-			//showToast("success", message)
+			showToast("success", message)
 		},
 		onError: (error: any) => {
 			const message = error?.response?.data?.message
 			console.log(message)
-			//showToast("error", message)
+			showToast("error", message)
 		},
 		onSettled: () => {
 			queryClient.invalidateQueries(["get-all-users"])
-			//queryClient.invalidateQueries(["get-user"])
 			cancelModal()
 		},
 	})
 
-	const submitDeleteUserForm: any = (data: any) => {
-		const { id, username, password, role } = data
+	const submitDeleteUserForm = ({ id }: any) => {
+		console.log("Id from form: ", { id })
 		deleteUserMutation.mutate(id)
 	}
 
 	const cancelModal = () => {
-		userForm.reset()
+		deleteUserForm.reset()
 		onClose()
 	}
 
@@ -68,8 +63,8 @@ export default function DeleteUserDialog(props: any) {
 			onOpenChange={cancelModal}
 		>
 			<DialogContent className="sm:max-w-[425px]">
-				<Form {...userForm}>
-					<form onSubmit={userForm.handleSubmit(submitDeleteUserForm)}>
+				<Form {...deleteUserForm}>
+					<form onSubmit={deleteUserForm.handleSubmit(submitDeleteUserForm)}>
 						<DialogHeader>
 							<DialogTitle>{title}</DialogTitle>
 							<DialogDescription>{description}</DialogDescription>

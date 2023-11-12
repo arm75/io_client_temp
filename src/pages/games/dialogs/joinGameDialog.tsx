@@ -9,22 +9,17 @@ import useAxios from "../../../app/api/axios"
 import { useAtomValue } from "jotai"
 import { socketAtom } from "../../../app/atoms/socketAtom"
 
-export default function JoinGameDialog(props: any) {
-	const { isOpen, onClose, title, description, joinGameId } = props
-
+export default function JoinGameDialog({ isOpen, onClose, title, description, joinGameId }: any) {
 	const api = useAxios()
 
-	//const [roleField, setRoleField] = useState("")
-	//const socket2 = useSocketContext()
 	const socket = useAtomValue(socketAtom)
-	// get query client (react-query)
+
 	const queryClient = useQueryClient()
 
 	const authMeQueryData: IUser | undefined = queryClient.getQueryData(["auth-me"])
 
 	const userForm = useForm({ mode: "onChange" })
 
-	// UPDATE USER mutation (react-query)
 	const joinGameMutation = useMutation(async (msg: { userId: string; gameId: string }) => await api.patch("/game/join", msg), {
 		onSuccess: (res) => {
 			//console.log("Success: ", {res})
@@ -46,25 +41,10 @@ export default function JoinGameDialog(props: any) {
 		},
 	})
 
-	const submitUpdateUserForm: any = (data: any) => {
-		// { username, password, roles }: any
-		//console.log("Form Submit Data: ", data)
-		const { userId, gameId } = data
+	const submitUpdateUserForm = ({ userId, gameId }: any) => {
 		console.log({ userId })
 		console.log({ gameId })
-		// console.log({ username })
-		// console.log({ password })
-		// console.log({ role })
-		// console.log("submit function ran.")
-		// const newUser = {
-		// 	username: username,
-		// 	password: password,
-		// 	//firstname: firstname,
-		// 	//lastname: lastname,
-		// 	//email: email,
-		// 	roles: roles,
-		// 	//rolesArray: rolesArray,
-		// }
+
 		joinGameMutation.mutate({ userId, gameId })
 	}
 

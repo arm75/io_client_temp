@@ -41,8 +41,6 @@ export function DataTable<TData, TValue>({
 	cancelGameFn,
 	deleteGameFn,
 }: DataTableProps<TData, TValue>) {
-	//const { startNewGame } = useGameStateContext()
-
 	const socket = useAtomValue(socketAtom)
 
 	const [sorting, setSorting] = React.useState<SortingState>([])
@@ -85,7 +83,7 @@ export function DataTable<TData, TValue>({
 
 	const handleStartGame = (id: any) => {
 		console.log("StartGame Clicked with ID: ", id)
-		//socket.emit("startGame", id)
+		socket.emit("startGame", id)
 	}
 
 	const handleJoinGameClick = (row: any): void => {

@@ -12,8 +12,6 @@ export default function AuthGuard({ children }: { children: JSX.Element }) {
 
 	const authMeQueryData = useAuthMe()
 
-	console.log(authMeQueryData?.data)
-
 	if (authMeQueryData?.data === "") {
 		content = (
 			<Navigate

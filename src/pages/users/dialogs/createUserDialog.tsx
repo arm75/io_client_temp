@@ -7,21 +7,19 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import IUser from "../../../models/interfaces/user"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/shadcn/ui/select"
 import useAxios from "../../../app/api/axios"
-import { useToasterContext } from "../../../app/context/toasterContext"
+import useToastContext from "../../../app/context/toast/useToastContext"
 
-export default function CreateUserDialog(props: any) {
-	const { isOpen, onClose, title, description } = props
+export default function CreateUserDialog({ isOpen, onClose, title, description }: any) {
+	const createUserForm = useForm({ mode: "onChange" })
 
-	const userForm = useForm({ mode: "onChange" })
-
-	const { showToast } = useToasterContext()
+	const { showToast } = useToastContext()
 
 	const api = useAxios()
 
 	const queryClient = useQueryClient()
 
 	const createUserMutation = useMutation(async (user: IUser) => await api.post("/users", user), {
-		onSuccess: (data) => {
+		onSuccess: (data: any) => {
 			const message = data?.data?.message
 			console.log(message)
 			showToast("success", message)
@@ -37,13 +35,12 @@ export default function CreateUserDialog(props: any) {
 		},
 	})
 
-	const submitCreateUserForm: any = (data: any) => {
-		const { username, password, role } = data
+	const submitCreateUserForm: any = ({ username, password, role }: any) => {
 		createUserMutation.mutate({ username, password, role })
 	}
 
 	const cancelModal = () => {
-		userForm.reset()
+		createUserForm.reset()
 		onClose()
 	}
 
@@ -53,14 +50,14 @@ export default function CreateUserDialog(props: any) {
 			onOpenChange={cancelModal}
 		>
 			<DialogContent className="sm:max-w-[425px]">
-				<Form {...userForm}>
-					<form onSubmit={userForm.handleSubmit(submitCreateUserForm)}>
+				<Form {...createUserForm}>
+					<form onSubmit={createUserForm.handleSubmit(submitCreateUserForm)}>
 						<DialogHeader>
 							<DialogTitle>{title}</DialogTitle>
 							<DialogDescription>{description}</DialogDescription>
 						</DialogHeader>
 						<FormField
-							control={userForm.control}
+							control={createUserForm.control}
 							name="username"
 							defaultValue=""
 							render={({ field }) => (
@@ -75,7 +72,7 @@ export default function CreateUserDialog(props: any) {
 							)}
 						/>
 						<FormField
-							control={userForm.control}
+							control={createUserForm.control}
 							name="password"
 							defaultValue=""
 							render={({ field }) => (
@@ -90,7 +87,7 @@ export default function CreateUserDialog(props: any) {
 							)}
 						/>
 						<FormField
-							control={userForm.control}
+							control={createUserForm.control}
 							name="role"
 							defaultValue=""
 							render={({ field }) => (

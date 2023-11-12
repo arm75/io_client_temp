@@ -3,10 +3,19 @@
 @tailwind utilities;
 
 html {
-    overflow: hidden !important;
+	overflow: hidden !important;
 }
 
 body {
-    /* TailwindCSS's slate-100 */
-    background-color: rgb(241 245 249);
+	/* TailwindCSS's slate-100 */
+	background-color: rgb(241 245 249);
+}
+
+iframe[data-xstate] {
+	width: 80vw;
+	height: 50vh;
+	border: 1px;
+	position: fixed;
+	right: 0;
+	bottom: 0;
 }

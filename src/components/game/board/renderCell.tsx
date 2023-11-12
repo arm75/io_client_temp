@@ -239,6 +239,7 @@ export default function RenderCell(props: any) {
 				onMouseOver={() => handleMouseOver(cell.row, cell.col, cell.bonusCookieColor, cell.bonusCookie)}
 			>
 				<div className="select-none">
+					{/* <div className=""> */}
 					{cell?.letterTile ? letterTileToRender(cell?.letterTile) : bonusCookieToRender(cell.bonusCookieColor, cell.bonusCookie)}
 				</div>
 			</div>

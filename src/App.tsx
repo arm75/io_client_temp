@@ -5,6 +5,7 @@ import PageNotFound from "./pages/pageNotFound"
 import UsersPage from "./pages/users/usersPage"
 import PlayPage from "./pages/play/playPage"
 import GamesPage from "./pages/games/gamesPage"
+import { PlayPageTest } from "./pages/play/playPageTest"
 
 const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
 
@@ -33,10 +34,10 @@ export default function App() {
 							}
 						/>
 						{/* Nested route for "/game/list" */}
-						{/* <Route
-								path="new"
-								element={<GameLayoutNew />}
-							/> */}
+						<Route
+							path="playtest"
+							element={<PlayPageTest />}
+						/>
 					</Route>
 					<Route
 						path="/admin/users"

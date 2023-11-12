@@ -1,21 +1,40 @@
 import RenderBoard from "../../components/game/board/renderBoard"
-import SocketEventsStateContainer from "./containers/socketEventsStateContainer"
 import { useCurrentGame } from "./queries/useCurrentGame"
 import { useAuthMe } from "../../app/auth/useAuthMe"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import GameControls from "./components/gameControls"
-import pause from "../../app/utils/pause"
+import ChoosePositionDialog from "./dialogs/choosePositionDialog"
+import { Button } from "../../components/shadcn/ui/button"
+import SocketEventListeners from "./containers/socketEventListeners"
+import { atomWithMachine } from "jotai-xstate"
+import turnMachine from "./machines/turnMachine"
+import { useAtom } from "jotai"
+import { inspect } from "@xstate/inspect"
+import RenderPlayerLetters from "./components/controls/renderPlayerLetters"
+import ChatBox from "../../components/chat/chatBox"
+
+//inspect()
 
 const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
 
+const turnMachineAtom = atomWithMachine(turnMachine, { devTools: true })
+
 export default function PlayPage() {
 	if (RENDER_LOG === "true") console.log("<PlayPage> rendered...")
+
+	const [turnState, sendTurnState] = useAtom(turnMachineAtom)
+
+	//const [letters, setLetters] = useState(["A", "G", "T", "Y", "U", "I", "R", "T"])
 
 	let content = <></>
 
 	const authMeQueryData = useAuthMe()
 
 	const currentGameQueryData = useCurrentGame(authMeQueryData.data?.currentGameId)
+
+	const [showChoosePositionModal, setShowChoosePositionModal] = useState(false)
+
+	console.log(turnState.value)
 
 	useEffect(() => {
 		const handleBeforeUnload = (e: any) => {
@@ -46,7 +65,7 @@ export default function PlayPage() {
 
 	content = (
 		<>
-			<SocketEventsStateContainer>
+			<SocketEventListeners>
 				<div className="grid grid-cols-12 h-screen">
 					<div className="col-span-6 h-full bg-emerald-600 px-8 pt-2 pb-8">
 						{authMeQueryData?.data?.currentGameId && currentGameQueryData?.data?.board ? (
@@ -63,14 +82,33 @@ export default function PlayPage() {
 					<div className="col-span-6 h-full grid grid-rows-10 bg-slate-900">
 						<div className="row-start-1 row-end-7 bg-slate-600 p-8">
 							<GameControls />
+							<div className="mb-4 p-4 bg-slate-800">
+								<RenderPlayerLetters
+									letters={
+										currentGameQueryData?.data?.players.find(
+											(player: any) => player.user._id.toString() === authMeQueryData?.data?.id
+										).letters
+									}
+								/>
+							</div>
+							<Button onClick={() => setShowChoosePositionModal(true)}>Choose Position Modal</Button>
 						</div>
 						<div className="row-start-7 row-end-11 bg-slate-700 p-8">
 							<p className="text-white text-xl pb-2">Game Chat</p>
-							{/* <ChatBox /> */}
+							<ChatBox />
 						</div>
 					</div>
 				</div>
-			</SocketEventsStateContainer>
+			</SocketEventListeners>
+			<ChoosePositionDialog
+				isOpen={showChoosePositionModal}
+				//isOpen={turnState.matches({ TURN: "CHOOSING_POSITION" })}
+				onClose={() => {
+					setShowChoosePositionModal(false)
+				}}
+				title="Choose Position"
+				description="Please choose word position."
+			/>
 		</>
 	)
 

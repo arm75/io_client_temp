@@ -6,10 +6,8 @@ import { socketAtom } from "../atoms/socketAtom"
 const SOCKET_SERVER = import.meta.env.VITE_APP_BASE_URL
 const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
 
-export default function SocketStateContainer(props: any) {
+export default function SocketStateContainer({ children }: any) {
 	if (RENDER_LOG === "true") console.log("<SocketStateContainer> rendered...")
-
-	const { children } = props
 
 	const setSocket = useSetAtom(socketAtom)
 

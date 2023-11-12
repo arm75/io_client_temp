@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useSocketContext } from "../../app/context/socketContext"
+//import { useSocketContext } from "../../app/context/socketContext"
 
 // const chatMessages = [
 // 	{
@@ -145,30 +145,30 @@ import { useSocketContext } from "../../app/context/socketContext"
 // ]
 
 export default function ChatBox() {
-	const socket = useSocketContext()
+	//const socket = useSocketContext()
 
-	socket.on("connection", () => {
-		//console.log(`I'm connected with the back-end`)
-	})
+	// socket.on("connection", () => {
+	// 	//console.log(`I'm connected with the back-end`)
+	// })
 
 	const [message, setMessage] = useState("")
 	const [messages, setMessages] = useState<string[]>([])
 
-	useEffect(() => {
-		//console.log("useEffect ran")
-		socket.on("chat message", (message: string) => {
-			setMessages([...messages, message])
-		})
-	}, [messages])
+	// useEffect(() => {
+	// 	//console.log("useEffect ran")
+	// 	socket.on("chat message", (message: string) => {
+	// 		setMessages([...messages, message])
+	// 	})
+	// }, [messages])
 
-	const handleSendMessage = () => {
-		socket.emit("chat message", message)
-		setMessage("")
-	}
+	// const handleSendMessage = () => {
+	// 	socket.emit("chat message", message)
+	// 	setMessage("")
+	// }
 
 	return (
 		<>
-			<div className="w-full h-[250px] flex flex-col border bg-slate-800 border-gray-300 overflow-y-scroll">
+			<div className="w-full h-[170px] flex flex-col border bg-slate-800 border-gray-300 overflow-y-scroll">
 				{messages.map((message, index) => (
 					<>
 						<div className={`${(index + 1) % 2 === 0 ? "bg-slate-800" : "bg-slate-900"} p-2`}>
@@ -200,7 +200,7 @@ export default function ChatBox() {
 					onChange={(e) => setMessage(e.target.value)}
 				/>
 				<button
-					onClick={handleSendMessage}
+					// onClick={handleSendMessage}
 					className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-r-lg"
 				>
 					Send

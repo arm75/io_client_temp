@@ -8,16 +8,14 @@ import IUser from "../../../models/interfaces/user"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/shadcn/ui/select"
 import { useState } from "react"
 import useAxios from "../../../app/api/axios"
-import { useToasterContext } from "../../../app/context/toasterContext"
+import useToastContext from "../../../app/context/toast/useToastContext"
 
-export default function UpdateUserDialog(props: any) {
-	const { isOpen, onClose, title, description, updateUserId } = props
-
+export default function UpdateUserDialog({ isOpen, onClose, title, description, updateUserId }: any) {
 	const [roleField, setRoleField] = useState("")
 
 	const userForm = useForm({ mode: "onChange" })
 
-	const { showToast } = useToasterContext()
+	const { showToast } = useToastContext()
 
 	const api = useAxios()
 
@@ -35,9 +33,6 @@ export default function UpdateUserDialog(props: any) {
 			userForm.setValue("username", "")
 			userForm.setValue("role", "")
 			setRoleField("")
-		},
-		onSettled: () => {
-			// console.log()
 		},
 		refetchOnWindowFocus: false,
 		enabled: Boolean(updateUserId),
