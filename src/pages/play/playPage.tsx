@@ -12,6 +12,7 @@ import { useAtom } from "jotai"
 import { inspect } from "@xstate/inspect"
 import RenderPlayerLetters from "./components/controls/renderPlayerLetters"
 import ChatBox from "../../components/chat/chatBox"
+import RenderTurnScoreTable from "./components/display/renderTurnScoreTable"
 
 //inspect()
 
@@ -81,16 +82,31 @@ export default function PlayPage() {
 					</div>
 					<div className="col-span-6 h-full grid grid-rows-10 bg-slate-900">
 						<div className="row-start-1 row-end-7 bg-slate-600 p-8">
-							<GameControls />
-							<div className="mb-4 p-4 bg-slate-800">
-								<RenderPlayerLetters
-									letters={
-										currentGameQueryData?.data?.players.find(
-											(player: any) => player.user._id.toString() === authMeQueryData?.data?.id
-										).letters
-									}
-								/>
+							{/* <!-- Logo Section --> */}
+							<div className="flex justify-center pt-4 pl-2 mb-4">
+								<a
+									href="/"
+									className="flex title-font font-medium items-center text-gray-100 mb-4 md:mb-0"
+								>
+									{/* <!-- LOGO SVG GOES INSIDE SPAN --> */}
+									{/* <span className="w-12 h-12 mr-2 pt-1 bg-violet-700 relative rounded-full"></span> */}
+
+									{/* <!-- Theme Title --> */}
+									<span className="text-3xl">
+										<span className="text-emerald-400">InWord</span>OutWord
+									</span>
+								</a>
 							</div>
+							{/* <hr className="text-emerald-900 my-10"></hr> */}
+							<RenderTurnScoreTable players={currentGameQueryData?.data?.players} />
+							<RenderPlayerLetters
+								letters={
+									currentGameQueryData?.data?.players.find(
+										(player: any) => player.user._id.toString() === authMeQueryData?.data?.id
+									).letters
+								}
+							/>
+							<GameControls />
 							<Button onClick={() => setShowChoosePositionModal(true)}>Choose Position Modal</Button>
 						</div>
 						<div className="row-start-7 row-end-11 bg-slate-700 p-8">

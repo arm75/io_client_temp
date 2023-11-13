@@ -46,24 +46,8 @@ export default function GameControls(props: any) {
 	if (authMeQuery?.data?.currentGameId && currentGameQuery?.data) {
 		content = (
 			<>
-				{/* <!-- Logo Section --> */}
-				<div className="flex justify-center pt-4 pl-2 mb-4">
-					<a
-						href="/"
-						className="flex title-font font-medium items-center text-gray-100 mb-4 md:mb-0"
-					>
-						{/* <!-- LOGO SVG GOES INSIDE SPAN --> */}
-						{/* <span className="w-12 h-12 mr-2 pt-1 bg-violet-700 relative rounded-full"></span> */}
-
-						{/* <!-- Theme Title --> */}
-						<span className="text-3xl">
-							<span className="text-emerald-400">InWord</span>OutWord
-						</span>
-					</a>
-				</div>
 				{/* <!-- "NAVIGATION" Label --> */}
 				{/* <div className="text-gray-500 self-center uppercase">Navigation</div> */}
-				<hr className="text-emerald-900 my-10"></hr>
 				{playerObject?.turn ? (
 					<>
 						<h1 className="text-3xl text-green-500">YOUR TURN</h1>
