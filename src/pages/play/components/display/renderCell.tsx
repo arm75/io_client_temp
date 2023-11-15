@@ -1,4 +1,4 @@
-import { hoverCookieAtom, hoverCookieColorAtom, hoverCoordinatesAtom } from "../../../pages/play/atoms/hoverAtoms"
+import { hoverCoordinatesAtom, hoverCookieColorAtom, hoverCookieAtom } from "../../atoms/hoverAtoms"
 import TokenBlue1 from "../tokens/bonusCookies/blue/tokenBlue1"
 import TokenBlue10 from "../tokens/bonusCookies/blue/tokenBlue10"
 import TokenBlue3 from "../tokens/bonusCookies/blue/tokenBlue3"

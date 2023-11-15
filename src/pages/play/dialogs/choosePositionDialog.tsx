@@ -1,10 +1,10 @@
 import { Button } from "../../../components/shadcn/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../../components/shadcn/ui/dialog"
 import useToastContext from "../../../app/context/toast/useToastContext"
-import RenderBoard from "../../../components/game/board/renderBoard"
 import { useAuthMe } from "../../../app/auth/useAuthMe"
 import { useCurrentGame } from "../queries/useCurrentGame"
-import CustCursor from "../components/test/custCursor"
+import BoxShadowExperiment from "../playPageTest2"
+import RenderBoard from "../components/display/renderBoard"
 // import { useForm } from "react-hook-form"
 // import { Input } from "../../../components/shadcn/ui/input"
 // import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../../../components/shadcn/ui/form"
@@ -105,7 +105,7 @@ export default function ChoosePositionDialog({ isOpen, onClose, title, descripti
 						<Button type="submit">Button</Button>
 					</DialogFooter>
 				</DialogContent>
-				<CustCursor />
+				{isOpen ? <BoxShadowExperiment /> : <></>}
 			</Dialog>
 		</>
 	)

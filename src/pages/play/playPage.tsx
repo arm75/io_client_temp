@@ -1,4 +1,3 @@
-import RenderBoard from "../../components/game/board/renderBoard"
 import { useCurrentGame } from "./queries/useCurrentGame"
 import { useAuthMe } from "../../app/auth/useAuthMe"
 import { useEffect, useState } from "react"
@@ -13,6 +12,9 @@ import { inspect } from "@xstate/inspect"
 import RenderPlayerLetters from "./components/controls/renderPlayerLetters"
 import ChatBox from "../../components/chat/chatBox"
 import RenderTurnScoreTable from "./components/display/renderTurnScoreTable"
+import RenderControlButtons from "./components/controls/renderControlButtons"
+import ChooseWordDialog from "./dialogs/chooseWordDialog"
+import RenderBoard from "./components/display/renderBoard"
 
 //inspect()
 
@@ -34,6 +36,7 @@ export default function PlayPage() {
 	const currentGameQueryData = useCurrentGame(authMeQueryData.data?.currentGameId)
 
 	const [showChoosePositionModal, setShowChoosePositionModal] = useState(false)
+	const [showChooseWordModal, setShowChooseWordModal] = useState(false)
 
 	console.log(turnState.value)
 
@@ -69,19 +72,21 @@ export default function PlayPage() {
 			<SocketEventListeners>
 				<div className="grid grid-cols-12 h-screen">
 					<div className="col-span-6 h-full bg-emerald-600 px-8 pt-2 pb-8">
-						{authMeQueryData?.data?.currentGameId && currentGameQueryData?.data?.board ? (
-							<RenderBoard
-								gameId={authMeQueryData?.data?.currentGameId}
-								boardToRender={currentGameQueryData?.data?.board}
-							/>
-						) : (
-							<>
-								<h1>NO GAME IN PROGRESS</h1>
-							</>
-						)}
+						<div className="col-span-10 overflow-auto flex justify-center bg-emerald-700 py-8">
+							{authMeQueryData?.data?.currentGameId && currentGameQueryData?.data?.board ? (
+								<RenderBoard
+									gameId={authMeQueryData?.data?.currentGameId}
+									boardToRender={currentGameQueryData?.data?.board}
+								/>
+							) : (
+								<>
+									<h1>NO GAME IN PROGRESS</h1>
+								</>
+							)}
+						</div>
 					</div>
 					<div className="col-span-6 h-full grid grid-rows-10 bg-slate-900">
-						<div className="row-start-1 row-end-7 bg-slate-600 p-8">
+						<div className="row-start-1 row-end-11 bg-slate-600 p-8 pt-2">
 							{/* <!-- Logo Section --> */}
 							<div className="flex justify-center pt-4 pl-2 mb-4">
 								<a
@@ -97,7 +102,6 @@ export default function PlayPage() {
 									</span>
 								</a>
 							</div>
-							{/* <hr className="text-emerald-900 my-10"></hr> */}
 							<RenderTurnScoreTable players={currentGameQueryData?.data?.players} />
 							<RenderPlayerLetters
 								letters={
@@ -106,16 +110,27 @@ export default function PlayPage() {
 									).letters
 								}
 							/>
-							<GameControls />
+							<RenderControlButtons />
+							<Button onClick={() => setShowChooseWordModal(true)}>Choose Word Modal</Button>
 							<Button onClick={() => setShowChoosePositionModal(true)}>Choose Position Modal</Button>
+							<GameControls />
 						</div>
-						<div className="row-start-7 row-end-11 bg-slate-700 p-8">
+						{/* <div className="row-start-7 row-end-11 bg-slate-700 p-8">
 							<p className="text-white text-xl pb-2">Game Chat</p>
-							<ChatBox />
-						</div>
+							<ChatBox  />
+						</div> */}
 					</div>
 				</div>
 			</SocketEventListeners>
+			<ChooseWordDialog
+				isOpen={showChooseWordModal}
+				//isOpen={turnState.matches({ TURN: "CHOOSING_POSITION" })}
+				onClose={() => {
+					setShowChooseWordModal(false)
+				}}
+				title="Choose Word"
+				description="Please pickup a word or word fragment."
+			/>
 			<ChoosePositionDialog
 				isOpen={showChoosePositionModal}
 				//isOpen={turnState.matches({ TURN: "CHOOSING_POSITION" })}

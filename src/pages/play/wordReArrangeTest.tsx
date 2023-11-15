@@ -6,7 +6,7 @@ interface ItemType {
 	name: string
 }
 
-export const PlayPageTest: FC = (props) => {
+export const WordReArrangeTest: FC = (props) => {
 	const [state, setState] = useState<ItemType[]>([
 		{ id: 1, name: "A" },
 		{ id: 2, name: "G" },

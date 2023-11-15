@@ -1,5 +1,4 @@
 import { useEffect } from "react"
-import { ReactSortable } from "react-sortablejs"
 import { Button } from "../../../../components/shadcn/ui/button"
 import { useAtom } from "jotai"
 import { ItemType, sortedLettersAtom } from "../../atoms/sortedLettersAtom"
@@ -22,7 +21,7 @@ import { ItemType, sortedLettersAtom } from "../../atoms/sortedLettersAtom"
 
 const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
 
-export default function RenderPlayerLetters({ letters }: any): JSX.Element {
+export default function RenderControlButtons({ letters }: any): JSX.Element {
 	if (RENDER_LOG === "true") console.log("<RenderPlayerLetters> rendered...")
 
 	const [sortedLetters, setSortedLetters] = useAtom(sortedLettersAtom)
@@ -53,28 +52,23 @@ export default function RenderPlayerLetters({ letters }: any): JSX.Element {
 
 	return (
 		<div className="mb-4 p-2 bg-slate-800 rounded-md">
-			<div className="flex justify-center items-center select-none bg-slate-900 rounded-md">
-				<ReactSortable
-					list={sortedLetters}
-					setList={setSortedLetters}
-					animation={150}
-				>
-					{sortedLetters.map((item) => (
-						<div
-							className="inline-flex justify-center items-center w-[60px] h-[60px] m-2 border-4 text-5xl text-sky-600 hover:text-white bg-slate-300 hover:bg-sky-600 hover:border-white border-sky-900"
-							key={item.id}
-						>
-							{item.name}
-						</div>
-					))}
-				</ReactSortable>
-				<div className="px-6">
+			<div className="flex p-2 justify-center items-center select-none bg-slate-900 rounded-md">
+				<div className="px-4">
 					<Button
 						size={"lg"}
-						className="h-[60px] bg-orange-600 hover:bg-orange-700 active:bg-sky-600"
+						className="h-[60px] w-96 bg-emerald-600 hover:bg-emerald-700 active:bg-sky-600"
 						onClick={() => shuffleArray(sortedLetters)}
 					>
-						SHUFFLE LETTERS
+						MAKE PLAY
+					</Button>
+				</div>
+				<div className="px-4">
+					<Button
+						size={"lg"}
+						className="h-[60px] w-96 bg-gray-600 hover:bg-gray-700 active:bg-sky-600"
+						onClick={() => shuffleArray(sortedLetters)}
+					>
+						PASS TURN
 					</Button>
 				</div>
 			</div>
