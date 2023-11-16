@@ -1,9 +1,13 @@
+import { useAtomValue } from "jotai"
 import React, { useEffect, useRef } from "react"
+import { chosenWordAtom } from "./atoms/chosenWordAtom"
 
 const BoxShadowExperiment = (props: any) => {
-	// const { lettersAttached } = props
-
 	const bsDivRef: any = useRef(null)
+
+	const wordFragment = useAtomValue(chosenWordAtom)
+
+	console.log(wordFragment)
 
 	useEffect(() => {
 		let x, y
@@ -32,21 +36,14 @@ const BoxShadowExperiment = (props: any) => {
 			className="fixed bg-white text-red-500 top-1/2 left-1/2 transform -translate-x-[46px] -translate-y-1/2 flex pointer-events-none z-50"
 			ref={bsDivRef}
 		>
-			<div className="letter p-4 flex justify-center items-center w-[46px] h-[46px] border-4 border-black text-black text-1.7rem">
-				A
-			</div>
-			<div className="letter p-4 flex justify-center items-center w-[46px] h-[46px] border-4 border-black text-black text-1.7rem">
-				P
-			</div>
-			<div className="letter p-4 flex justify-center items-center w-[46px] h-[46px] border-4 border-black text-black text-1.7rem">
-				P
-			</div>
-			<div className="letter p-4 flex justify-center items-center w-[46px] h-[46px] border-4 border-black text-black text-1.7rem">
-				L
-			</div>
-			<div className="letter p-4 flex justify-center items-center w-[46px] h-[46px] border-4 border-black text-black text-1.7rem">
-				E
-			</div>
+			{Array.from(wordFragment?.word).map((char: string, index: number) => (
+				<div
+					key={`picked-up-${index}`}
+					className="letter p-4 flex justify-center items-center w-[46px] h-[46px] border-4 border-black text-black text-1.7rem"
+				>
+					{char.toUpperCase()}
+				</div>
+			))}
 		</div>
 	)
 }

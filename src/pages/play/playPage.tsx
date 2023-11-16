@@ -72,18 +72,18 @@ export default function PlayPage() {
 			<SocketEventListeners>
 				<div className="grid grid-cols-12 h-screen">
 					<div className="col-span-6 h-full bg-emerald-600 px-8 pt-2 pb-8">
-						<div className="col-span-10 overflow-auto flex justify-center bg-emerald-700 py-8">
-							{authMeQueryData?.data?.currentGameId && currentGameQueryData?.data?.board ? (
-								<RenderBoard
-									gameId={authMeQueryData?.data?.currentGameId}
-									boardToRender={currentGameQueryData?.data?.board}
-								/>
-							) : (
-								<>
-									<h1>NO GAME IN PROGRESS</h1>
-								</>
-							)}
-						</div>
+						{/* <div className="col-span-10 overflow-auto flex justify-center bg-emerald-700 py-8"> */}
+						{authMeQueryData?.data?.currentGameId && currentGameQueryData?.data?.board ? (
+							<RenderBoard
+								gameId={authMeQueryData?.data?.currentGameId}
+								boardToRender={currentGameQueryData?.data?.board}
+							/>
+						) : (
+							<>
+								<h1>NO GAME IN PROGRESS</h1>
+							</>
+						)}
+						{/* </div> */}
 					</div>
 					<div className="col-span-6 h-full grid grid-rows-10 bg-slate-900">
 						<div className="row-start-1 row-end-11 bg-slate-600 p-8 pt-2">

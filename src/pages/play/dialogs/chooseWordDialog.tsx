@@ -1,11 +1,19 @@
 import { Button } from "../../../components/shadcn/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../../components/shadcn/ui/dialog"
 import useToastContext from "../../../app/context/toast/useToastContext"
-import RenderBoard from "../../../components/game/board/renderBoard"
+// import RenderBoard from "../../../components/game/board/renderBoard"
 import { useAuthMe } from "../../../app/auth/useAuthMe"
 import { useCurrentGame } from "../queries/useCurrentGame"
-import CustCursor from "../components/test/custCursor"
+// import CustCursor from "../components/test/custCursor"
 import BoxShadowExperiment from "../playPageTest2"
+import RenderPlayerLettersInDialog from "../components/controls/renderPlayerLettersInDialog"
+import { useAtom, useAtomValue, useSetAtom } from "jotai"
+import { sortedLettersAtom } from "../atoms/sortedLettersAtom"
+import { sortedLettersInDialogAtom } from "../atoms/sortedLettersInDialogAtom"
+import { useForm } from "react-hook-form"
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "../../../components/shadcn/ui/form"
+import { Input } from "../../../components/shadcn/ui/input"
+import { chosenWordAtom } from "../atoms/chosenWordAtom"
 // import { useForm } from "react-hook-form"
 // import { Input } from "../../../components/shadcn/ui/input"
 // import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../../../components/shadcn/ui/form"
@@ -18,13 +26,16 @@ import BoxShadowExperiment from "../playPageTest2"
 export default function ChooseWordDialog({ isOpen, onClose, title, description }: any) {
 	//const [roleField, setRoleField] = useState("")
 
-	//const userForm = useForm({ mode: "onChange" })
-
+	const chooseWordForm = useForm({ mode: "onChange" })
 	const { showToast } = useToastContext()
-
 	const authMeQueryData = useAuthMe()
-
 	const currentGameQueryData = useCurrentGame(authMeQueryData.data?.currentGameId)
+
+	const sortedLetters = useAtomValue(sortedLettersAtom)
+	const setWordFragment = useSetAtom(chosenWordAtom)
+
+	// console.log({ sortedLetters })
+	// console.log("render")
 
 	//const api = useAxios()
 
@@ -65,13 +76,14 @@ export default function ChooseWordDialog({ isOpen, onClose, title, description }
 	// 	},
 	// })
 
-	// const submitUpdateUserForm: any = (data: any) => {
-	// 	const { id, username, password, role } = data
-	// 	updateUserMutation.mutate({ id, username, password, role })
-	// }
+	const submitChooseWordForm = (data: any) => {
+		console.log(data)
+		setWordFragment(data)
+		onClose()
+	}
 
 	const cancelModal = () => {
-		//userForm.reset()
+		chooseWordForm.reset()
 		onClose()
 	}
 
@@ -81,31 +93,41 @@ export default function ChooseWordDialog({ isOpen, onClose, title, description }
 				open={isOpen}
 				onOpenChange={cancelModal}
 			>
-				<DialogContent className="sm:max-w-[1425px] sm:h-[100vh]">
-					<DialogHeader>
-						<DialogTitle>{title}</DialogTitle>
-						<DialogDescription>{description}</DialogDescription>
-					</DialogHeader>
-					This will have stuff
-					{/* {authMeQueryData?.data?.currentGameId && currentGameQueryData?.data?.board ? (
-						<RenderBoard
-							gameId={authMeQueryData?.data?.currentGameId}
-							boardToRender={currentGameQueryData?.data?.board}
-						/>
-					) : (
-						<>
-							<h1>NO GAME IN PROGRESS</h1>
-						</>
-					)} */}
-					<DialogFooter className="mt-8">
-						<Button
-							type="button"
-							onClick={cancelModal}
-						>
-							Cancel
-						</Button>
-						<Button type="submit">Button</Button>
-					</DialogFooter>
+				<DialogContent className="sm:max-w-[1000px] ">
+					<Form {...chooseWordForm}>
+						<form onSubmit={chooseWordForm.handleSubmit(submitChooseWordForm)}>
+							<DialogHeader>
+								<DialogTitle>{title}</DialogTitle>
+								<DialogDescription>{description}</DialogDescription>
+							</DialogHeader>
+
+							<FormField
+								control={chooseWordForm.control}
+								name="word"
+								defaultValue=""
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Word or Word Fragment</FormLabel>
+										<FormControl>
+											<Input {...field} />
+										</FormControl>
+										<FormDescription>Please choose a word OR word fragment to play.</FormDescription>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<RenderPlayerLettersInDialog letters={sortedLetters} />
+							<DialogFooter className="mt-8">
+								<Button
+									type="button"
+									onClick={cancelModal}
+								>
+									Cancel
+								</Button>
+								<Button type="submit">Choose</Button>
+							</DialogFooter>
+						</form>
+					</Form>
 				</DialogContent>
 				{/* {isOpen ? <BoxShadowExperiment /> : <></>} */}
 			</Dialog>

@@ -1,7 +1,8 @@
 import { useEffect } from "react"
 import { Button } from "../../../../components/shadcn/ui/button"
 import { useAtom } from "jotai"
-import { ItemType, sortedLettersAtom } from "../../atoms/sortedLettersAtom"
+import { sortedLettersAtom } from "../../atoms/sortedLettersAtom"
+import { ItemType } from "../../../../models/interfaces/itemType"
 
 // [
 // { id: 1, name: "A" },

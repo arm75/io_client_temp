@@ -80,6 +80,7 @@ export default function ChoosePositionDialog({ isOpen, onClose, title, descripti
 				open={isOpen}
 				onOpenChange={cancelModal}
 			>
+				{/* <DialogContent className="sm:max-w-[1000px]"> */}
 				<DialogContent className="sm:max-w-[1425px] sm:h-[100vh]">
 					<DialogHeader>
 						<DialogTitle>{title}</DialogTitle>
