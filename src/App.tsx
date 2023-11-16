@@ -34,10 +34,10 @@ export default function App() {
 							}
 						/>
 						{/* Nested route for "/game/list" */}
-						<Route
+						{/* <Route
 							path="wordtest"
 							element={<WordReArrangeTest />}
-						/>
+						/> */}
 					</Route>
 					<Route
 						path="/admin/users"

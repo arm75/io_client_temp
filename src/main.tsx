@@ -20,6 +20,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 						{RENDER_LOG === "true" ? console.log("<Main> rendered...") : null}
 						<App />
 						<Toaster />
+
 						{/* <iframe data-xstate></iframe> */}
 						<ReactQueryDevtools />
 					</>
