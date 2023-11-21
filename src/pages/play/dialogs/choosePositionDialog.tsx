@@ -3,16 +3,8 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import useToastContext from "../../../app/context/toast/useToastContext"
 import { useAuthMe } from "../../../app/auth/useAuthMe"
 import { useCurrentGame } from "../queries/useCurrentGame"
-import BoxShadowExperiment from "../playPageTest2"
 import RenderBoard from "../components/display/renderBoard"
-// import { useForm } from "react-hook-form"
-// import { Input } from "../../../components/shadcn/ui/input"
-// import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../../../components/shadcn/ui/form"
-// import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-// import IUser from "../../../models/interfaces/user"
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/shadcn/ui/select"
-// import { useState } from "react"
-// import useAxios from "../../../app/api/axios"
+import ChosenWordToPlay from "../components/display/chosenWordToPlay"
 
 export default function ChoosePositionDialog({ isOpen, onClose, title, description }: any) {
 	//const [roleField, setRoleField] = useState("")
@@ -106,7 +98,7 @@ export default function ChoosePositionDialog({ isOpen, onClose, title, descripti
 						<Button type="submit">Button</Button>
 					</DialogFooter>
 				</DialogContent>
-				{isOpen ? <BoxShadowExperiment /> : <></>}
+				{isOpen ? <ChosenWordToPlay /> : <></>}
 			</Dialog>
 		</>
 	)

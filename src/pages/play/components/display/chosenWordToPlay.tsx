@@ -1,8 +1,8 @@
 import { useAtomValue } from "jotai"
-import React, { useEffect, useRef } from "react"
-import { chosenWordAtom } from "./atoms/chosenWordAtom"
+import { useEffect, useRef } from "react"
+import { chosenWordAtom } from "../../atoms/chosenWordAtom"
 
-const BoxShadowExperiment = (props: any) => {
+const ChosenWordToPlay = (props: any) => {
 	const bsDivRef: any = useRef(null)
 
 	const wordFragment = useAtomValue(chosenWordAtom)
@@ -39,7 +39,7 @@ const BoxShadowExperiment = (props: any) => {
 			{Array.from(wordFragment?.word).map((char: string, index: number) => (
 				<div
 					key={`picked-up-${index}`}
-					className="letter p-4 flex justify-center items-center w-[46px] h-[46px] border-4 border-black text-black text-1.7rem"
+					className="letter p-4 flex justify-center items-center w-[46px] h-[46px] border-4 border-red-500 text-black text-1.7rem"
 				>
 					{char.toUpperCase()}
 				</div>
@@ -48,4 +48,4 @@ const BoxShadowExperiment = (props: any) => {
 	)
 }
 
-export default BoxShadowExperiment
+export default ChosenWordToPlay

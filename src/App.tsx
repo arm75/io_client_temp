@@ -5,7 +5,6 @@ import PageNotFound from "./pages/pageNotFound"
 import UsersPage from "./pages/users/usersPage"
 import PlayPage from "./pages/play/playPage"
 import GamesPage from "./pages/games/gamesPage"
-import { WordReArrangeTest } from "./pages/play/wordReArrangeTest"
 
 const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
 
@@ -33,10 +32,10 @@ export default function App() {
 								</AuthGuard>
 							}
 						/>
-						{/* Nested route for "/game/list" */}
+						{/* Nested route for refernce "/game/list" */}
 						{/* <Route
-							path="wordtest"
-							element={<WordReArrangeTest />}
+							path="list"
+							element={<WordReArrangeListTest />}
 						/> */}
 					</Route>
 					<Route
