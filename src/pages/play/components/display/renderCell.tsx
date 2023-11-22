@@ -1,4 +1,5 @@
-import { hoverCoordinatesAtom, hoverCookieColorAtom, hoverCookieAtom } from "../../atoms/hoverAtoms"
+import { chosenWordLengthAtom } from "../../atoms/chosenWordAtom"
+import { hoverCoordinatesAtom, hoverCookieColorAtom, hoverCookieAtom, hoverStatesAtom, hoverStatesResetAtom } from "../../atoms/hoverAtoms"
 import TokenBlue1 from "../tokens/bonusCookies/blue/tokenBlue1"
 import TokenBlue10 from "../tokens/bonusCookies/blue/tokenBlue10"
 import TokenBlue3 from "../tokens/bonusCookies/blue/tokenBlue3"
@@ -43,22 +44,55 @@ import LetterTileW from "../tokens/letterTiles/html/LetterTileW"
 import LetterTileX from "../tokens/letterTiles/html/LetterTileX"
 import LetterTileY from "../tokens/letterTiles/html/LetterTileY"
 import LetterTileZ from "../tokens/letterTiles/html/LetterTileZ"
-import { useSetAtom } from "jotai"
+import { useAtom, useAtomValue, useSetAtom } from "jotai"
 
 const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
 
 export default function RenderCell(props: any) {
 	if (RENDER_LOG === "true") console.log("<RenderCell> rendered...")
+
 	const { cell } = props
 
 	const setHoverCoordinates = useSetAtom(hoverCoordinatesAtom)
 	const setHoverCookieColor = useSetAtom(hoverCookieColorAtom)
 	const setHoverCookie = useSetAtom(hoverCookieAtom)
+	const [hoverStates, setHoverStates] = useAtom(hoverStatesAtom)
+	const hoverStatesReset = useAtomValue(hoverStatesResetAtom)
+	const chosenWordLength = useAtomValue(chosenWordLengthAtom)
 
 	const handleMouseOver = (currentRow: number, currentCol: number, currentCookieColor: string, currentCookie: string) => {
+		updateHoverState(currentRow, currentCol)
 		setHoverCoordinates({ row: currentRow, col: currentCol })
 		setHoverCookieColor(currentCookieColor)
 		setHoverCookie(currentCookie)
+	}
+
+	const handleMouseLeave = () => resetHoverStates()
+
+	const updateHoverState = (row: number, col: number) => {
+		const rowIndex = row - 1
+		const colIndex = col - 1
+		for (let count = 0; count <= chosenWordLength - 1; count++) {
+			setHoverStates((prevHoverStates) => {
+				const rowIndexToSet = rowIndex + count
+				const colIndexToSet = colIndex
+				// Create a new outer array
+				const newStates = [...prevHoverStates]
+
+				// Create a new inner array
+				newStates[rowIndexToSet] = [...newStates[rowIndexToSet]]
+
+				// Update the specific value
+				// newStates[row][col] = !newStates[row][col]
+				newStates[rowIndexToSet][colIndexToSet] = true
+
+				return newStates
+			})
+		}
+	}
+
+	const resetHoverStates = () => {
+		setHoverStates(hoverStatesReset)
 	}
 
 	function bonusCookieToRender(color: string, cookie: string): JSX.Element {
@@ -234,9 +268,17 @@ export default function RenderCell(props: any) {
 
 	return (
 		<>
-			<div
+			{/* <div
 				className="border text-white bg-slate-300 hover:bg-emerald-300 hover:border-emerald-600 border-slate-800 flex justify-center items-center w-[46px] h-[46px]"
 				onMouseOver={() => handleMouseOver(cell.row, cell.col, cell.bonusCookieColor, cell.bonusCookie)}
+			> */}
+			{/* {console.log(`Row: ${cell.row}, Col: ${cell.col}`)} */}
+			<div
+				className={`border text-white ${
+					hoverStates[cell.row - 1][cell.col - 1] ? "bg-emerald-300" : "bg-slate-300"
+				} border-slate-800 flex justify-center items-center w-[46px] h-[46px]`}
+				onMouseOver={() => handleMouseOver(cell.row, cell.col, cell.bonusCookieColor, cell.bonusCookie)}
+				onMouseLeave={() => handleMouseLeave()}
 			>
 				<div className="select-none">
 					{/* <div className=""> */}

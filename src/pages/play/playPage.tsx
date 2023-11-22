@@ -31,6 +31,8 @@ export default function PlayPage() {
 
 	let content = <></>
 
+	//console.log({ hoverStatesArray })
+
 	const authMeQueryData = useAuthMe()
 
 	const currentGameQueryData = useCurrentGame(authMeQueryData.data?.currentGameId)

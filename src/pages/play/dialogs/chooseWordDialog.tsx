@@ -13,7 +13,7 @@ import { sortedLettersInDialogAtom } from "../atoms/sortedLettersInDialogAtom"
 import { useForm } from "react-hook-form"
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "../../../components/shadcn/ui/form"
 import { Input } from "../../../components/shadcn/ui/input"
-import { chosenWordAtom } from "../atoms/chosenWordAtom"
+import { chosenWordAtom, chosenWordLengthAtom } from "../atoms/chosenWordAtom"
 // import { useForm } from "react-hook-form"
 // import { Input } from "../../../components/shadcn/ui/input"
 // import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../../../components/shadcn/ui/form"
@@ -34,7 +34,6 @@ export default function ChooseWordDialog({ isOpen, onClose, title, description }
 	const sortedLetters = useAtomValue(sortedLettersAtom)
 	const setWordFragment = useSetAtom(chosenWordAtom)
 
-	// console.log({ sortedLetters })
 	// console.log("render")
 
 	//const api = useAxios()

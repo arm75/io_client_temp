@@ -1,6 +1,7 @@
+import { chosenWordLengthAtom } from "../../atoms/chosenWordAtom"
 import { hoverCoordinatesAtom, hoverCookieColorAtom, hoverCookieAtom } from "../../atoms/hoverAtoms"
 import RenderCell from "./renderCell"
-import { useSetAtom } from "jotai"
+import { useAtomValue, useSetAtom } from "jotai"
 
 const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
 
@@ -10,6 +11,9 @@ export default function RenderBoard({ boardToRender }: any) {
 	const setHoverCoordinates = useSetAtom(hoverCoordinatesAtom)
 	const setHoverCookieColor = useSetAtom(hoverCookieColorAtom)
 	const setHoverCookie = useSetAtom(hoverCookieAtom)
+
+	const numberOfLettersInWord = useAtomValue(chosenWordLengthAtom)
+	console.log({ numberOfLettersInWord })
 
 	function handleMouseOut() {
 		setHoverCoordinates({ row: 0, col: 0 })

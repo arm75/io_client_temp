@@ -2,7 +2,11 @@ import { useAtomValue } from "jotai"
 import { useEffect, useRef } from "react"
 import { chosenWordAtom } from "../../atoms/chosenWordAtom"
 
+const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
+
 const ChosenWordToPlay = (props: any) => {
+	if (RENDER_LOG === "true") console.log("<ChosenWordToPlay> rendered...")
+
 	const bsDivRef: any = useRef(null)
 
 	const wordFragment = useAtomValue(chosenWordAtom)
@@ -33,7 +37,8 @@ const ChosenWordToPlay = (props: any) => {
 
 	return (
 		<div
-			className="fixed bg-white text-red-500 top-1/2 left-1/2 transform -translate-x-[46px] -translate-y-1/2 flex pointer-events-none z-50"
+			className="fixed bg-white text-red-500 top-1/2 left-1/2 transform -translate-x-[18px] -translate-y-[36px] flex pointer-events-none z-50"
+			// className="fixed bg-white text-red-500 top-1/2 left-1/2 transform -translate-x-[46px] -translate-y-1/2 flex pointer-events-none z-50"
 			ref={bsDivRef}
 		>
 			{Array.from(wordFragment?.word).map((char: string, index: number) => (

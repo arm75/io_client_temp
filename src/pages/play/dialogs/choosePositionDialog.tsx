@@ -6,7 +6,11 @@ import { useCurrentGame } from "../queries/useCurrentGame"
 import RenderBoard from "../components/display/renderBoard"
 import ChosenWordToPlay from "../components/display/chosenWordToPlay"
 
+const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
+
 export default function ChoosePositionDialog({ isOpen, onClose, title, description }: any) {
+	if (RENDER_LOG === "true") console.log("<ChoosePositionDialog> rendered...")
+
 	//const [roleField, setRoleField] = useState("")
 
 	//const userForm = useForm({ mode: "onChange" })
