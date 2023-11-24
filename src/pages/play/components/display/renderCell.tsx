@@ -1,3 +1,4 @@
+import React from "react"
 import { chosenWordLengthAtom } from "../../atoms/chosenWordAtom"
 import { hoverCoordinatesAtom, hoverCookieColorAtom, hoverCookieAtom, hoverStatesAtom, hoverStatesResetAtom } from "../../atoms/hoverAtoms"
 import TokenBlue1 from "../tokens/bonusCookies/blue/tokenBlue1"
@@ -48,7 +49,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai"
 
 const RENDER_LOG = import.meta.env.VITE_APP_RENDER_LOG
 
-export default function RenderCell(props: any) {
+const RenderCell = React.memo((props: any) => {
 	if (RENDER_LOG === "true") console.log("<RenderCell> rendered...")
 
 	const { cell } = props
@@ -287,4 +288,6 @@ export default function RenderCell(props: any) {
 			</div>
 		</>
 	)
-}
+})
+
+export default RenderCell
